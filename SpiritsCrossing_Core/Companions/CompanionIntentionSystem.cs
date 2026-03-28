@@ -176,46 +176,59 @@ namespace SpiritsCrossing.Companions
             var bondSys     = CompanionBondSystem.Instance;
             if (playerState == null || vrs == null) return;
 
+            // Read player's assignment once per evaluation cycle
+            var assignment = CompanionAssignmentManager.Instance?.Assignment;
+
             foreach (var kvp in _states)
             {
-                string id    = kvp.Key;
+                string id     = kvp.Key;
                 var    istate = kvp.Value;
                 var    profile = bondSys?.GetProfile(id);
                 if (profile == null) continue;
 
-                float harmony   = vrs.GetHarmony(id);
-                float bondLevel = bondSys?.GetBondLevel(id) ?? 0f;
-                var   npcEvo    = NpcEvolutionSystem.Instance?.GetState(profile.npcArchetype ?? id);
+                float rawHarmony = vrs.GetHarmony(id);
+                float bondLevel  = bondSys?.GetBondLevel(id) ?? 0f;
+                var   npcEvo     = NpcEvolutionSystem.Instance?.GetState(profile.npcArchetype ?? id);
+
+                // --- Assignment integration ---
+                // An ongoing relationship strengthens the resonance channel.
+                // Assigned animals notice the player more readily and stay longer.
+                // This is not control — it is the channel being open.
+                float assignmentBonus = ComputeAssignmentBonus(id, assignment, bondLevel);
+                float harmony         = Mathf.Clamp01(rawHarmony + assignmentBonus);
 
                 // If already departing, let it play out
                 if (istate.intention == CompanionIntention.Departing) continue;
 
                 // --- Decide new intention ---
                 CompanionIntention newIntention = DecideIntention(
-                    id, profile, istate, playerState, harmony, bondLevel, npcEvo);
+                    id, profile, istate, playerState, harmony, bondLevel, npcEvo, assignmentBonus);
 
                 if (newIntention != istate.intention)
-                    SetIntention(istate, newIntention, harmony, bondLevel, profile.tier);
+                    SetIntention(istate, newIntention, harmony, bondLevel, profile.tier, assignmentBonus > 0f);
             }
         }
 
         private CompanionIntention DecideIntention(
             string id, CompanionProfile profile, CompanionIntentionState istate,
             PlayerResonanceState playerState, float harmony, float bondLevel,
-            NpcEvolutionState npcEvo)
+            NpcEvolutionState npcEvo, float assignmentBonus = 0f)
         {
             // ---- DEPARTURE: time up and stay roll failed ----
             if (istate.IsEngaged && istate.intentionTimer >= maxIntentionTime)
             {
-                if (!ShouldStay(bondLevel, harmony, profile.tier))
+                if (!ShouldStay(bondLevel, harmony, profile.tier, assignmentBonus > 0f))
                     return CompanionIntention.Departing;
             }
 
             // ---- TRICK: player too predictable + this is a trickster ----
+            // Assigned tricksters wait longer before tricking — the relationship
+            // makes them less likely to disrupt, though they still do eventually.
+            float effectiveTrickTime = trickActivateTime + (assignmentBonus > 0f ? 30f : 0f);
             if (TRICKSTERS.Contains(id) &&
-                _playerCalmTimer >= trickActivateTime &&
+                _playerCalmTimer >= effectiveTrickTime &&
                 !istate.trickActive &&
-                harmony > 0.30f)   // tricksters need some connection to show up
+                harmony > 0.30f)
                 return CompanionIntention.Tricking;
 
             // ---- HELP: player in distress ----
@@ -243,18 +256,20 @@ namespace SpiritsCrossing.Companions
         // Set intention and notify behavior controller
         // -------------------------------------------------------------------------
         private void SetIntention(CompanionIntentionState istate, CompanionIntention newIntention,
-            float harmony, float bondLevel, int tier)
+            float harmony, float bondLevel, int tier, bool isAssigned = false)
         {
             var prev = istate.intention;
             istate.intention      = newIntention;
             istate.intentionTimer = 0f;
 
             // Compute stay score at arrival
+            // Assigned animals receive a flat stay bonus — the relationship matters to them too.
             if (newIntention != CompanionIntention.Wandering &&
                 newIntention != CompanionIntention.Departing)
             {
-                float mult = tier switch { 1 => tier1StayMult, 2 => tier2StayMult, _ => tier3StayMult };
-                istate.visitStayScore = bondLevel * harmony * mult;
+                float mult       = tier switch { 1 => tier1StayMult, 2 => tier2StayMult, _ => tier3StayMult };
+                float assignBonus = isAssigned ? 0.18f : 0f;  // ~18% flat stay lift for assigned
+                istate.visitStayScore = Mathf.Clamp01(bondLevel * harmony * mult + assignBonus);
             }
 
             OnIntentionChanged?.Invoke(istate.animalId, newIntention);
@@ -378,11 +393,41 @@ namespace SpiritsCrossing.Companions
         // -------------------------------------------------------------------------
         // Stay decision
         // -------------------------------------------------------------------------
-        private bool ShouldStay(float bondLevel, float harmony, int tier)
+        private bool ShouldStay(float bondLevel, float harmony, int tier, bool isAssigned = false)
         {
-            float mult  = tier switch { 1 => tier1StayMult, 2 => tier2StayMult, _ => tier3StayMult };
-            float prob  = bondLevel * harmony * mult;
+            float mult       = tier switch { 1 => tier1StayMult, 2 => tier2StayMult, _ => tier3StayMult };
+            float assignBonus = isAssigned ? 0.18f : 0f;
+            float prob       = Mathf.Clamp01(bondLevel * harmony * mult + assignBonus);
             return UnityEngine.Random.value < prob;
+        }
+
+        // -------------------------------------------------------------------------
+        // Assignment bonus — relationship opens the resonance channel
+        // -------------------------------------------------------------------------
+        private static float ComputeAssignmentBonus(string animalId, CompanionAssignment assignment, float bondLevel)
+        {
+            if (assignment == null) return 0f;
+
+            // Check every slot — primary gets the strongest signal
+            bool isPrimary = assignment.primaryCompanion == animalId;
+            bool isSession = assignment.sessionCompanion == animalId;
+            bool isElement = assignment.airCompanion   == animalId ||
+                             assignment.earthCompanion == animalId ||
+                             assignment.waterCompanion == animalId ||
+                             assignment.fireCompanion  == animalId;
+            bool isRealm   = assignment.realmAnimals.Contains(animalId);
+
+            if (!isPrimary && !isSession && !isElement && !isRealm) return 0f;
+
+            // Primary = strongest channel. Realm = most specific. Element = general affinity.
+            float slotBonus = isPrimary ? 0.12f
+                            : isRealm  ? 0.10f
+                            : isSession? 0.09f
+                                       : 0.08f;
+
+            // Bond depth scales the bonus — the longer the relationship, the more open the channel.
+            // A bond of 0 = small invitation. A bond of 1 = full resonance channel open.
+            return slotBonus * (0.40f + bondLevel * 0.60f);
         }
 
         // -------------------------------------------------------------------------
