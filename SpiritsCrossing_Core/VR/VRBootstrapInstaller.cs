@@ -24,6 +24,7 @@ using SpiritsCrossing.Cosmos;
 using SpiritsCrossing.Vibration;
 using SpiritsCrossing.Lifecycle;
 using SpiritsCrossing.World;
+using SpiritsCrossing.Autonomous;
 using V243.SandstoneCave;
 
 namespace SpiritsCrossing.VR
@@ -72,6 +73,9 @@ namespace SpiritsCrossing.VR
         private WorldSystem                 _worldSystem;
         private CompanionAssignmentManager  _assignmentManager;
         private CompanionAssignmentUI       _assignmentUI;
+        private NpcEvolutionSystem          _npcEvolution;
+        private PlanetAutonomySystem        _planetAutonomy;
+        private CosmosClockSystem           _cosmosClock;
 
         // -------------------------------------------------------------------------
         // Lifecycle
@@ -350,6 +354,14 @@ namespace SpiritsCrossing.VR
             if (_assignmentManager == null) { var go = new GameObject("[CompanionAssignmentManager]"); DontDestroyOnLoad(go); _assignmentManager = go.AddComponent<CompanionAssignmentManager>(); }
             if (_assignmentUI == null) _assignmentUI = FindObjectOfType<CompanionAssignmentUI>();
             if (_assignmentUI == null) { var go = new GameObject("[CompanionAssignmentUI]"); DontDestroyOnLoad(go); _assignmentUI = go.AddComponent<CompanionAssignmentUI>(); }
+
+            // Autonomous world systems (NPC evolution, planet autonomy, cosmos clock)
+            if (_npcEvolution    == null) _npcEvolution    = FindObjectOfType<NpcEvolutionSystem>();
+            if (_npcEvolution    == null) { var go = new GameObject("[NpcEvolutionSystem]");    DontDestroyOnLoad(go); _npcEvolution    = go.AddComponent<NpcEvolutionSystem>(); }
+            if (_planetAutonomy  == null) _planetAutonomy  = FindObjectOfType<PlanetAutonomySystem>();
+            if (_planetAutonomy  == null) { var go = new GameObject("[PlanetAutonomySystem]");  DontDestroyOnLoad(go); _planetAutonomy  = go.AddComponent<PlanetAutonomySystem>(); }
+            if (_cosmosClock     == null) _cosmosClock     = FindObjectOfType<CosmosClockSystem>();
+            if (_cosmosClock     == null) { var go = new GameObject("[CosmosClockSystem]");     DontDestroyOnLoad(go); _cosmosClock     = go.AddComponent<CosmosClockSystem>(); }
         }
 
         // =========================================================================
@@ -406,6 +418,10 @@ namespace SpiritsCrossing.VR
             string activeComp = cam?.ActiveCompanionId ?? "—";
             int ruleCount = cam?.Rules?.rules?.Count ?? 0;
             sb.AppendLine($"║  [+] CompanionAssignment: {StatusIcon(cam)} active={activeComp,-14} rules={ruleCount,-6}║");
+            var clock = CosmosClockSystem.Instance;
+            float elapsed = clock?.ElapsedHours ?? 0f;
+            int npcCount = UniverseStateManager.Instance?.Current.npcStates?.Count ?? 0;
+            sb.AppendLine($"║  [+] CosmosAutonomy:      {StatusIcon(clock)} away={elapsed:F1}h npc={npcCount,-20}║");
             sb.AppendLine("╚══════════════════════════════════════════════╝");
 
             Debug.Log(sb.ToString());

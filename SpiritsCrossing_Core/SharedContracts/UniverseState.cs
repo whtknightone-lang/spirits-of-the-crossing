@@ -10,6 +10,7 @@ using SpiritsCrossing.Companions;
 using SpiritsCrossing.Memory;
 using SpiritsCrossing.Lifecycle;
 using SpiritsCrossing.World;
+using SpiritsCrossing.Autonomous;
 
 namespace SpiritsCrossing
 {
@@ -86,6 +87,11 @@ namespace SpiritsCrossing
 
         // Companion bonds (all 26 animal companions across 4 elements)
         public List<CompanionBondState> companions = new List<CompanionBondState>();
+
+        // Autonomous world state
+        public List<NpcEvolutionState>    npcStates             = new List<NpcEvolutionState>();
+        public List<PlanetAutonomyState>  planetAutonomyStates  = new List<PlanetAutonomyState>();
+        public string                     lastSessionUtc;
 
         // User companion assignments (primary / elemental / realm / session)
         public CompanionAssignment userAssignment = new CompanionAssignment();
