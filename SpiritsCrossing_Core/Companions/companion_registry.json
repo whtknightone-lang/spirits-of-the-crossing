@@ -265,6 +265,72 @@
       "npcArchetype": "EarthDragon"
     },
     {
+      "animalId": "parrot",
+      "displayName": "Forest Parrot",
+      "element": "Air",
+      "tier": 1,
+      "behaviorMode": "mimic-joyful",
+      "description": "Vivid air spirit of the deep forest. Roosts in the causeway trees of ancient temples. Mimics the player's emotional state \u2014 it sounds like whatever you feel. Bonds through pure joy expressed freely in the presence of old things.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.5,
+        "wonder": 0.0,
+        "socialSync": 0.3,
+        "movementFlow": 0.2,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.29,
+      "mythTrigger": "forest",
+      "preferredPlanet": "ForestHeart",
+      "npcArchetype": "DryadTree"
+    },
+    {
+      "animalId": "forest_hawk",
+      "displayName": "Forest Hawk",
+      "element": "Air",
+      "tier": 2,
+      "behaviorMode": "sacred-watch",
+      "description": "Nests in the moss-stone towers of ancient temples. Circles slowly overhead, always watching. Does not hunt in the player's presence \u2014 it observes. Bonds through the marriage of calm awareness and wonder: you must be still enough to notice without wanting to hold.",
+      "resonanceWeights": {
+        "calm": 0.4,
+        "joy": 0.0,
+        "wonder": 0.4,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.2
+      },
+      "bondThreshold": 0.43,
+      "mythTrigger": "ruin",
+      "preferredPlanet": "ForestHeart",
+      "npcArchetype": "DryadTree"
+    },
+    {
+      "animalId": "elder_white_stag",
+      "displayName": "Elder White Stag",
+      "element": "Earth",
+      "tier": 3,
+      "behaviorMode": "sacred-ancient",
+      "description": "The oldest living thing in the forest. Pure white. Appears only at dawn, near the inner sanctum of the deepest temples or drinking from the source pools of blessed rivers. Does not bond quickly. The Stag does not come to you \u2014 you become still enough that it no longer needs to leave. The rarest earth bond. Requires source alignment, calm, and breath coherence all held together at depth.",
+      "resonanceWeights": {
+        "calm": 0.35,
+        "joy": 0.0,
+        "wonder": 0.0,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.45,
+        "breathCoherence": 0.2
+      },
+      "bondThreshold": 0.58,
+      "mythTrigger": "elder",
+      "preferredPlanet": "ForestHeart",
+      "npcArchetype": "DryadTree"
+    },
+    {
       "animalId": "starfish",
       "displayName": "Starfish",
       "element": "Water",
@@ -609,6 +675,10 @@
     "ElderAirDragon": [
       "harpy_eagle",
       "eagle"
+    ],
+    "DryadTree": [
+      "forest_hawk",
+      "parrot"
     ]
   }
 }

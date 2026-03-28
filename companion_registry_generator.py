@@ -1,7 +1,7 @@
 """
 Companion Registry Generator
 =============================
-Defines all 25 elemental animal companions and exports companion_registry.json
+Defines all 28 elemental animal companions and exports companion_registry.json
 ready for Unity StreamingAssets.
 
 Each companion has:
@@ -196,6 +196,52 @@ COMPANIONS = [
         "mythTrigger":    "forest",
         "preferredPlanet":"ForestHeart",
         "npcArchetype":   "EarthDragon",
+    },
+
+    # =========================================================================
+    # FOREST WORLD — ForestHeart / Tree spirits, temples, blessed rivers
+    # These three companions are bound to the Forest World layer.
+    # They appear near dryad trees, overgrown stone rings, Angkor temples,
+    # and blessed rivers. They do not transfer to other realms.
+    # =========================================================================
+    {
+        "animalId":       "parrot",
+        "displayName":    "Forest Parrot",
+        "element":        "Air",
+        "tier":           1,
+        "behaviorMode":   "mimic-joyful",
+        "description":    "Vivid air spirit of the deep forest. Roosts in the causeway trees of ancient temples. Mimics the player's emotional state — it sounds like whatever you feel. Bonds through pure joy expressed freely in the presence of old things.",
+        "resonanceWeights": w(joy=0.50, socialSync=0.30, movementFlow=0.20),
+        "bondThreshold":  0.29,
+        "mythTrigger":    "forest",
+        "preferredPlanet":"ForestHeart",
+        "npcArchetype":   "DryadTree",
+    },
+    {
+        "animalId":       "forest_hawk",
+        "displayName":    "Forest Hawk",
+        "element":        "Air",
+        "tier":           2,
+        "behaviorMode":   "sacred-watch",
+        "description":    "Nests in the moss-stone towers of ancient temples. Circles slowly overhead, always watching. Does not hunt in the player's presence — it observes. Bonds through the marriage of calm awareness and wonder: you must be still enough to notice without wanting to hold.",
+        "resonanceWeights": w(calm=0.40, wonder=0.40, breathCoherence=0.20),
+        "bondThreshold":  0.43,
+        "mythTrigger":    "ruin",
+        "preferredPlanet":"ForestHeart",
+        "npcArchetype":   "DryadTree",
+    },
+    {
+        "animalId":       "elder_white_stag",
+        "displayName":    "Elder White Stag",
+        "element":        "Earth",
+        "tier":           3,
+        "behaviorMode":   "sacred-ancient",
+        "description":    "The oldest living thing in the forest. Pure white. Appears only at dawn, near the inner sanctum of the deepest temples or drinking from the source pools of blessed rivers. Does not bond quickly. The Stag does not come to you — you become still enough that it no longer needs to leave. The rarest earth bond. Requires source alignment, calm, and breath coherence all held together at depth.",
+        "resonanceWeights": w(sourceAlignment=0.45, calm=0.35, breathCoherence=0.20),
+        "bondThreshold":  0.58,
+        "mythTrigger":    "elder",
+        "preferredPlanet":"ForestHeart",
+        "npcArchetype":   "DryadTree",
     },
 
     # =========================================================================
@@ -400,6 +446,9 @@ NPC_DEFAULT_COMPANIONS = {
     "FireDragon":    ["fire_drake", "lion"],
     "WaterDragon":   ["whale", "kraken"],
     "ElderAirDragon":["harpy_eagle", "eagle"],
+    # Forest World — parrot and hawk in temple/dryad zones
+    # elder_white_stag is not assigned to NPCs; it appears on its own terms
+    "DryadTree":     ["forest_hawk", "parrot"],
 }
 
 
