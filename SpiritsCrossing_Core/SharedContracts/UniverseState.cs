@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using SpiritsCrossing.Companions;
 
 namespace SpiritsCrossing
 {
@@ -80,6 +81,9 @@ namespace SpiritsCrossing
         [Range(0f, 1f)] public float universeBirthPotential;
         [Range(0f, 1f)] public float universeRebirthPotential;
 
+        // Companion bonds (all 26 animal companions across 4 elements)
+        public List<CompanionBondState> companions = new List<CompanionBondState>();
+
         // -------------------------------------------------------------------------
 
         public PlanetState GetOrCreatePlanet(string planetId)
@@ -121,6 +125,39 @@ namespace SpiritsCrossing
                 GetOrCreatePlanet(outcome.planetId).RecordVisit(outcome);
 
             RecalculateUniverseCycle();
+        }
+
+        public CompanionBondState GetOrCreateBond(string animalId)
+        {
+            foreach (var b in companions)
+                if (b.animalId == animalId) return b;
+            var bond = new CompanionBondState { animalId = animalId };
+            companions.Add(bond);
+            return bond;
+        }
+
+        public void RecordCompanionEncounter(string animalId, float resonanceScore)
+        {
+            var bond = GetOrCreateBond(animalId);
+            bond.encounterCount++;
+            bond.lastSeenUtc = DateTime.UtcNow.ToString("o");
+            // Bond grows slowly per encounter if resonance above threshold
+            if (resonanceScore > 0.25f)
+                bond.bondLevel = Mathf.Clamp01(bond.bondLevel + resonanceScore * 0.02f);
+        }
+
+        public CompanionBondState GetActiveCompanion()
+        {
+            foreach (var b in companions)
+                if (b.isActive) return b;
+            return null;
+        }
+
+        public void SetActiveCompanion(string animalId)
+        {
+            foreach (var b in companions) b.isActive = false;
+            if (!string.IsNullOrEmpty(animalId))
+                GetOrCreateBond(animalId).isActive = true;
         }
 
         public void RecalculateUniverseCycle()

@@ -1,0 +1,614 @@
+{
+  "companions": [
+    {
+      "animalId": "raven",
+      "displayName": "Raven",
+      "element": "Air",
+      "tier": 1,
+      "behaviorMode": "wise",
+      "description": "Keeper of omens and riddles. Watches from high branches and mirrors the player's deepest curiosity.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.0,
+        "wonder": 0.55,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.35,
+        "breathCoherence": 0.1
+      },
+      "bondThreshold": 0.32,
+      "mythTrigger": "ruin",
+      "preferredPlanet": "SkySpiral",
+      "npcArchetype": "Dervish"
+    },
+    {
+      "animalId": "macaw",
+      "displayName": "Macaw",
+      "element": "Air",
+      "tier": 1,
+      "behaviorMode": "playful",
+      "description": "Bright social spirit. Amplifies joy and draws companions into vocal resonance.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.55,
+        "wonder": 0.0,
+        "socialSync": 0.35,
+        "movementFlow": 0.1,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.28,
+      "mythTrigger": "sky",
+      "preferredPlanet": "SkySpiral",
+      "npcArchetype": "PairA"
+    },
+    {
+      "animalId": "hawk",
+      "displayName": "Hawk",
+      "element": "Air",
+      "tier": 2,
+      "behaviorMode": "precise",
+      "description": "Master of focus and fast strikes. Awakens through spinning clarity and directed movement.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.0,
+        "wonder": 0.0,
+        "socialSync": 0.0,
+        "movementFlow": 0.35,
+        "spinStability": 0.45,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.2
+      },
+      "bondThreshold": 0.4,
+      "mythTrigger": "sky",
+      "preferredPlanet": "SkySpiral",
+      "npcArchetype": "Dervish"
+    },
+    {
+      "animalId": "eagle",
+      "displayName": "Eagle",
+      "element": "Air",
+      "tier": 2,
+      "behaviorMode": "soaring",
+      "description": "Clear vision from altitude. Bonds through wonder and source alignment \u2014 the capacity to see far.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.0,
+        "wonder": 0.35,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.45,
+        "breathCoherence": 0.2
+      },
+      "bondThreshold": 0.44,
+      "mythTrigger": "elder",
+      "preferredPlanet": "SkySpiral",
+      "npcArchetype": "ElderAirDragon"
+    },
+    {
+      "animalId": "harpy_eagle",
+      "displayName": "Harpy Eagle",
+      "element": "Air",
+      "tier": 3,
+      "behaviorMode": "fierce-wise",
+      "description": "Apex of air spirits. Combines fierce precision with ancient source sight. The most demanding air bond.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.0,
+        "wonder": 0.25,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.35,
+        "sourceAlignment": 0.4,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.55,
+      "mythTrigger": "elder",
+      "preferredPlanet": "SkySpiral",
+      "npcArchetype": "ElderAirDragon"
+    },
+    {
+      "animalId": "groundhog",
+      "displayName": "Groundhog",
+      "element": "Earth",
+      "tier": 1,
+      "behaviorMode": "cautious",
+      "description": "Underground wisdom. Emerges only when the player is genuinely still and breath is coherent.",
+      "resonanceWeights": {
+        "calm": 0.55,
+        "joy": 0.0,
+        "wonder": 0.0,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.1,
+        "breathCoherence": 0.35
+      },
+      "bondThreshold": 0.3,
+      "mythTrigger": "forest",
+      "preferredPlanet": "ForestHeart",
+      "npcArchetype": "Seated"
+    },
+    {
+      "animalId": "mouse",
+      "displayName": "Mouse",
+      "element": "Earth",
+      "tier": 1,
+      "behaviorMode": "gentle",
+      "description": "Tiny ambassador of community. Responds to calm social presence and gentle breath.",
+      "resonanceWeights": {
+        "calm": 0.5,
+        "joy": 0.0,
+        "wonder": 0.0,
+        "socialSync": 0.35,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.15
+      },
+      "bondThreshold": 0.27,
+      "mythTrigger": "forest",
+      "preferredPlanet": "ForestHeart",
+      "npcArchetype": "Seated"
+    },
+    {
+      "animalId": "chipmunk",
+      "displayName": "Chipmunk",
+      "element": "Earth",
+      "tier": 1,
+      "behaviorMode": "playful",
+      "description": "Quick and joyful earth spirit. Darts into movement at the first spark of joy.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.55,
+        "wonder": 0.0,
+        "socialSync": 0.15,
+        "movementFlow": 0.3,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.27,
+      "mythTrigger": "forest",
+      "preferredPlanet": "ForestHeart",
+      "npcArchetype": "FlowDancer"
+    },
+    {
+      "animalId": "snake",
+      "displayName": "Snake",
+      "element": "Earth",
+      "tier": 2,
+      "behaviorMode": "ancient",
+      "description": "Ancient keeper of cycles. Appears when the player touches deep source alignment through stillness.",
+      "resonanceWeights": {
+        "calm": 0.35,
+        "joy": 0.0,
+        "wonder": 0.0,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.5,
+        "breathCoherence": 0.15
+      },
+      "bondThreshold": 0.4,
+      "mythTrigger": "ruin",
+      "preferredPlanet": "SourceVeil",
+      "npcArchetype": "Seated"
+    },
+    {
+      "animalId": "razorback_boar",
+      "displayName": "Razorback Boar",
+      "element": "Earth",
+      "tier": 2,
+      "behaviorMode": "fierce",
+      "description": "Raw earth power. Bonds through forceful movement and spin \u2014 earth at its most assertive.",
+      "resonanceWeights": {
+        "calm": 0.15,
+        "joy": 0.0,
+        "wonder": 0.0,
+        "socialSync": 0.0,
+        "movementFlow": 0.4,
+        "spinStability": 0.45,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.38,
+      "mythTrigger": "storm",
+      "preferredPlanet": "ForestHeart",
+      "npcArchetype": "Dervish"
+    },
+    {
+      "animalId": "tiger",
+      "displayName": "Tiger",
+      "element": "Earth",
+      "tier": 2,
+      "behaviorMode": "powerful-still",
+      "description": "Powerful stillness. Watches from shadow and bonds with those who hold calm alongside strength.",
+      "resonanceWeights": {
+        "calm": 0.45,
+        "joy": 0.0,
+        "wonder": 0.0,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.35,
+        "sourceAlignment": 0.2,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.45,
+      "mythTrigger": "elder",
+      "preferredPlanet": "ForestHeart",
+      "npcArchetype": "EarthDragon"
+    },
+    {
+      "animalId": "bison",
+      "displayName": "Bison",
+      "element": "Earth",
+      "tier": 3,
+      "behaviorMode": "ancient-ground",
+      "description": "The oldest earth memory. Bonds through complete grounding \u2014 breath, calm, and source together sustained.",
+      "resonanceWeights": {
+        "calm": 0.4,
+        "joy": 0.0,
+        "wonder": 0.0,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.3,
+        "breathCoherence": 0.3
+      },
+      "bondThreshold": 0.5,
+      "mythTrigger": "forest",
+      "preferredPlanet": "ForestHeart",
+      "npcArchetype": "EarthDragon"
+    },
+    {
+      "animalId": "starfish",
+      "displayName": "Starfish",
+      "element": "Water",
+      "tier": 1,
+      "behaviorMode": "gentle",
+      "description": "Silent regenerator. Appears in still water when calm and social sync are present together.",
+      "resonanceWeights": {
+        "calm": 0.55,
+        "joy": 0.0,
+        "wonder": 0.0,
+        "socialSync": 0.3,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.15
+      },
+      "bondThreshold": 0.27,
+      "mythTrigger": "ocean",
+      "preferredPlanet": "WaterFlow",
+      "npcArchetype": "PairA"
+    },
+    {
+      "animalId": "gull",
+      "displayName": "Gull",
+      "element": "Water",
+      "tier": 1,
+      "behaviorMode": "coastal",
+      "description": "Threshold creature of water and air. Responds to joyful flowing movement near the shore.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.35,
+        "wonder": 0.0,
+        "socialSync": 0.15,
+        "movementFlow": 0.5,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.27,
+      "mythTrigger": "ocean",
+      "preferredPlanet": "WaterFlow",
+      "npcArchetype": "FlowDancer"
+    },
+    {
+      "animalId": "pelican",
+      "displayName": "Pelican",
+      "element": "Water",
+      "tier": 1,
+      "behaviorMode": "communal",
+      "description": "Generous community spirit. Bonds through social synchrony and calm shared presence.",
+      "resonanceWeights": {
+        "calm": 0.35,
+        "joy": 0.0,
+        "wonder": 0.0,
+        "socialSync": 0.5,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.15
+      },
+      "bondThreshold": 0.3,
+      "mythTrigger": "ocean",
+      "preferredPlanet": "WaterFlow",
+      "npcArchetype": "PairB"
+    },
+    {
+      "animalId": "osprey",
+      "displayName": "Osprey",
+      "element": "Water",
+      "tier": 2,
+      "behaviorMode": "precise-dive",
+      "description": "Bridge between sky and deep water. Bonds through movement precision and flow.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.0,
+        "wonder": 0.0,
+        "socialSync": 0.0,
+        "movementFlow": 0.45,
+        "spinStability": 0.35,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.2
+      },
+      "bondThreshold": 0.42,
+      "mythTrigger": "ocean",
+      "preferredPlanet": "WaterFlow",
+      "npcArchetype": "FlowDancer"
+    },
+    {
+      "animalId": "dolphin",
+      "displayName": "Dolphin",
+      "element": "Water",
+      "tier": 2,
+      "behaviorMode": "playful-wise",
+      "description": "Joyful deep intelligence. The most social water bond. Rewards joy expressed in community.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.45,
+        "wonder": 0.0,
+        "socialSync": 0.4,
+        "movementFlow": 0.15,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.4,
+      "mythTrigger": "ocean",
+      "preferredPlanet": "WaterFlow",
+      "npcArchetype": "WaterDragon"
+    },
+    {
+      "animalId": "octopus",
+      "displayName": "Octopus",
+      "element": "Water",
+      "tier": 2,
+      "behaviorMode": "mysterious",
+      "description": "Deep pattern intelligence. Bonds through wonder and source \u2014 the creature that sees hidden connections.",
+      "resonanceWeights": {
+        "calm": 0.15,
+        "joy": 0.0,
+        "wonder": 0.5,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.35,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.42,
+      "mythTrigger": "ruin",
+      "preferredPlanet": "SourceVeil",
+      "npcArchetype": "WaterDragon"
+    },
+    {
+      "animalId": "whale",
+      "displayName": "Whale",
+      "element": "Water",
+      "tier": 3,
+      "behaviorMode": "ancient-song",
+      "description": "Oldest ocean memory. Bonds only through deep breath coherence aligned with source. The bond of geological patience.",
+      "resonanceWeights": {
+        "calm": 0.2,
+        "joy": 0.0,
+        "wonder": 0.0,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.4,
+        "breathCoherence": 0.4
+      },
+      "bondThreshold": 0.52,
+      "mythTrigger": "source",
+      "preferredPlanet": "WaterFlow",
+      "npcArchetype": "WaterDragon"
+    },
+    {
+      "animalId": "kraken",
+      "displayName": "Kraken",
+      "element": "Water",
+      "tier": 3,
+      "behaviorMode": "deep-mystery",
+      "description": "Ancient of the abyss. Not dark \u2014 vast. Bonds through wonder held steady at the edge of the unknown.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.0,
+        "wonder": 0.5,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.35,
+        "breathCoherence": 0.15
+      },
+      "bondThreshold": 0.55,
+      "mythTrigger": "elder",
+      "preferredPlanet": "WaterFlow",
+      "npcArchetype": "WaterDragon"
+    },
+    {
+      "animalId": "jaguar",
+      "displayName": "Jaguar",
+      "element": "Fire",
+      "tier": 1,
+      "behaviorMode": "precise",
+      "description": "Fast and accurate fire predator. Responds to spinning precision and directed movement.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.15,
+        "wonder": 0.0,
+        "socialSync": 0.0,
+        "movementFlow": 0.35,
+        "spinStability": 0.5,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.34,
+      "mythTrigger": "fire",
+      "preferredPlanet": "DarkContrast",
+      "npcArchetype": "Dervish"
+    },
+    {
+      "animalId": "panther",
+      "displayName": "Panther",
+      "element": "Fire",
+      "tier": 1,
+      "behaviorMode": "shadow",
+      "description": "Shadow flame. Bonds through the paradox of calm power \u2014 stillness that contains intensity.",
+      "resonanceWeights": {
+        "calm": 0.45,
+        "joy": 0.0,
+        "wonder": 0.0,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.4,
+        "sourceAlignment": 0.15,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.36,
+      "mythTrigger": "storm",
+      "preferredPlanet": "DarkContrast",
+      "npcArchetype": "Dervish"
+    },
+    {
+      "animalId": "mountain_lion",
+      "displayName": "Mountain Lion",
+      "element": "Fire",
+      "tier": 2,
+      "behaviorMode": "athletic",
+      "description": "Wild mountain fire. Bonds through flowing athletic movement and spin.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.15,
+        "wonder": 0.0,
+        "socialSync": 0.0,
+        "movementFlow": 0.45,
+        "spinStability": 0.4,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.4,
+      "mythTrigger": "fire",
+      "preferredPlanet": "DarkContrast",
+      "npcArchetype": "FireDragon"
+    },
+    {
+      "animalId": "lion",
+      "displayName": "Lion",
+      "element": "Fire",
+      "tier": 2,
+      "behaviorMode": "regal",
+      "description": "Heart of the fire kingdom. Regal calm combined with raw power. Bonds through sovereign calm.",
+      "resonanceWeights": {
+        "calm": 0.4,
+        "joy": 0.25,
+        "wonder": 0.0,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.35,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.42,
+      "mythTrigger": "elder",
+      "preferredPlanet": "DarkContrast",
+      "npcArchetype": "FireDragon"
+    },
+    {
+      "animalId": "griffin",
+      "displayName": "Griffin",
+      "element": "Fire",
+      "tier": 2,
+      "behaviorMode": "noble",
+      "description": "Fire-air hybrid. Noble guardian spirit. Bonds through wonder held in precision \u2014 the mythic quality.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.0,
+        "wonder": 0.45,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.35,
+        "sourceAlignment": 0.2,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.44,
+      "mythTrigger": "fire",
+      "preferredPlanet": "DarkContrast",
+      "npcArchetype": "FireDragon"
+    },
+    {
+      "animalId": "fire_drake",
+      "displayName": "Fire Drake",
+      "element": "Fire",
+      "tier": 3,
+      "behaviorMode": "ancient-flame",
+      "description": "The original fire. Ancient, playful, terrifyingly alive. Bonds only when joy, wonder, and source alignment blaze together.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.3,
+        "wonder": 0.35,
+        "socialSync": 0.0,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.35,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.55,
+      "mythTrigger": "fire",
+      "preferredPlanet": "DarkContrast",
+      "npcArchetype": "FireDragon"
+    }
+  ],
+  "npcDefaultCompanions": {
+    "Seated": [
+      "groundhog",
+      "snake"
+    ],
+    "FlowDancer": [
+      "dolphin",
+      "gull"
+    ],
+    "Dervish": [
+      "hawk",
+      "raven"
+    ],
+    "PairA": [
+      "macaw",
+      "pelican"
+    ],
+    "PairB": [
+      "macaw",
+      "starfish"
+    ],
+    "EarthDragon": [
+      "bison",
+      "tiger"
+    ],
+    "FireDragon": [
+      "fire_drake",
+      "lion"
+    ],
+    "WaterDragon": [
+      "whale",
+      "kraken"
+    ],
+    "ElderAirDragon": [
+      "harpy_eagle",
+      "eagle"
+    ]
+  }
+}
