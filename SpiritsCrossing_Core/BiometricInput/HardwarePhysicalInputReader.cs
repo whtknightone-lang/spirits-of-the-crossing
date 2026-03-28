@@ -24,6 +24,9 @@ using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.XR;
+using System.Collections.Generic;
+using SpiritsCrossing.VR;
 #if UNITY_STANDALONE || UNITY_EDITOR
 using System.IO.Ports;
 #endif
@@ -205,10 +208,14 @@ namespace SpiritsCrossing.BiometricInput
         private IHeartRateSource  _hrSource;
 
         private Vector3           _prevAccel;
+        private Vector3           _prevXRVelocity;
         private float             _speed;
         private float             _jerk;
         private float             _rotRate;
         private float             _prevRotMag;
+        private InputDevice       _xrRightHand;
+        private InputDevice       _xrHead;
+        private readonly List<InputDevice> _xrDeviceBuffer = new List<InputDevice>();
 
         private void Start()  => StartReading();
         private void OnDestroy() => StopReading();
@@ -292,12 +299,27 @@ namespace SpiritsCrossing.BiometricInput
         // -------------------------------------------------------------------------
         private void InitMotion()
         {
-            // Input.acceleration auto-enables on mobile; nothing to init for KB/XR
+            if (motionSource == MotionSourceType.XR)
+                RefreshXRDevices();
+        }
+
+        private void RefreshXRDevices()
+        {
+            InputDevices.GetDevicesWithCharacteristics(
+                InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller,
+                _xrDeviceBuffer);
+            if (_xrDeviceBuffer.Count > 0) _xrRightHand = _xrDeviceBuffer[0];
+
+            InputDevices.GetDevicesWithCharacteristics(
+                InputDeviceCharacteristics.HeadMounted,
+                _xrDeviceBuffer);
+            if (_xrDeviceBuffer.Count > 0) _xrHead = _xrDeviceBuffer[0];
         }
 
         private void UpdateMovement()
         {
-            Vector3 accel = Vector3.zero;
+            Vector3 accel    = Vector3.zero;
+            float   rotInput = 0f;
 
             switch (motionSource)
             {
@@ -306,13 +328,31 @@ namespace SpiritsCrossing.BiometricInput
                     break;
 
                 case MotionSourceType.XR:
-#if UNITY_XR_MANAGEMENT || UNITY_XR_SDK
-                    // XR controller velocity via InputSystem
-                    // Uncomment and adapt for your XR setup:
-                    // var device = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
-                    // device.TryGetFeatureValue(CommonUsages.deviceVelocity, out accel);
-#endif
-                    accel = Input.acceleration * 9.8f; // fallback
+                    // Prefer VRInputAdapter if available (already reads both hands)
+                    var vr = VRInputAdapter.Instance;
+                    if (vr != null && vr.IsVRActive)
+                    {
+                        // Use combined hand velocity as the primary motion signal
+                        accel    = (vr.LeftHandVelocity + vr.RightHandVelocity) * 0.5f;
+                        rotInput = vr.AngularVelocityY;  // head yaw rate for spin
+                    }
+                    else
+                    {
+                        // Direct XR device read fallback
+                        if (!_xrRightHand.isValid) RefreshXRDevices();
+                        if (_xrRightHand.isValid)
+                        {
+                            _xrRightHand.TryGetFeatureValue(CommonUsages.deviceVelocity,        out Vector3 handVel);
+                            _xrRightHand.TryGetFeatureValue(CommonUsages.deviceAngularVelocity, out Vector3 handAngVel);
+                            accel    = handVel;
+                            rotInput = handAngVel.magnitude;
+                        }
+                        if (_xrHead.isValid)
+                        {
+                            _xrHead.TryGetFeatureValue(CommonUsages.deviceAngularVelocity, out Vector3 headAngVel);
+                            rotInput = Mathf.Max(rotInput, Mathf.Abs(headAngVel.y));
+                        }
+                    }
                     break;
 
                 case MotionSourceType.KeyboardGamepad:
@@ -325,16 +365,10 @@ namespace SpiritsCrossing.BiometricInput
             float mag  = accel.magnitude;
             float norm = Mathf.Clamp01(mag / Mathf.Max(0.01f, maxAcceleration));
 
-            _jerk    = Mathf.Clamp01(Vector3.Distance(accel, _prevAccel) / Mathf.Max(0.01f, maxAcceleration));
-            _speed   = Mathf.Lerp(_speed,   norm,  Time.deltaTime * 5f);
+            _jerk      = Mathf.Clamp01(Vector3.Distance(accel, _prevAccel) / Mathf.Max(0.01f, maxAcceleration));
+            _speed     = Mathf.Lerp(_speed,   norm,          Time.deltaTime * 5f);
+            _rotRate   = Mathf.Lerp(_rotRate, rotInput * 0.5f, Time.deltaTime * 5f);
             _prevAccel = accel;
-
-            // Rotation rate approximation (change in acceleration direction)
-            float rotMag = _prevAccel.magnitude > 0.01f
-                ? Vector3.Angle(_prevAccel, accel) / 180f
-                : 0f;
-            _rotRate   = Mathf.Lerp(_rotRate, rotMag, Time.deltaTime * 5f);
-            _prevRotMag = rotMag;
         }
 
         // -------------------------------------------------------------------------
