@@ -20,6 +20,7 @@ using SpiritsCrossing.SpiritAI;
 using SpiritsCrossing.BiometricInput;
 using SpiritsCrossing.Companions;
 using SpiritsCrossing.Memory;
+using SpiritsCrossing.Cosmos;
 using V243.SandstoneCave;
 
 namespace SpiritsCrossing.VR
@@ -58,6 +59,7 @@ namespace SpiritsCrossing.VR
         private SpiritProfileLoader        _profileLoader;
         private CompanionBondSystem        _companionBonds;
         private ResonanceMemorySystem      _memorySystem;
+        private CosmosGenerationSystem     _cosmosSystem;
 
         // -------------------------------------------------------------------------
         // Lifecycle
@@ -286,6 +288,16 @@ namespace SpiritsCrossing.VR
                 DontDestroyOnLoad(go);
                 _memorySystem = go.AddComponent<ResonanceMemorySystem>();
             }
+
+            // CosmosGenerationSystem
+            if (_cosmosSystem == null)
+                _cosmosSystem = FindObjectOfType<CosmosGenerationSystem>();
+            if (_cosmosSystem == null)
+            {
+                var go = new GameObject("[CosmosGenerationSystem]");
+                DontDestroyOnLoad(go);
+                _cosmosSystem = go.AddComponent<CosmosGenerationSystem>();
+            }
         }
 
         // =========================================================================
@@ -323,6 +335,8 @@ namespace SpiritsCrossing.VR
             var memory = FindObjectOfType<ResonanceMemorySystem>();
             var learning = UniverseStateManager.Instance?.Current.learningState;
             sb.AppendLine($"║  [+] ResonanceMemory:     {StatusIcon(memory)} src={(learning?.sourceConnectionLevel.ToString("F2") ?? "N/A")} elem={(learning?.dominantElement ?? "?"),-13}║");
+            var cosmos = FindObjectOfType<CosmosGenerationSystem>();
+            sb.AppendLine($"║  [+] CosmosGeneration:    {StatusIcon(cosmos)} R={(CosmosGenerationSystem.Instance?.R_Universe.ToString("F3") ?? "N/A"),-24}║");
             sb.AppendLine("╚══════════════════════════════════════════════╝");
 
             Debug.Log(sb.ToString());

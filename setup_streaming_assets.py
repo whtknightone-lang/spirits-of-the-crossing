@@ -37,6 +37,7 @@ JSON_FILES = {
     ROOT / "SpiritsCrossing_Core" / "SpiritAI"       / "myth_thresholds.json":    "myth_thresholds.json",
     ROOT / "SpiritsCrossing_Core" / "BiometricInput" / "biometric_profiles.json": "biometric_profiles.json",
     ROOT / "SpiritsCrossing_Core" / "Companions"     / "companion_registry.json": "companion_registry.json",
+    ROOT / "SpiritsCrossing_Core" / "Cosmos"         / "cosmos_data.json":        "cosmos_data.json",
 }
 
 # Common Unity project subfolder names to search for
@@ -124,9 +125,10 @@ def main():
 
     if success > 0 and not args.dry_run:
         print("\nNext steps in Unity:")
-        print("  [2] Add GameBootstrapper to Bootstrap scene root (creates CompanionBondSystem auto)")
+        print("  [2] Add GameBootstrapper to Bootstrap scene root (auto-creates all systems)")
         print("  [3] Add CompanionBehaviorController to each companion prefab, set animalId")
-        print("  [+] Add ResonanceMemorySystem to Bootstrap scene (created by VRBootstrapInstaller)")
+        print("  [+] ResonanceMemorySystem, CompanionBondSystem, CosmosGenerationSystem")
+        print("      are all created automatically by VRBootstrapInstaller")
 
 
 if __name__ == "__main__":
