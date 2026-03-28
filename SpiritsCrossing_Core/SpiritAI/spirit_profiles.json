@@ -119,12 +119,108 @@
         "indigo": 0.9065,
         "violet": 1.0
       }
+    },
+    {
+      "archetypeId": "EarthDragon",
+      "sculptureMode": "DragonManifest",
+      "description": "Ancient earth guardian. Deepest rest energy. Grounded, slow, ancient memory.",
+      "driveWeights": {
+        "attack": 0.0,
+        "flee": 0.0,
+        "seek": 0.2531,
+        "rest": 0.4617,
+        "signal": 0.2852,
+        "explore": 0.0
+      },
+      "dominantDrive": "rest",
+      "coherenceBaseline": 0.9158,
+      "spectralSignature": {
+        "red": 1.0,
+        "orange": 0.9996,
+        "yellow": 1.0,
+        "green": 1.0,
+        "blue": 1.0,
+        "indigo": 0.9076,
+        "violet": 1.0
+      }
+    },
+    {
+      "archetypeId": "FireDragon",
+      "sculptureMode": "DragonManifest",
+      "description": "Intense fire spirit. High aggression and chaos. Transforms through challenge.",
+      "driveWeights": {
+        "attack": 0.2382,
+        "flee": 0.2016,
+        "seek": 0.2199,
+        "rest": 0.0,
+        "signal": 0.0733,
+        "explore": 0.267
+      },
+      "dominantDrive": "explore",
+      "coherenceBaseline": 0.9158,
+      "spectralSignature": {
+        "red": 0.9752,
+        "orange": 0.9603,
+        "yellow": 0.9812,
+        "green": 0.9869,
+        "blue": 0.9855,
+        "indigo": 0.8786,
+        "violet": 0.9788
+      }
+    },
+    {
+      "archetypeId": "WaterDragon",
+      "sculptureMode": "DragonManifest",
+      "description": "Fluid water spirit. Social resonance and depth. Flows between worlds.",
+      "driveWeights": {
+        "attack": 0.0632,
+        "flee": 0.0,
+        "seek": 0.276,
+        "rest": 0.1571,
+        "signal": 0.3017,
+        "explore": 0.202
+      },
+      "dominantDrive": "signal",
+      "coherenceBaseline": 0.9158,
+      "spectralSignature": {
+        "red": 1.0,
+        "orange": 0.9994,
+        "yellow": 1.0,
+        "green": 1.0,
+        "blue": 1.0,
+        "indigo": 0.9077,
+        "violet": 1.0
+      }
+    },
+    {
+      "archetypeId": "ElderAirDragon",
+      "sculptureMode": "DragonManifest",
+      "description": "Elder of the sky. Balanced all-band resonance. Seeks and explores endlessly.",
+      "driveWeights": {
+        "attack": 0.0671,
+        "flee": 0.0336,
+        "seek": 0.2902,
+        "rest": 0.1151,
+        "signal": 0.1799,
+        "explore": 0.3141
+      },
+      "dominantDrive": "explore",
+      "coherenceBaseline": 0.9158,
+      "spectralSignature": {
+        "red": 1.0,
+        "orange": 0.9993,
+        "yellow": 1.0,
+        "green": 1.0,
+        "blue": 1.0,
+        "indigo": 0.9074,
+        "violet": 1.0
+      }
     }
   ],
   "planets": [
     {
       "planetId": "ForestHeart",
-      "description": "Lush, calm, social. High food, low hazard.",
+      "description": "Lush, calm, social. High food, low hazard. Earth Dragon realm.",
       "worldBias": {
         "foodRegen": 0.6,
         "hazard": 0.167,
@@ -134,12 +230,13 @@
       },
       "preferredArchetypes": [
         "Seated",
-        "FlowDancer"
+        "FlowDancer",
+        "EarthDragon"
       ]
     },
     {
       "planetId": "SkySpiral",
-      "description": "Aerial, exploratory, spinning. Low hazard, high energy.",
+      "description": "Aerial, exploratory, spinning. Low hazard, high energy. Air Dragon realm.",
       "worldBias": {
         "foodRegen": 0.3,
         "hazard": 0.2,
@@ -149,7 +246,8 @@
       },
       "preferredArchetypes": [
         "Dervish",
-        "FlowDancer"
+        "FlowDancer",
+        "ElderAirDragon"
       ]
     },
     {
@@ -164,12 +262,13 @@
       },
       "preferredArchetypes": [
         "Seated",
-        "PairA"
+        "PairA",
+        "EarthDragon"
       ]
     },
     {
       "planetId": "WaterFlow",
-      "description": "Fluid, dynamic. Medium food in patches, flowing signal.",
+      "description": "Fluid, dynamic. Medium food in patches, flowing signal. Water Dragon realm.",
       "worldBias": {
         "foodRegen": 0.5,
         "hazard": 0.3,
@@ -179,7 +278,8 @@
       },
       "preferredArchetypes": [
         "FlowDancer",
-        "PairB"
+        "PairB",
+        "WaterDragon"
       ]
     },
     {
@@ -199,7 +299,7 @@
     },
     {
       "planetId": "DarkContrast",
-      "description": "High challenge. Elevated hazard, sparse food, strong signals.",
+      "description": "High challenge. Elevated hazard, sparse food, strong signals. Fire Dragon realm.",
       "worldBias": {
         "foodRegen": 0.1,
         "hazard": 0.917,
@@ -209,7 +309,8 @@
       },
       "preferredArchetypes": [
         "Dervish",
-        "PairB"
+        "PairB",
+        "FireDragon"
       ]
     }
   ]

@@ -102,6 +102,51 @@ ARCHETYPE_PARAMS: dict[str, dict] = {
         "rotation_rate_mean":  0.28,
         "breath_hold_prob":    0.03,
     },
+    # ---- Elder Dragon Spirits ----
+    "EarthDragon": {
+        "breath_rate_hz":      0.15,   # ~9 breaths/min — ancient, vast, slow
+        "breath_amplitude":    0.95,   # very deep
+        "breath_regularity":   0.96,   # near-perfect regularity
+        "hr_bpm_mean":         58.0,   # lowest resting HR
+        "hr_bpm_std":          1.8,    # barely varies — rock steady
+        "movement_speed_mean": 0.02,   # almost completely still
+        "movement_jerk_mean":  0.01,
+        "rotation_rate_mean":  0.01,
+        "breath_hold_prob":    0.12,   # deep holds — ancient stillness
+    },
+    "FireDragon": {
+        "breath_rate_hz":      0.48,   # ~29 breaths/min — intense, burning
+        "breath_amplitude":    0.55,   # shallow, rapid fire
+        "breath_regularity":   0.40,   # erratic
+        "hr_bpm_mean":        108.0,   # highest HR — fire intensity
+        "hr_bpm_std":         12.0,    # very high variability
+        "movement_speed_mean": 0.90,   # maximum movement
+        "movement_jerk_mean":  0.65,   # explosive jerk
+        "rotation_rate_mean":  0.70,   # spinning fire
+        "breath_hold_prob":    0.01,
+    },
+    "WaterDragon": {
+        "breath_rate_hz":      0.22,   # ~13 breaths/min — fluid, oceanic
+        "breath_amplitude":    0.78,
+        "breath_regularity":   0.88,   # very regular — wave-like
+        "hr_bpm_mean":         66.0,
+        "hr_bpm_std":          3.5,    # gentle variation like tides
+        "movement_speed_mean": 0.45,
+        "movement_jerk_mean":  0.06,   # ultra-smooth — water flows
+        "rotation_rate_mean":  0.18,
+        "breath_hold_prob":    0.05,   # underwater breath holds
+    },
+    "ElderAirDragon": {
+        "breath_rate_hz":      0.35,   # ~21 breaths/min — soaring altitude
+        "breath_amplitude":    0.70,
+        "breath_regularity":   0.75,   # moderate — wind varies
+        "hr_bpm_mean":         85.0,   # elevated — in constant flight
+        "hr_bpm_std":          7.0,
+        "movement_speed_mean": 0.75,   # fast flight
+        "movement_jerk_mean":  0.20,   # turbulence
+        "rotation_rate_mean":  0.55,   # aerial rolls and spirals
+        "breath_hold_prob":    0.04,   # altitude holds
+    },
 }
 
 # ---------------------------------------------------------------------------

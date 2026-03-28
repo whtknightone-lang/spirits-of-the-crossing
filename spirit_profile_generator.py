@@ -83,6 +83,35 @@ ARCHETYPE_SEEDS: dict[str, dict] = {
         "world_overrides": {"food_regen": 0.004, "hazard_strength": 0.22,
                             "signal_diffusion": 0.28, "signal_decay": 0.04},
     },
+    # ---- Elder Dragon Spirits ----
+    "EarthDragon": {
+        "sculptureMode": "DragonManifest",
+        "description": "Ancient earth guardian. Deepest rest energy. Grounded, slow, ancient memory.",
+        "amplitude_seed": [0.05, 0.60, 0.45, 0.90, 0.10, 0.35, 0.12],
+        "world_overrides": {"food_regen": 0.008, "hazard_strength": 0.06,
+                            "signal_diffusion": 0.10, "signal_decay": 0.03},
+    },
+    "FireDragon": {
+        "sculptureMode": "DragonManifest",
+        "description": "Intense fire spirit. High aggression and chaos. Transforms through challenge.",
+        "amplitude_seed": [0.80, 0.35, 0.50, 0.12, 0.72, 0.22, 0.78],
+        "world_overrides": {"food_regen": 0.001, "hazard_strength": 0.55,
+                            "signal_diffusion": 0.20, "signal_decay": 0.08},
+    },
+    "WaterDragon": {
+        "sculptureMode": "DragonManifest",
+        "description": "Fluid water spirit. Social resonance and depth. Flows between worlds.",
+        "amplitude_seed": [0.08, 0.20, 0.30, 0.50, 0.85, 0.70, 0.25],
+        "world_overrides": {"food_regen": 0.005, "hazard_strength": 0.14,
+                            "signal_diffusion": 0.45, "signal_decay": 0.04},
+    },
+    "ElderAirDragon": {
+        "sculptureMode": "DragonManifest",
+        "description": "Elder of the sky. Balanced all-band resonance. Seeks and explores endlessly.",
+        "amplitude_seed": [0.25, 0.30, 0.40, 0.65, 0.75, 0.45, 0.70],
+        "world_overrides": {"food_regen": 0.003, "hazard_strength": 0.15,
+                            "signal_diffusion": 0.35, "signal_decay": 0.05},
+    },
 }
 
 # ---------------------------------------------------------------------------
@@ -91,28 +120,28 @@ ARCHETYPE_SEEDS: dict[str, dict] = {
 
 PLANET_CONFIGS: dict[str, dict] = {
     "ForestHeart": {
-        "description": "Lush, calm, social. High food, low hazard.",
+        "description": "Lush, calm, social. High food, low hazard. Earth Dragon realm.",
         "world_overrides": {"food_regen": 0.006, "hazard_strength": 0.10,
                             "signal_diffusion": 0.20, "energy_regen": 0.004},
-        "preferredArchetypes": ["Seated", "FlowDancer"],
+        "preferredArchetypes": ["Seated", "FlowDancer", "EarthDragon"],
     },
     "SkySpiral": {
-        "description": "Aerial, exploratory, spinning. Low hazard, high energy.",
+        "description": "Aerial, exploratory, spinning. Low hazard, high energy. Air Dragon realm.",
         "world_overrides": {"food_regen": 0.003, "hazard_strength": 0.12,
                             "signal_diffusion": 0.35, "energy_regen": 0.006},
-        "preferredArchetypes": ["Dervish", "FlowDancer"],
+        "preferredArchetypes": ["Dervish", "FlowDancer", "ElderAirDragon"],
     },
     "SourceVeil": {
         "description": "Mystical stillness. High signal patch, low hazard.",
         "world_overrides": {"food_regen": 0.004, "hazard_strength": 0.08,
                             "signal_patch_gain": 0.35, "energy_regen": 0.003},
-        "preferredArchetypes": ["Seated", "PairA"],
+        "preferredArchetypes": ["Seated", "PairA", "EarthDragon"],
     },
     "WaterFlow": {
-        "description": "Fluid, dynamic. Medium food in patches, flowing signal.",
+        "description": "Fluid, dynamic. Medium food in patches, flowing signal. Water Dragon realm.",
         "world_overrides": {"food_regen": 0.005, "hazard_strength": 0.18,
                             "signal_diffusion": 0.40, "energy_regen": 0.004},
-        "preferredArchetypes": ["FlowDancer", "PairB"],
+        "preferredArchetypes": ["FlowDancer", "PairB", "WaterDragon"],
     },
     "MachineOrder": {
         "description": "Ordered, disciplined. High terrain variation, moderate hazard.",
@@ -121,10 +150,10 @@ PLANET_CONFIGS: dict[str, dict] = {
         "preferredArchetypes": ["Dervish", "PairA"],
     },
     "DarkContrast": {
-        "description": "High challenge. Elevated hazard, sparse food, strong signals.",
+        "description": "High challenge. Elevated hazard, sparse food, strong signals. Fire Dragon realm.",
         "world_overrides": {"food_regen": 0.001, "hazard_strength": 0.55,
                             "signal_diffusion": 0.15, "signal_decay": 0.08},
-        "preferredArchetypes": ["Dervish", "PairB"],
+        "preferredArchetypes": ["Dervish", "PairB", "FireDragon"],
     },
 }
 
