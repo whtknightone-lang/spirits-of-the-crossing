@@ -1,0 +1,40 @@
+# System
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+
+# Unity build artefacts
+*.dmg
+*.pkg
+
+# Version archive folders (V36– V243 etc.) and their zips
+V[0-9]*/
+rue-*/
+living_universe_*/
+ai_multiverse_*/
+wib_unity_*/
+resonance_*/
+Resonance_*/
+entrance_room_*/
+source_dropin*/
+cosmos_realm_*/
+creation_wire_*/
+ElderDragons_4Slices*/
+ElderAirDragon_PlayableLoop.zip
+Playable_Polished_Slice*/
+PortalRevealControllersPackage*/
+SoloStrongUnifiedChamberField*/
+Unity_ArtificialUniverse_Project*/
+Unity_Source_DarkPlanet_Conversion*/
+ResonanceLab_GPU/
+ResonanceWorld_Unity/
+
+# PDF research documents
+*.pdf
+
+# Calendar / misc
+*.ics
+
+# Plan artefact (created by Warp)
+"Spirits of the Crossing — Total Game Architecture.md"
