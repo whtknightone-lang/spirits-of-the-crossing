@@ -76,6 +76,7 @@ namespace SpiritsCrossing.VR
         private NpcEvolutionSystem          _npcEvolution;
         private PlanetAutonomySystem        _planetAutonomy;
         private CosmosClockSystem           _cosmosClock;
+        private CompanionIntentionSystem    _intentionSystem;
 
         // -------------------------------------------------------------------------
         // Lifecycle
@@ -362,6 +363,10 @@ namespace SpiritsCrossing.VR
             if (_planetAutonomy  == null) { var go = new GameObject("[PlanetAutonomySystem]");  DontDestroyOnLoad(go); _planetAutonomy  = go.AddComponent<PlanetAutonomySystem>(); }
             if (_cosmosClock     == null) _cosmosClock     = FindObjectOfType<CosmosClockSystem>();
             if (_cosmosClock     == null) { var go = new GameObject("[CosmosClockSystem]");     DontDestroyOnLoad(go); _cosmosClock     = go.AddComponent<CosmosClockSystem>(); }
+
+            // Companion intention + agency
+            if (_intentionSystem == null) _intentionSystem = FindObjectOfType<CompanionIntentionSystem>();
+            if (_intentionSystem == null) { var go = new GameObject("[CompanionIntentionSystem]"); DontDestroyOnLoad(go); _intentionSystem = go.AddComponent<CompanionIntentionSystem>(); }
         }
 
         // =========================================================================
@@ -422,6 +427,9 @@ namespace SpiritsCrossing.VR
             float elapsed = clock?.ElapsedHours ?? 0f;
             int npcCount = UniverseStateManager.Instance?.Current.npcStates?.Count ?? 0;
             sb.AppendLine($"║  [+] CosmosAutonomy:      {StatusIcon(clock)} away={elapsed:F1}h npc={npcCount,-20}║");
+            var intent = CompanionIntentionSystem.Instance;
+            string presLine = intent?.GetPresenceSummary().Split('\n')[0] ?? "—";
+            sb.AppendLine($"║  [+] CompanionIntent:     {StatusIcon(intent)} {presLine,-30}║");
             sb.AppendLine("╚══════════════════════════════════════════════╝");
 
             Debug.Log(sb.ToString());
