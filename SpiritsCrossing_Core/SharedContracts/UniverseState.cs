@@ -15,6 +15,17 @@ using SpiritsCrossing.Autonomous;
 namespace SpiritsCrossing
 {
     // -------------------------------------------------------------------------
+    // Dryad whisper progress — how many whisper lines each dryad has delivered.
+    // Stored here so dryads remember across sessions what they have already said.
+    // -------------------------------------------------------------------------
+    [Serializable]
+    public class DryadWhisperEntry
+    {
+        public string dryadId;
+        public int    whisperIndex; // index of the NEXT line to deliver (0 = nothing spoken yet)
+    }
+
+    // -------------------------------------------------------------------------
     // Per-planet persistent record.
     // Wraps PlanetNodeController's runtime values for save/load.
     // -------------------------------------------------------------------------
@@ -107,6 +118,9 @@ namespace SpiritsCrossing
 
         // Discovered ruins — ancient and newer ruins found across all planets
         public List<string> discoveredRuinIds = new List<string>();
+
+        // Forest World — dryad whisper progress (which lines each dryad has spoken)
+        public List<DryadWhisperEntry> dryadWhisperProgress = new List<DryadWhisperEntry>();
 
         // Vibrational messages sent to planets (cap 20)
         public List<VibrationalMessage> sentMessages = new List<VibrationalMessage>();

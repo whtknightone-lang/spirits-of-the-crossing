@@ -37,7 +37,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SpiritsCrossing.Vibration;
-using SpiritsCrossing.World;
+using SpiritsCrossing.Runtime;
 
 namespace SpiritsCrossing.ForestWorld
 {
@@ -266,21 +266,47 @@ namespace SpiritsCrossing.ForestWorld
         // -------------------------------------------------------------------------
         private void LoadPersistedState()
         {
-            // Whisper indices are persisted in UniverseState.dryadWhisperProgress
-            // (added as List<DryadWhisperEntry> — see UniverseState extension notes)
-            // For now, initialise all to 0 (first-session default).
             if (_worldData == null) return;
+
+            // Load saved whisper indices from UniverseState
+            var progress = UniverseStateManager.Instance?.Current.dryadWhisperProgress;
+
             foreach (var zone in _worldData.zones)
+            {
                 foreach (var d in zone.dryads)
-                    if (!_whisperIndex.ContainsKey(d.dryadId))
-                        _whisperIndex[d.dryadId] = 0;
+                {
+                    int savedIndex = 0;
+                    if (progress != null)
+                    {
+                        foreach (var entry in progress)
+                            if (entry.dryadId == d.dryadId) { savedIndex = entry.whisperIndex; break; }
+                    }
+                    _whisperIndex[d.dryadId] = savedIndex;
+                }
+            }
         }
 
         private void PersistWhisperIndex(string dryadId, int newIndex)
         {
-            // Hook into UniverseStateManager when DryadWhisperEntry is added.
-            // For now: state is held in memory and survives the session.
-            _ = newIndex; // suppress unused warning until persistence is wired
+            var universe = UniverseStateManager.Instance?.Current;
+            if (universe == null) return;
+
+            // Update or insert the entry
+            foreach (var entry in universe.dryadWhisperProgress)
+            {
+                if (entry.dryadId == dryadId)
+                {
+                    entry.whisperIndex = newIndex;
+                    UniverseStateManager.Instance.Save();
+                    return;
+                }
+            }
+            universe.dryadWhisperProgress.Add(new DryadWhisperEntry
+            {
+                dryadId      = dryadId,
+                whisperIndex = newIndex
+            });
+            UniverseStateManager.Instance.Save();
         }
 
         // -------------------------------------------------------------------------

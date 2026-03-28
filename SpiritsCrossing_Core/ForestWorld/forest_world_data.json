@@ -1,0 +1,873 @@
+{
+  "worldId": "forest_world",
+  "worldName": "The Forest of the Crossing",
+  "zones": [
+    {
+      "zoneId": "zone_deep_wood",
+      "zoneName": "The Deep Wood",
+      "element": "Earth",
+      "ambientField": {
+        "red": 0.12,
+        "orange": 0.18,
+        "yellow": 0.3,
+        "green": 0.65,
+        "blue": 0.42,
+        "indigo": 0.5,
+        "violet": 0.48
+      },
+      "dryads": [
+        {
+          "dryadId": "dryad_old_oak_1",
+          "treeId": "OldOak_01",
+          "forestZone": "zone_deep_wood",
+          "temperament": "patient",
+          "mythFragment": "forest",
+          "impressionThreshold": 0.33,
+          "presenceThreshold": 0.7,
+          "resonanceAffinity": {
+            "red": 0.1,
+            "orange": 0.15,
+            "yellow": 0.25,
+            "green": 0.7,
+            "blue": 0.4,
+            "indigo": 0.55,
+            "violet": 0.5
+          },
+          "whisperLines": [
+            "I have been here longer than the stones.",
+            "You are quieter than the last one who came.",
+            "The rings remember. Walk toward the low ground."
+          ],
+          "canGesture": true,
+          "bindsToRuin": true,
+          "boundRuinId": "ring_deep_wood_01"
+        },
+        {
+          "dryadId": "dryad_old_oak_2",
+          "treeId": "OldOak_02",
+          "forestZone": "zone_deep_wood",
+          "temperament": "watching",
+          "mythFragment": "ruin",
+          "impressionThreshold": 0.35,
+          "presenceThreshold": 0.72,
+          "resonanceAffinity": {
+            "red": 0.12,
+            "orange": 0.18,
+            "yellow": 0.28,
+            "green": 0.65,
+            "blue": 0.38,
+            "indigo": 0.6,
+            "violet": 0.55
+          },
+          "whisperLines": [
+            "I watched you arrive.",
+            "The others who came this way did not stay long enough.",
+            "When you are ready, go deeper. The sunken rings will know you."
+          ],
+          "canGesture": true,
+          "bindsToRuin": false,
+          "boundRuinId": ""
+        },
+        {
+          "dryadId": "dryad_cedar_1",
+          "treeId": "Cedar_01",
+          "forestZone": "zone_deep_wood",
+          "temperament": "joyful",
+          "mythFragment": "forest",
+          "impressionThreshold": 0.3,
+          "presenceThreshold": 0.65,
+          "resonanceAffinity": {
+            "red": 0.2,
+            "orange": 0.35,
+            "yellow": 0.5,
+            "green": 0.7,
+            "blue": 0.35,
+            "indigo": 0.4,
+            "violet": 0.4
+          },
+          "whisperLines": [
+            "Oh! You can feel us.",
+            "The parrots knew before you did."
+          ],
+          "canGesture": true,
+          "bindsToRuin": false,
+          "boundRuinId": ""
+        },
+        {
+          "dryadId": "dryad_cedar_2",
+          "treeId": "Cedar_02",
+          "forestZone": "zone_deep_wood",
+          "temperament": "grieving",
+          "mythFragment": "ruin",
+          "impressionThreshold": 0.38,
+          "presenceThreshold": 0.75,
+          "resonanceAffinity": {
+            "red": 0.08,
+            "orange": 0.1,
+            "yellow": 0.2,
+            "green": 0.55,
+            "blue": 0.45,
+            "indigo": 0.65,
+            "violet": 0.6
+          },
+          "whisperLines": [
+            "My tree was twice this size, once.",
+            "I remember the ring when it was whole. Before the roots took it.",
+            "Do not grieve for what the forest takes. It gives it back differently."
+          ],
+          "canGesture": false,
+          "bindsToRuin": true,
+          "boundRuinId": "ring_deep_wood_01"
+        },
+        {
+          "dryadId": "dryad_elder_ash",
+          "treeId": "ElderAsh_01",
+          "forestZone": "zone_deep_wood",
+          "temperament": "ancient",
+          "mythFragment": "elder",
+          "impressionThreshold": 0.42,
+          "presenceThreshold": 0.8,
+          "resonanceAffinity": {
+            "red": 0.05,
+            "orange": 0.08,
+            "yellow": 0.15,
+            "green": 0.6,
+            "blue": 0.5,
+            "indigo": 0.8,
+            "violet": 0.85
+          },
+          "whisperLines": [
+            "You have breath coherence. That is rare now.",
+            "The stag and I have been here since before the temple had a name.",
+            "Stay until the light changes. Then you will understand why we watch.",
+            "The rings below were built by people who knew what we are. They left when the knowing went quiet."
+          ],
+          "canGesture": true,
+          "bindsToRuin": false,
+          "boundRuinId": ""
+        },
+        {
+          "dryadId": "dryad_twisted_yew",
+          "treeId": "TwistedYew_01",
+          "forestZone": "zone_deep_wood",
+          "temperament": "fierce",
+          "mythFragment": "storm",
+          "impressionThreshold": 0.4,
+          "presenceThreshold": 0.78,
+          "resonanceAffinity": {
+            "red": 0.15,
+            "orange": 0.2,
+            "yellow": 0.3,
+            "green": 0.55,
+            "blue": 0.35,
+            "indigo": 0.55,
+            "violet": 0.5
+          },
+          "whisperLines": [
+            "Not all trees are welcoming. I am not.",
+            "You are still here. That earns you one more moment."
+          ],
+          "canGesture": false,
+          "bindsToRuin": false,
+          "boundRuinId": ""
+        },
+        {
+          "dryadId": "dryad_birch_1",
+          "treeId": "Birch_01",
+          "forestZone": "zone_deep_wood",
+          "temperament": "curious",
+          "mythFragment": "forest",
+          "impressionThreshold": 0.28,
+          "presenceThreshold": 0.6,
+          "resonanceAffinity": {
+            "red": 0.18,
+            "orange": 0.3,
+            "yellow": 0.45,
+            "green": 0.65,
+            "blue": 0.4,
+            "indigo": 0.42,
+            "violet": 0.38
+          },
+          "whisperLines": [
+            "You are the second one this season.",
+            "The hawk circles you. That is good."
+          ],
+          "canGesture": true,
+          "bindsToRuin": false,
+          "boundRuinId": ""
+        },
+        {
+          "dryadId": "dryad_willow_1",
+          "treeId": "Willow_01",
+          "forestZone": "zone_deep_wood",
+          "temperament": "gentle",
+          "mythFragment": "ocean",
+          "impressionThreshold": 0.25,
+          "presenceThreshold": 0.62,
+          "resonanceAffinity": {
+            "red": 0.1,
+            "orange": 0.18,
+            "yellow": 0.3,
+            "green": 0.72,
+            "blue": 0.55,
+            "indigo": 0.5,
+            "violet": 0.48
+          },
+          "whisperLines": [
+            "The river runs beneath my roots. I drink source water.",
+            "Follow the green thread when you are lost."
+          ],
+          "canGesture": true,
+          "bindsToRuin": false,
+          "boundRuinId": ""
+        }
+      ],
+      "stoneRings": [
+        {
+          "ringId": "ring_deep_wood_01",
+          "forestZone": "zone_deep_wood",
+          "stoneCount": 7,
+          "ringRadiusMeters": 5.5,
+          "overgrowthLevel": 0.75,
+          "frozenField": {
+            "red": 0.08,
+            "orange": 0.12,
+            "yellow": 0.22,
+            "green": 0.68,
+            "blue": 0.42,
+            "indigo": 0.62,
+            "violet": 0.7
+          },
+          "discoveryThreshold": 0.58,
+          "mythTrigger": "forest",
+          "era": "The Stone Dreaming",
+          "nearbyDryadIds": [
+            "dryad_old_oak_1",
+            "dryad_cedar_2"
+          ],
+          "hasAltarStone": true,
+          "altarResonanceBonus": 0.08,
+          "centerMythTrigger": "ruin"
+        }
+      ],
+      "temples": [],
+      "rivers": [
+        {
+          "riverId": "river_green_thread",
+          "riverName": "The Green Thread",
+          "forestZone": "zone_deep_wood",
+          "segmentCount": 8,
+          "totalLengthMeters": 450.0,
+          "hasSourcePool": false,
+          "hasSeaExit": true,
+          "greenAmplification": 0.04,
+          "violetAmplification": 0.02,
+          "adjacencyRadius": 6.0,
+          "stagDrinksAtSource": false,
+          "mythTrigger": "forest",
+          "sourcePoolMythTrigger": "",
+          "riverField": {
+            "red": 0.08,
+            "orange": 0.12,
+            "yellow": 0.28,
+            "green": 0.8,
+            "blue": 0.5,
+            "indigo": 0.45,
+            "violet": 0.42
+          }
+        }
+      ],
+      "preferredCompanionIds": [
+        "parrot",
+        "forest_hawk"
+      ]
+    },
+    {
+      "zoneId": "zone_sunken_rings",
+      "zoneName": "The Sunken Rings",
+      "element": "Earth",
+      "ambientField": {
+        "red": 0.08,
+        "orange": 0.12,
+        "yellow": 0.2,
+        "green": 0.58,
+        "blue": 0.46,
+        "indigo": 0.68,
+        "violet": 0.72
+      },
+      "dryads": [
+        {
+          "dryadId": "dryad_ring_oak_1",
+          "treeId": "RingOak_01",
+          "forestZone": "zone_sunken_rings",
+          "temperament": "ancient",
+          "mythFragment": "ruin",
+          "impressionThreshold": 0.45,
+          "presenceThreshold": 0.82,
+          "resonanceAffinity": {
+            "red": 0.05,
+            "orange": 0.08,
+            "yellow": 0.15,
+            "green": 0.55,
+            "blue": 0.45,
+            "indigo": 0.75,
+            "violet": 0.8
+          },
+          "whisperLines": [
+            "These rings were here before trees were.",
+            "The ones who built them understood silence.",
+            "You have found the first ring. There are two more. They are not waiting for you \u2014 but they will know you came."
+          ],
+          "canGesture": true,
+          "bindsToRuin": true,
+          "boundRuinId": "ring_root_age_01"
+        },
+        {
+          "dryadId": "dryad_ring_oak_2",
+          "treeId": "RingOak_02",
+          "forestZone": "zone_sunken_rings",
+          "temperament": "patient",
+          "mythFragment": "ruin",
+          "impressionThreshold": 0.42,
+          "presenceThreshold": 0.8,
+          "resonanceAffinity": {
+            "red": 0.06,
+            "orange": 0.1,
+            "yellow": 0.18,
+            "green": 0.58,
+            "blue": 0.48,
+            "indigo": 0.72,
+            "violet": 0.75
+          },
+          "whisperLines": [
+            "I have seen many seasons. You are small in all of them. That is not an insult.",
+            "The second ring is older. Its stones go deeper."
+          ],
+          "canGesture": true,
+          "bindsToRuin": true,
+          "boundRuinId": "ring_root_age_02"
+        },
+        {
+          "dryadId": "dryad_altar_oak",
+          "treeId": "AltarOak_01",
+          "forestZone": "zone_sunken_rings",
+          "temperament": "watchful",
+          "mythFragment": "elder",
+          "impressionThreshold": 0.5,
+          "presenceThreshold": 0.85,
+          "resonanceAffinity": {
+            "red": 0.04,
+            "orange": 0.07,
+            "yellow": 0.12,
+            "green": 0.52,
+            "blue": 0.5,
+            "indigo": 0.82,
+            "violet": 0.9
+          },
+          "whisperLines": [
+            "You are standing on the altar stone of the first ring. Good.",
+            "This is where they came to listen for Source.",
+            "The third ring, the buried one, is older than this altar. It predates the name for fire.",
+            "When you are ready for the temple, the hawk will circle it. Follow where it does not land."
+          ],
+          "canGesture": true,
+          "bindsToRuin": true,
+          "boundRuinId": "ring_root_age_01"
+        },
+        {
+          "dryadId": "dryad_ring_pine",
+          "treeId": "RingPine_01",
+          "forestZone": "zone_sunken_rings",
+          "temperament": "grieving",
+          "mythFragment": "forest",
+          "impressionThreshold": 0.36,
+          "presenceThreshold": 0.74,
+          "resonanceAffinity": {
+            "red": 0.08,
+            "orange": 0.12,
+            "yellow": 0.2,
+            "green": 0.58,
+            "blue": 0.42,
+            "indigo": 0.65,
+            "violet": 0.68
+          },
+          "whisperLines": [
+            "The people who knew these rings are gone.",
+            "But the rings themselves are fine. They do not need to be remembered to hold their field."
+          ],
+          "canGesture": false,
+          "bindsToRuin": false,
+          "boundRuinId": ""
+        }
+      ],
+      "stoneRings": [
+        {
+          "ringId": "ring_root_age_01",
+          "forestZone": "zone_sunken_rings",
+          "stoneCount": 11,
+          "ringRadiusMeters": 8.0,
+          "overgrowthLevel": 0.9,
+          "frozenField": {
+            "red": 0.06,
+            "orange": 0.1,
+            "yellow": 0.18,
+            "green": 0.6,
+            "blue": 0.44,
+            "indigo": 0.72,
+            "violet": 0.78
+          },
+          "discoveryThreshold": 0.62,
+          "mythTrigger": "ruin",
+          "era": "The Root Age",
+          "nearbyDryadIds": [
+            "dryad_ring_oak_1",
+            "dryad_altar_oak"
+          ],
+          "hasAltarStone": true,
+          "altarResonanceBonus": 0.1,
+          "centerMythTrigger": "elder"
+        },
+        {
+          "ringId": "ring_root_age_02",
+          "forestZone": "zone_sunken_rings",
+          "stoneCount": 9,
+          "ringRadiusMeters": 6.5,
+          "overgrowthLevel": 0.85,
+          "frozenField": {
+            "red": 0.05,
+            "orange": 0.09,
+            "yellow": 0.16,
+            "green": 0.58,
+            "blue": 0.46,
+            "indigo": 0.7,
+            "violet": 0.74
+          },
+          "discoveryThreshold": 0.62,
+          "mythTrigger": "ruin",
+          "era": "The Root Age",
+          "nearbyDryadIds": [
+            "dryad_ring_oak_2"
+          ],
+          "hasAltarStone": false,
+          "altarResonanceBonus": 0.0,
+          "centerMythTrigger": ""
+        },
+        {
+          "ringId": "ring_first_age_01",
+          "forestZone": "zone_sunken_rings",
+          "stoneCount": 5,
+          "ringRadiusMeters": 4.0,
+          "overgrowthLevel": 0.97,
+          "frozenField": {
+            "red": 0.04,
+            "orange": 0.06,
+            "yellow": 0.12,
+            "green": 0.5,
+            "blue": 0.48,
+            "indigo": 0.8,
+            "violet": 0.9
+          },
+          "discoveryThreshold": 0.7,
+          "mythTrigger": "elder",
+          "era": "Before the First Fire",
+          "nearbyDryadIds": [],
+          "hasAltarStone": false,
+          "altarResonanceBonus": 0.0,
+          "centerMythTrigger": "source"
+        }
+      ],
+      "temples": [],
+      "rivers": [
+        {
+          "riverId": "river_root_vein",
+          "riverName": "The Root Vein",
+          "forestZone": "zone_sunken_rings",
+          "segmentCount": 5,
+          "totalLengthMeters": 280.0,
+          "hasSourcePool": true,
+          "hasSeaExit": false,
+          "greenAmplification": 0.05,
+          "violetAmplification": 0.03,
+          "adjacencyRadius": 5.0,
+          "stagDrinksAtSource": false,
+          "mythTrigger": "forest",
+          "sourcePoolMythTrigger": "ruin",
+          "riverField": {
+            "red": 0.06,
+            "orange": 0.1,
+            "yellow": 0.22,
+            "green": 0.75,
+            "blue": 0.48,
+            "indigo": 0.58,
+            "violet": 0.62
+          }
+        }
+      ],
+      "preferredCompanionIds": [
+        "forest_hawk",
+        "elder_white_stag"
+      ]
+    },
+    {
+      "zoneId": "zone_temple_crossing",
+      "zoneName": "The Temple of the Crossing",
+      "element": "Source",
+      "ambientField": {
+        "red": 0.05,
+        "orange": 0.08,
+        "yellow": 0.16,
+        "green": 0.56,
+        "blue": 0.52,
+        "indigo": 0.76,
+        "violet": 0.8
+      },
+      "dryads": [
+        {
+          "dryadId": "dryad_causeway_elm",
+          "treeId": "CausewayElm_01",
+          "forestZone": "zone_temple_crossing",
+          "temperament": "patient",
+          "mythFragment": "ruin",
+          "impressionThreshold": 0.4,
+          "presenceThreshold": 0.75,
+          "resonanceAffinity": {
+            "red": 0.08,
+            "orange": 0.12,
+            "yellow": 0.22,
+            "green": 0.62,
+            "blue": 0.42,
+            "indigo": 0.65,
+            "violet": 0.68
+          },
+          "whisperLines": [
+            "The causeway was built so the approach itself was a prayer.",
+            "Walk slowly. The stones were placed at specific intervals. There is a rhythm."
+          ],
+          "canGesture": true,
+          "bindsToRuin": false,
+          "boundRuinId": ""
+        },
+        {
+          "dryadId": "dryad_causeway_elm_2",
+          "treeId": "CausewayElm_02",
+          "forestZone": "zone_temple_crossing",
+          "temperament": "watching",
+          "mythFragment": "forest",
+          "impressionThreshold": 0.38,
+          "presenceThreshold": 0.73,
+          "resonanceAffinity": {
+            "red": 0.1,
+            "orange": 0.15,
+            "yellow": 0.25,
+            "green": 0.6,
+            "blue": 0.4,
+            "indigo": 0.62,
+            "violet": 0.65
+          },
+          "whisperLines": [
+            "The parrots have roosted here for as long as the temple has been ruined.",
+            "Before it was ruined, they roosted here too."
+          ],
+          "canGesture": false,
+          "bindsToRuin": false,
+          "boundRuinId": ""
+        },
+        {
+          "dryadId": "dryad_entrance_column",
+          "treeId": "EntranceColumn_Root_01",
+          "forestZone": "zone_temple_crossing",
+          "temperament": "ancient",
+          "mythFragment": "ruin",
+          "impressionThreshold": 0.45,
+          "presenceThreshold": 0.8,
+          "resonanceAffinity": {
+            "red": 0.05,
+            "orange": 0.08,
+            "yellow": 0.14,
+            "green": 0.55,
+            "blue": 0.48,
+            "indigo": 0.78,
+            "violet": 0.82
+          },
+          "whisperLines": [
+            "This root has been growing through this column for four hundred years.",
+            "I grew with it.",
+            "The second chamber has a still pool. The water does not move. Something old is at the bottom."
+          ],
+          "canGesture": true,
+          "bindsToRuin": false,
+          "boundRuinId": ""
+        },
+        {
+          "dryadId": "dryad_root_hall_column",
+          "treeId": "RootHallColumn_01",
+          "forestZone": "zone_temple_crossing",
+          "temperament": "ancient",
+          "mythFragment": "elder",
+          "impressionThreshold": 0.52,
+          "presenceThreshold": 0.83,
+          "resonanceAffinity": {
+            "red": 0.04,
+            "orange": 0.06,
+            "yellow": 0.12,
+            "green": 0.52,
+            "blue": 0.5,
+            "indigo": 0.82,
+            "violet": 0.88
+          },
+          "whisperLines": [
+            "The root hall is what remains when a building and a forest become the same thing.",
+            "Notice which direction the roots come from. That direction is the oldest part of this place.",
+            "Go deeper. The stag has been in the inner court before dawn. It may come again."
+          ],
+          "canGesture": true,
+          "bindsToRuin": false,
+          "boundRuinId": ""
+        },
+        {
+          "dryadId": "dryad_inner_court_fig",
+          "treeId": "InnerCourtFig_01",
+          "forestZone": "zone_temple_crossing",
+          "temperament": "sacred",
+          "mythFragment": "source",
+          "impressionThreshold": 0.55,
+          "presenceThreshold": 0.85,
+          "resonanceAffinity": {
+            "red": 0.03,
+            "orange": 0.05,
+            "yellow": 0.1,
+            "green": 0.5,
+            "blue": 0.52,
+            "indigo": 0.85,
+            "violet": 0.92
+          },
+          "whisperLines": [
+            "You have come to the inner court.",
+            "The stag stands here at first light, facing east.",
+            "It does not acknowledge anything that approaches.",
+            "It simply stands. And somehow that is enough for everything in this place."
+          ],
+          "canGesture": true,
+          "bindsToRuin": false,
+          "boundRuinId": ""
+        },
+        {
+          "dryadId": "dryad_sanctum_banyan",
+          "treeId": "SanctumBanyan_01",
+          "forestZone": "zone_temple_crossing",
+          "temperament": "source",
+          "mythFragment": "source",
+          "impressionThreshold": 0.6,
+          "presenceThreshold": 0.88,
+          "resonanceAffinity": {
+            "red": 0.02,
+            "orange": 0.04,
+            "yellow": 0.08,
+            "green": 0.48,
+            "blue": 0.55,
+            "indigo": 0.88,
+            "violet": 0.95
+          },
+          "whisperLines": [
+            "This is the sanctum.",
+            "The original builders left something here that is not physical.",
+            "You are breathing it right now."
+          ],
+          "canGesture": false,
+          "bindsToRuin": false,
+          "boundRuinId": ""
+        }
+      ],
+      "stoneRings": [
+        {
+          "ringId": "ring_temple_outer",
+          "forestZone": "zone_temple_crossing",
+          "stoneCount": 13,
+          "ringRadiusMeters": 10.0,
+          "overgrowthLevel": 0.6,
+          "frozenField": {
+            "red": 0.07,
+            "orange": 0.11,
+            "yellow": 0.2,
+            "green": 0.6,
+            "blue": 0.46,
+            "indigo": 0.68,
+            "violet": 0.72
+          },
+          "discoveryThreshold": 0.55,
+          "mythTrigger": "ruin",
+          "era": "The Root Age",
+          "nearbyDryadIds": [
+            "dryad_causeway_elm"
+          ],
+          "hasAltarStone": true,
+          "altarResonanceBonus": 0.09,
+          "centerMythTrigger": "elder"
+        }
+      ],
+      "temples": [
+        {
+          "templeId": "temple_of_the_crossing",
+          "forestZone": "zone_temple_crossing",
+          "templeStyle": "angkor",
+          "chambers": [
+            {
+              "chamberId": "chamber_entrance_hall",
+              "chamberName": "The Entrance Hall",
+              "discoveryThreshold": 0.45,
+              "mythTrigger": "ruin",
+              "chamberField": {
+                "red": 0.12,
+                "orange": 0.18,
+                "yellow": 0.28,
+                "green": 0.6,
+                "blue": 0.4,
+                "indigo": 0.58,
+                "violet": 0.6
+              },
+              "rootDensity": 0.3,
+              "vineCoverage": 0.55,
+              "hasOpenRoof": false,
+              "chamberDryadIds": [
+                "dryad_entrance_column"
+              ]
+            },
+            {
+              "chamberId": "chamber_root_hall",
+              "chamberName": "The Root Hall",
+              "discoveryThreshold": 0.55,
+              "mythTrigger": "ruin",
+              "chamberField": {
+                "red": 0.08,
+                "orange": 0.12,
+                "yellow": 0.2,
+                "green": 0.58,
+                "blue": 0.44,
+                "indigo": 0.7,
+                "violet": 0.72
+              },
+              "rootDensity": 0.85,
+              "vineCoverage": 0.4,
+              "hasOpenRoof": true,
+              "chamberDryadIds": [
+                "dryad_root_hall_column"
+              ]
+            },
+            {
+              "chamberId": "chamber_still_water",
+              "chamberName": "Chamber of Still Water",
+              "discoveryThreshold": 0.6,
+              "mythTrigger": "ocean",
+              "chamberField": {
+                "red": 0.06,
+                "orange": 0.1,
+                "yellow": 0.18,
+                "green": 0.62,
+                "blue": 0.58,
+                "indigo": 0.72,
+                "violet": 0.75
+              },
+              "rootDensity": 0.6,
+              "vineCoverage": 0.7,
+              "hasOpenRoof": false,
+              "chamberDryadIds": []
+            },
+            {
+              "chamberId": "chamber_inner_court",
+              "chamberName": "The Inner Court",
+              "discoveryThreshold": 0.65,
+              "mythTrigger": "elder",
+              "chamberField": {
+                "red": 0.04,
+                "orange": 0.07,
+                "yellow": 0.14,
+                "green": 0.55,
+                "blue": 0.5,
+                "indigo": 0.8,
+                "violet": 0.85
+              },
+              "rootDensity": 0.7,
+              "vineCoverage": 0.5,
+              "hasOpenRoof": true,
+              "chamberDryadIds": [
+                "dryad_inner_court_fig"
+              ]
+            },
+            {
+              "chamberId": "chamber_sanctum",
+              "chamberName": "The Sanctum",
+              "discoveryThreshold": 0.72,
+              "mythTrigger": "source",
+              "chamberField": {
+                "red": 0.02,
+                "orange": 0.04,
+                "yellow": 0.1,
+                "green": 0.5,
+                "blue": 0.55,
+                "indigo": 0.88,
+                "violet": 0.95
+              },
+              "rootDensity": 0.95,
+              "vineCoverage": 0.35,
+              "hasOpenRoof": true,
+              "chamberDryadIds": [
+                "dryad_sanctum_banyan"
+              ]
+            }
+          ],
+          "overallRootDensity": 0.7,
+          "hasCauseway": true,
+          "hasMoat": true,
+          "templeField": {
+            "red": 0.05,
+            "orange": 0.08,
+            "yellow": 0.15,
+            "green": 0.55,
+            "blue": 0.5,
+            "indigo": 0.78,
+            "violet": 0.82
+          },
+          "outerDiscoveryThreshold": 0.45,
+          "innerDiscoveryThreshold": 0.7,
+          "outerMythTrigger": "ruin",
+          "innerMythTrigger": "elder",
+          "hawkNestPresent": true,
+          "parrotRoostPresent": true,
+          "stagAppearsAtDawn": true
+        }
+      ],
+      "rivers": [
+        {
+          "riverId": "river_source_vein",
+          "riverName": "Source Vein",
+          "forestZone": "zone_temple_crossing",
+          "segmentCount": 4,
+          "totalLengthMeters": 200.0,
+          "hasSourcePool": true,
+          "hasSeaExit": false,
+          "greenAmplification": 0.045,
+          "violetAmplification": 0.04,
+          "adjacencyRadius": 8.0,
+          "stagDrinksAtSource": true,
+          "mythTrigger": "forest",
+          "sourcePoolMythTrigger": "source",
+          "riverField": {
+            "red": 0.03,
+            "orange": 0.05,
+            "yellow": 0.12,
+            "green": 0.65,
+            "blue": 0.55,
+            "indigo": 0.8,
+            "violet": 0.9
+          }
+        }
+      ],
+      "preferredCompanionIds": [
+        "parrot",
+        "forest_hawk",
+        "elder_white_stag"
+      ]
+    }
+  ],
+  "generatedAt": "2026-03-28T20:43:29.970624Z"
+}

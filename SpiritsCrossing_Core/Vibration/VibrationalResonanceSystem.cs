@@ -320,5 +320,31 @@ namespace SpiritsCrossing.Vibration
             result.Sort((a, b) => b.harmony.CompareTo(a.harmony));
             return result;
         }
+
+        /// <summary>
+        /// Apply a transient additive boost to a named band in the player's current field.
+        /// Called each tick by environmental systems (blessed rivers, altar stones, etc.).
+        /// The boost is applied directly to PlayerField — the field's normal lerp toward
+        /// the physiological target will naturally absorb it over the following frames.
+        /// </summary>
+        /// <param name="bandName">One of: red, orange, yellow, green, blue, indigo, violet</param>
+        /// <param name="amount">Additive boost, typically 0.02–0.08 per tick</param>
+        public void ApplyTransientBoost(string bandName, float amount)
+        {
+            if (amount <= 0f) return;
+            switch (bandName)
+            {
+                case "red":    PlayerField.red    = Mathf.Clamp01(PlayerField.red    + amount); break;
+                case "orange": PlayerField.orange = Mathf.Clamp01(PlayerField.orange + amount); break;
+                case "yellow": PlayerField.yellow = Mathf.Clamp01(PlayerField.yellow + amount); break;
+                case "green":  PlayerField.green  = Mathf.Clamp01(PlayerField.green  + amount); break;
+                case "blue":   PlayerField.blue   = Mathf.Clamp01(PlayerField.blue   + amount); break;
+                case "indigo": PlayerField.indigo = Mathf.Clamp01(PlayerField.indigo + amount); break;
+                case "violet": PlayerField.violet = Mathf.Clamp01(PlayerField.violet + amount); break;
+                default:
+                    Debug.LogWarning($"[VibrationalResonanceSystem] Unknown band: '{bandName}'");
+                    break;
+            }
+        }
     }
 }

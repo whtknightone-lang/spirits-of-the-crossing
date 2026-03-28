@@ -38,7 +38,8 @@ JSON_FILES = {
     ROOT / "SpiritsCrossing_Core" / "BiometricInput" / "biometric_profiles.json": "biometric_profiles.json",
     ROOT / "SpiritsCrossing_Core" / "Companions"     / "companion_registry.json": "companion_registry.json",
     ROOT / "SpiritsCrossing_Core" / "Cosmos"         / "cosmos_data.json":        "cosmos_data.json",
-    ROOT / "SpiritsCrossing_Core" / "World"           / "ruins_data.json":         "ruins_data.json",
+    ROOT / "SpiritsCrossing_Core" / "World"       / "ruins_data.json":         "ruins_data.json",
+    ROOT / "SpiritsCrossing_Core" / "ForestWorld" / "forest_world_data.json":  "forest_world_data.json",
 }
 
 # Common Unity project subfolder names to search for
@@ -123,6 +124,8 @@ def main():
         print("  python myth_threshold_calibrator.py")
         print("  python biometric_simulator.py")
         print("  python companion_registry_generator.py")
+        print("  python ruins_generator.py")
+        print("  python forest_world_generator.py")
 
     if success > 0 and not args.dry_run:
         print("\nNext steps in Unity:")
