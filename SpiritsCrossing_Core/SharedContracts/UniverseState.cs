@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SpiritsCrossing.Companions;
 using SpiritsCrossing.Memory;
+using SpiritsCrossing.Lifecycle;
 
 namespace SpiritsCrossing
 {
@@ -88,6 +89,15 @@ namespace SpiritsCrossing
         // Resonance learning — the game's memory of who the player is
         public ResonanceLearningState learningState = new ResonanceLearningState();
 
+        // Lifecycle — Birth / Source / Rebirth cycle state
+        public LifecycleState lifecycle = new LifecycleState();
+
+        // Vibrational messages sent to planets (cap 20)
+        public List<VibrationalMessage> sentMessages = new List<VibrationalMessage>();
+
+        // Known player/NPC presences on the cosmos map
+        public List<CosmosPresence> knownPresences = new List<CosmosPresence>();
+
         // -------------------------------------------------------------------------
 
         public PlanetState GetOrCreatePlanet(string planetId)
@@ -165,6 +175,14 @@ namespace SpiritsCrossing
             foreach (var b in companions) b.isActive = false;
             if (!string.IsNullOrEmpty(animalId))
                 GetOrCreateBond(animalId).isActive = true;
+        }
+
+        public List<VibrationalMessage> GetMessagesByPlanet(string planetId)
+        {
+            var result = new List<VibrationalMessage>();
+            foreach (var m in sentMessages)
+                if (m.planetId == planetId) result.Add(m);
+            return result;
         }
 
         public void RecalculateUniverseCycle()

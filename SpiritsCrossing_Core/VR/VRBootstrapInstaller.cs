@@ -22,6 +22,7 @@ using SpiritsCrossing.Companions;
 using SpiritsCrossing.Memory;
 using SpiritsCrossing.Cosmos;
 using SpiritsCrossing.Vibration;
+using SpiritsCrossing.Lifecycle;
 using V243.SandstoneCave;
 
 namespace SpiritsCrossing.VR
@@ -62,6 +63,11 @@ namespace SpiritsCrossing.VR
         private ResonanceMemorySystem      _memorySystem;
         private CosmosGenerationSystem     _cosmosSystem;
         private VibrationalResonanceSystem  _vibrationSystem;
+        private LifecycleSystem             _lifecycleSystem;
+        private SourceCommunionSystem       _communionSystem;
+        private CosmosObserverMode          _cosmosObserver;
+        private VibrationalMessenger        _messenger;
+        private MeditationMode              _meditationMode;
 
         // -------------------------------------------------------------------------
         // Lifecycle
@@ -310,6 +316,26 @@ namespace SpiritsCrossing.VR
                 DontDestroyOnLoad(go);
                 _vibrationSystem = go.AddComponent<VibrationalResonanceSystem>();
             }
+
+            // LifecycleSystem
+            if (_lifecycleSystem == null) _lifecycleSystem = FindObjectOfType<LifecycleSystem>();
+            if (_lifecycleSystem == null) { var go = new GameObject("[LifecycleSystem]"); DontDestroyOnLoad(go); _lifecycleSystem = go.AddComponent<LifecycleSystem>(); }
+
+            // SourceCommunionSystem
+            if (_communionSystem == null) _communionSystem = FindObjectOfType<SourceCommunionSystem>();
+            if (_communionSystem == null) { var go = new GameObject("[SourceCommunionSystem]"); DontDestroyOnLoad(go); _communionSystem = go.AddComponent<SourceCommunionSystem>(); }
+
+            // CosmosObserverMode
+            if (_cosmosObserver == null) _cosmosObserver = FindObjectOfType<CosmosObserverMode>();
+            if (_cosmosObserver == null) { var go = new GameObject("[CosmosObserverMode]"); DontDestroyOnLoad(go); _cosmosObserver = go.AddComponent<CosmosObserverMode>(); }
+
+            // VibrationalMessenger
+            if (_messenger == null) _messenger = FindObjectOfType<VibrationalMessenger>();
+            if (_messenger == null) { var go = new GameObject("[VibrationalMessenger]"); DontDestroyOnLoad(go); _messenger = go.AddComponent<VibrationalMessenger>(); }
+
+            // MeditationMode
+            if (_meditationMode == null) _meditationMode = FindObjectOfType<MeditationMode>();
+            if (_meditationMode == null) { var go = new GameObject("[MeditationMode]"); DontDestroyOnLoad(go); _meditationMode = go.AddComponent<MeditationMode>(); }
         }
 
         // =========================================================================
@@ -352,6 +378,12 @@ namespace SpiritsCrossing.VR
             var vib = FindObjectOfType<VibrationalResonanceSystem>();
             var vf  = VibrationalResonanceSystem.Instance?.PlayerField;
             sb.AppendLine($"║  [+] VibrationalField:    {StatusIcon(vib)} dom={(vf?.DominantBandName() ?? "N/A")} top={(VibrationalResonanceSystem.Instance?.HighestHarmonyAnimal ?? "?"),-12}║");
+            var lc  = UniverseStateManager.Instance?.Current.lifecycle;
+            string phase   = lc?.currentPhase.ToString() ?? "N/A";
+            string depth   = SourceCommunionSystem.Instance?.MaxDepth.ToString("F2") ?? "—";
+            sb.AppendLine($"║  [+] Lifecycle:           {StatusIcon(_lifecycleSystem)} {phase,-14} cycle={(lc?.cycleCount ?? 0),-3} depth={depth,-7}║");
+            var med = MeditationMode.Instance;
+            sb.AppendLine($"║  [+] MeditationMode:      {StatusIcon(med)} {(med?.GetStatusString() ?? "N/A"),-30}║");
             sb.AppendLine("╚══════════════════════════════════════════════╝");
 
             Debug.Log(sb.ToString());

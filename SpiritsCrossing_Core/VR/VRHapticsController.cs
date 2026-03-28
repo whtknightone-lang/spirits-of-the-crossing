@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 using SpiritsCrossing.SpiritAI;
+using SpiritsCrossing.Lifecycle;
 using V243.SandstoneCave;
 
 namespace SpiritsCrossing.VR
@@ -113,6 +114,15 @@ namespace SpiritsCrossing.VR
             if (UniverseStateManager.Instance != null)
                 UniverseStateManager.Instance.OnRealmOutcomeApplied += OnRealmComplete;
 
+            // Lifecycle events
+            if (LifecycleSystem.Instance != null)
+            {
+                LifecycleSystem.Instance.OnSourceDropIn    += OnSourceDropIn;
+                LifecycleSystem.Instance.OnRebirthComplete += OnRebirthComplete;
+            }
+            if (SourceCommunionSystem.Instance != null)
+                SourceCommunionSystem.Instance.OnCommunionDepthMilestone += OnCommunionMilestone;
+
             // Portal unlock
             var portal = FindObjectOfType<PortalUnlockController>();
             // PortalUnlockController doesn't have an event yet — we poll it in Update.
@@ -133,6 +143,14 @@ namespace SpiritsCrossing.VR
             }
             if (UniverseStateManager.Instance != null)
                 UniverseStateManager.Instance.OnRealmOutcomeApplied -= OnRealmComplete;
+
+            if (LifecycleSystem.Instance != null)
+            {
+                LifecycleSystem.Instance.OnSourceDropIn    -= OnSourceDropIn;
+                LifecycleSystem.Instance.OnRebirthComplete -= OnRebirthComplete;
+            }
+            if (SourceCommunionSystem.Instance != null)
+                SourceCommunionSystem.Instance.OnCommunionDepthMilestone -= OnCommunionMilestone;
         }
 
         // -------------------------------------------------------------------------
@@ -236,6 +254,52 @@ namespace SpiritsCrossing.VR
         {
             float intensity = Mathf.Clamp01(outcome.celebration * 1.1f) * globalIntensityScale;
             StartCoroutine(BilateralPulse(intensity, realmCompleteDuration));
+        }
+
+        // ---- Source Drop-In: 3-second deep bilateral rumble ----
+        private void OnSourceDropIn()
+        {
+            StartCoroutine(BilateralSustained(0.40f * globalIntensityScale, 3.0f));
+            Debug.Log("[VRHapticsController] Source Drop-In rumble.");
+        }
+
+        // ---- Dragon Communion milestone: element-specific pulse ----
+        private void OnCommunionMilestone(string element, float depth)
+        {
+            switch (element)
+            {
+                case "Fire":  // right hand strong sharp pulse
+                    StartCoroutine(SingleHandPulse(_rightController, 0.70f * globalIntensityScale, 0.15f));
+                    break;
+                case "Water": // left hand slow gentle pulse
+                    StartCoroutine(SingleHandPulse(_leftController,  0.40f * globalIntensityScale, 0.35f));
+                    break;
+                case "Earth": // deep bilateral low sustained
+                    StartCoroutine(BilateralSustained(0.35f * globalIntensityScale, 0.50f));
+                    break;
+                case "Air":   // quick alternating tap
+                    StartCoroutine(SingleHandPulse(_leftController,  0.45f * globalIntensityScale, 0.10f));
+                    StartCoroutine(SingleHandPulse(_rightController, 0.45f * globalIntensityScale, 0.10f));
+                    break;
+            }
+            Debug.Log($"[VRHapticsController] Communion milestone: {element} depth={depth:F2}");
+        }
+
+        // ---- Rebirth: ascending triple pulse 0.5 / 0.7 / 0.9 ----
+        private void OnRebirthComplete(System.Collections.Generic.List<string> gifts)
+        {
+            StartCoroutine(AscendingTriplePulse());
+            Debug.Log("[VRHapticsController] Rebirth ascending triple pulse.");
+        }
+
+        private System.Collections.IEnumerator AscendingTriplePulse()
+        {
+            float[] intensities = { 0.50f, 0.70f, 0.90f };
+            foreach (float i in intensities)
+            {
+                yield return BilateralPulse(i * globalIntensityScale, 0.30f);
+                yield return new WaitForSeconds(0.15f);
+            }
         }
 
         // -------------------------------------------------------------------------
