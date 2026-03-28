@@ -1,0 +1,216 @@
+{
+  "spirits": [
+    {
+      "archetypeId": "Seated",
+      "sculptureMode": "SeatedMeditation",
+      "description": "Still, grounded, high rest drive. Crown and heart dominant.",
+      "driveWeights": {
+        "attack": 0.0,
+        "flee": 0.0,
+        "seek": 0.1965,
+        "rest": 0.5476,
+        "signal": 0.2456,
+        "explore": 0.0102
+      },
+      "dominantDrive": "rest",
+      "coherenceBaseline": 0.9158,
+      "spectralSignature": {
+        "red": 1.0,
+        "orange": 0.9996,
+        "yellow": 1.0,
+        "green": 1.0,
+        "blue": 0.9997,
+        "indigo": 0.9065,
+        "violet": 1.0
+      }
+    },
+    {
+      "archetypeId": "FlowDancer",
+      "sculptureMode": "FlowDance",
+      "description": "Fluid movement, heart-blue axis, moderate social.",
+      "driveWeights": {
+        "attack": 0.0337,
+        "flee": 0.0,
+        "seek": 0.3743,
+        "rest": 0.2021,
+        "signal": 0.184,
+        "explore": 0.2059
+      },
+      "dominantDrive": "seek",
+      "coherenceBaseline": 0.9158,
+      "spectralSignature": {
+        "red": 1.0,
+        "orange": 0.9921,
+        "yellow": 1.0,
+        "green": 1.0,
+        "blue": 0.9997,
+        "indigo": 0.9061,
+        "violet": 1.0
+      }
+    },
+    {
+      "archetypeId": "Dervish",
+      "sculptureMode": "Dervish",
+      "description": "High spin/explore, violet-blue axis, low rest.",
+      "driveWeights": {
+        "attack": 0.1217,
+        "flee": 0.0448,
+        "seek": 0.3121,
+        "rest": 0.0,
+        "signal": 0.1095,
+        "explore": 0.4119
+      },
+      "dominantDrive": "explore",
+      "coherenceBaseline": 0.9158,
+      "spectralSignature": {
+        "red": 1.0,
+        "orange": 0.983,
+        "yellow": 1.0,
+        "green": 1.0,
+        "blue": 1.0,
+        "indigo": 0.9066,
+        "violet": 1.0
+      }
+    },
+    {
+      "archetypeId": "PairA",
+      "sculptureMode": "CoupledDance",
+      "description": "Social resonance, indigo-orange axis, paired synchrony.",
+      "driveWeights": {
+        "attack": 0.0,
+        "flee": 0.0131,
+        "seek": 0.2328,
+        "rest": 0.1629,
+        "signal": 0.4513,
+        "explore": 0.14
+      },
+      "dominantDrive": "signal",
+      "coherenceBaseline": 0.9158,
+      "spectralSignature": {
+        "red": 1.0,
+        "orange": 1.0,
+        "yellow": 1.0,
+        "green": 1.0,
+        "blue": 0.9998,
+        "indigo": 0.9077,
+        "violet": 1.0
+      }
+    },
+    {
+      "archetypeId": "PairB",
+      "sculptureMode": "CoupledDance",
+      "description": "Responsive pair spirit, slightly higher fear/flee, strong social.",
+      "driveWeights": {
+        "attack": 0.0417,
+        "flee": 0.0498,
+        "seek": 0.217,
+        "rest": 0.1281,
+        "signal": 0.3986,
+        "explore": 0.1648
+      },
+      "dominantDrive": "signal",
+      "coherenceBaseline": 0.9158,
+      "spectralSignature": {
+        "red": 1.0,
+        "orange": 1.0,
+        "yellow": 1.0,
+        "green": 1.0,
+        "blue": 0.9997,
+        "indigo": 0.9065,
+        "violet": 1.0
+      }
+    }
+  ],
+  "planets": [
+    {
+      "planetId": "ForestHeart",
+      "description": "Lush, calm, social. High food, low hazard.",
+      "worldBias": {
+        "foodRegen": 0.6,
+        "hazard": 0.167,
+        "signalFlow": 0.4,
+        "energyRegen": 0.5,
+        "signalPatch": 0.375
+      },
+      "preferredArchetypes": [
+        "Seated",
+        "FlowDancer"
+      ]
+    },
+    {
+      "planetId": "SkySpiral",
+      "description": "Aerial, exploratory, spinning. Low hazard, high energy.",
+      "worldBias": {
+        "foodRegen": 0.3,
+        "hazard": 0.2,
+        "signalFlow": 0.7,
+        "energyRegen": 0.75,
+        "signalPatch": 0.375
+      },
+      "preferredArchetypes": [
+        "Dervish",
+        "FlowDancer"
+      ]
+    },
+    {
+      "planetId": "SourceVeil",
+      "description": "Mystical stillness. High signal patch, low hazard.",
+      "worldBias": {
+        "foodRegen": 0.4,
+        "hazard": 0.133,
+        "signalFlow": 0.4,
+        "energyRegen": 0.375,
+        "signalPatch": 0.875
+      },
+      "preferredArchetypes": [
+        "Seated",
+        "PairA"
+      ]
+    },
+    {
+      "planetId": "WaterFlow",
+      "description": "Fluid, dynamic. Medium food in patches, flowing signal.",
+      "worldBias": {
+        "foodRegen": 0.5,
+        "hazard": 0.3,
+        "signalFlow": 0.8,
+        "energyRegen": 0.5,
+        "signalPatch": 0.375
+      },
+      "preferredArchetypes": [
+        "FlowDancer",
+        "PairB"
+      ]
+    },
+    {
+      "planetId": "MachineOrder",
+      "description": "Ordered, disciplined. High terrain variation, moderate hazard.",
+      "worldBias": {
+        "foodRegen": 0.3,
+        "hazard": 0.467,
+        "signalFlow": 0.2,
+        "energyRegen": 0.25,
+        "signalPatch": 0.375
+      },
+      "preferredArchetypes": [
+        "Dervish",
+        "PairA"
+      ]
+    },
+    {
+      "planetId": "DarkContrast",
+      "description": "High challenge. Elevated hazard, sparse food, strong signals.",
+      "worldBias": {
+        "foodRegen": 0.1,
+        "hazard": 0.917,
+        "signalFlow": 0.3,
+        "energyRegen": 0.25,
+        "signalPatch": 0.375
+      },
+      "preferredArchetypes": [
+        "Dervish",
+        "PairB"
+      ]
+    }
+  ]
+}
