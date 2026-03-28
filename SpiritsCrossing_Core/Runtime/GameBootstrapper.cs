@@ -14,6 +14,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using SpiritsCrossing.VR;
 
 namespace SpiritsCrossing
 {
@@ -24,8 +25,9 @@ namespace SpiritsCrossing
         public string ritualCaveScene = "SandstoneCave";
 
         [Header("References (auto-found if null)")]
-        public UniverseStateManager universeStateManager;
+        public UniverseStateManager  universeStateManager;
         public MythInterpreter       mythInterpreter;
+        public VRBootstrapInstaller  vrInstaller;
 
         // Cave session controller reference — set when Ritual scene loads
         private V243.SandstoneCave.CaveSessionController _caveController;
@@ -53,6 +55,13 @@ namespace SpiritsCrossing
 
             if (mythInterpreter == null)
                 mythInterpreter = gameObject.AddComponent<MythInterpreter>();
+
+            // Ensure VRBootstrapInstaller exists (handles all 4 VR setup steps)
+            if (vrInstaller == null)
+                vrInstaller = FindObjectOfType<VRBootstrapInstaller>();
+
+            if (vrInstaller == null)
+                vrInstaller = gameObject.AddComponent<VRBootstrapInstaller>();
         }
 
         private IEnumerator Start()
