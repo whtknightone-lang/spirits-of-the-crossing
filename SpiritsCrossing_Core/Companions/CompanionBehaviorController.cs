@@ -70,11 +70,14 @@ namespace SpiritsCrossing.Companions
         // -------------------------------------------------------------------------
         // Internal
         // -------------------------------------------------------------------------
-        private CompanionProfile _profile;
-        private Vector3          _wanderTarget;
-        private float            _wanderTimer;
-        private Animator         _animator;
-        private float            _prevHarmony;
+        private CompanionProfile      _profile;
+        private Vector3               _wanderTarget;
+        private float                 _wanderTimer;
+        private Animator              _animator;
+        private float                 _prevHarmony;
+        private CompanionRuleAction   _overrideAction;
+        private float                 _overrideTimer;  // >0 = override active
+        private bool                  _hasOverride;
 
         // -------------------------------------------------------------------------
         // Lifecycle
@@ -125,10 +128,30 @@ namespace SpiritsCrossing.Companions
         }
 
         // -------------------------------------------------------------------------
+        // Behavior override from CompanionAssignmentManager rule engine
+        // -------------------------------------------------------------------------
+        public void SetBehaviorOverride(CompanionRuleAction action, float duration)
+        {
+            _overrideAction = action;
+            _overrideTimer  = duration;
+            _hasOverride    = true;
+        }
+
+        public void ClearBehaviorOverride() { _hasOverride = false; _overrideTimer = 0f; }
+
+        // -------------------------------------------------------------------------
         // Continuous vibrational behavior — no state machine, one flow
         // -------------------------------------------------------------------------
         private void TickContinuousBehavior()
         {
+            // Rule override takes priority over harmony-based movement
+            if (_hasOverride)
+            {
+                _overrideTimer -= Time.deltaTime;
+                if (_overrideTimer <= 0f) { _hasOverride = false; }
+                else { ApplyOverride(_overrideAction); return; }
+            }
+
             float h = _currentHarmony;
 
             // --- Distance: continuously lerps between max and min ---
@@ -181,6 +204,52 @@ namespace SpiritsCrossing.Companions
             {
                 _wanderTimer = 0f;
                 PickNewWanderTarget();
+            }
+        }
+
+        // -------------------------------------------------------------------------
+        // Override execution
+        // -------------------------------------------------------------------------
+        private void ApplyOverride(CompanionRuleAction action)
+        {
+            if (playerTransform == null) return;
+            switch (action)
+            {
+                case CompanionRuleAction.Approach:
+                    MoveToward(OffsetFromPlayer(minDistance), maxMoveSpeed);
+                    LookAt(playerTransform.position);
+                    break;
+                case CompanionRuleAction.Retreat:
+                    MoveToward(OffsetFromPlayer(maxDistance * 0.85f), maxMoveSpeed * 0.6f);
+                    break;
+                case CompanionRuleAction.Alert:
+                    LookAt(playerTransform.position);
+                    if (_animator != null) _animator.SetTrigger("Alert");
+                    break;
+                case CompanionRuleAction.Perform:
+                    LookAt(playerTransform.position);
+                    if (_animator != null) _animator.SetFloat("ElementPerform", 1f);
+                    break;
+                case CompanionRuleAction.Bond:
+                    // Temporarily boost bond growth via CompanionBondSystem
+                    if (CompanionBondSystem.Instance != null)
+                        CompanionBondSystem.Instance.bondGrowthRate = Mathf.Min(5f,
+                            CompanionBondSystem.Instance.bondGrowthRate + 0.5f);
+                    MoveToward(OffsetFromPlayer(minDistance * 1.5f), maxMoveSpeed);
+                    break;
+                case CompanionRuleAction.Guard:
+                    // Position between player and wanderTarget
+                    Vector3 guardPos = (playerTransform.position + _wanderTarget) * 0.5f;
+                    MoveToward(guardPos, maxMoveSpeed);
+                    LookAt(_wanderTarget);
+                    break;
+                case CompanionRuleAction.Follow:
+                    MoveToward(OffsetFromPlayer(minDistance), maxMoveSpeed * 1.1f);
+                    LookAt(playerTransform.position);
+                    break;
+                case CompanionRuleAction.Release:
+                    MoveToward(_wanderTarget, maxMoveSpeed * 0.3f);
+                    break;
             }
         }
 

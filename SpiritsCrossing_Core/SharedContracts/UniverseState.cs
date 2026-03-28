@@ -87,6 +87,12 @@ namespace SpiritsCrossing
         // Companion bonds (all 26 animal companions across 4 elements)
         public List<CompanionBondState> companions = new List<CompanionBondState>();
 
+        // User companion assignments (primary / elemental / realm / session)
+        public CompanionAssignment userAssignment = new CompanionAssignment();
+
+        // User companion rules (trigger → action pairs)
+        public CompanionRuleSet companionRules = new CompanionRuleSet();
+
         // Resonance learning — the game's memory of who the player is
         public ResonanceLearningState learningState = new ResonanceLearningState();
 

@@ -70,6 +70,8 @@ namespace SpiritsCrossing.VR
         private VibrationalMessenger        _messenger;
         private MeditationMode              _meditationMode;
         private WorldSystem                 _worldSystem;
+        private CompanionAssignmentManager  _assignmentManager;
+        private CompanionAssignmentUI       _assignmentUI;
 
         // -------------------------------------------------------------------------
         // Lifecycle
@@ -342,6 +344,12 @@ namespace SpiritsCrossing.VR
             // WorldSystem
             if (_worldSystem == null) _worldSystem = FindObjectOfType<WorldSystem>();
             if (_worldSystem == null) { var go = new GameObject("[WorldSystem]"); DontDestroyOnLoad(go); _worldSystem = go.AddComponent<WorldSystem>(); }
+
+            // CompanionAssignmentManager + UI
+            if (_assignmentManager == null) _assignmentManager = FindObjectOfType<CompanionAssignmentManager>();
+            if (_assignmentManager == null) { var go = new GameObject("[CompanionAssignmentManager]"); DontDestroyOnLoad(go); _assignmentManager = go.AddComponent<CompanionAssignmentManager>(); }
+            if (_assignmentUI == null) _assignmentUI = FindObjectOfType<CompanionAssignmentUI>();
+            if (_assignmentUI == null) { var go = new GameObject("[CompanionAssignmentUI]"); DontDestroyOnLoad(go); _assignmentUI = go.AddComponent<CompanionAssignmentUI>(); }
         }
 
         // =========================================================================
@@ -394,6 +402,10 @@ namespace SpiritsCrossing.VR
             int ruins = ws?.TotalDiscovered ?? 0;
             string wname = ws?.CurrentActiveWorld?.planetId ?? "cosmos";
             sb.AppendLine($"║  [+] WorldSystem:         {StatusIcon(ws)} ruins={ruins,-3} world={wname,-22}║");
+            var cam = CompanionAssignmentManager.Instance;
+            string activeComp = cam?.ActiveCompanionId ?? "—";
+            int ruleCount = cam?.Rules?.rules?.Count ?? 0;
+            sb.AppendLine($"║  [+] CompanionAssignment: {StatusIcon(cam)} active={activeComp,-14} rules={ruleCount,-6}║");
             sb.AppendLine("╚══════════════════════════════════════════════╝");
 
             Debug.Log(sb.ToString());
