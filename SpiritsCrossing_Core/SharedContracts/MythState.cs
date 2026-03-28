@@ -88,6 +88,20 @@ namespace SpiritsCrossing
             RebuildModifiers();
         }
 
+        /// <summary>Decay a single myth by its calibrated per-session rate.</summary>
+        public void DecaySpecific(string key, float amount)
+        {
+            for (int i = activeMyths.Count - 1; i >= 0; i--)
+            {
+                if (activeMyths[i].mythKey != key) continue;
+                activeMyths[i].strength = Mathf.Clamp01(activeMyths[i].strength - amount);
+                if (activeMyths[i].strength <= 0f)
+                    activeMyths.RemoveAt(i);
+                break;
+            }
+            RebuildModifiers();
+        }
+
         /// <summary>Recompute scalar modifiers from current active myths.</summary>
         public void RebuildModifiers()
         {

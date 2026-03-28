@@ -1,0 +1,120 @@
+{
+  "source": {
+    "threshold": 0.169,
+    "boostThreshold": 0.137,
+    "decayRate": 0.03,
+    "derivedFrom": [
+      "Seated",
+      "PairA"
+    ],
+    "planet": "SourceVeil",
+    "avgMaxScore": 0.3263,
+    "coherenceDiscount": 0.0333,
+    "description": "Deep alignment with the source field. Activates through stillness and crown connection."
+  },
+  "forest": {
+    "threshold": 0.3407,
+    "boostThreshold": 0.2533,
+    "decayRate": 0.04,
+    "derivedFrom": [
+      "Seated",
+      "FlowDancer"
+    ],
+    "planet": "ForestHeart",
+    "avgMaxScore": 0.6032,
+    "coherenceDiscount": 0.0333,
+    "description": "Lush, grounded resonance. Activates through calm flow with low distortion."
+  },
+  "sky": {
+    "threshold": 0.182,
+    "boostThreshold": 0.1458,
+    "decayRate": 0.05,
+    "derivedFrom": [
+      "Dervish",
+      "FlowDancer"
+    ],
+    "planet": "SkySpiral",
+    "avgMaxScore": 0.3472,
+    "coherenceDiscount": 0.0333,
+    "description": "Aerial, exploratory presence. Activates through spinning movement and wonder."
+  },
+  "ocean": {
+    "threshold": 0.3007,
+    "boostThreshold": 0.2263,
+    "decayRate": 0.04,
+    "derivedFrom": [
+      "FlowDancer",
+      "PairB"
+    ],
+    "planet": "WaterFlow",
+    "avgMaxScore": 0.5387,
+    "coherenceDiscount": 0.0333,
+    "description": "Fluid, rhythmic harmony. Activates through flowing movement and social sync."
+  },
+  "fire": {
+    "threshold": 0.1,
+    "boostThreshold": 0.0368,
+    "decayRate": 0.06,
+    "derivedFrom": [
+      "Dervish",
+      "PairB"
+    ],
+    "planet": "DarkContrast",
+    "avgMaxScore": 0.0877,
+    "coherenceDiscount": 0.0333,
+    "description": "Intense contrast and will. Activates through high spin with distortion."
+  },
+  "machine": {
+    "threshold": 0.1441,
+    "boostThreshold": 0.1202,
+    "decayRate": 0.04,
+    "derivedFrom": [
+      "Dervish",
+      "PairA"
+    ],
+    "planet": "MachineOrder",
+    "avgMaxScore": 0.2861,
+    "coherenceDiscount": 0.0333,
+    "description": "Ordered, disciplined resonance. Activates through precise spin and paired synchrony."
+  },
+  "storm": {
+    "threshold": 0.1,
+    "boostThreshold": 0.0206,
+    "decayRate": 0.07,
+    "derivedFrom": [
+      "Dervish",
+      "PairB"
+    ],
+    "planet": "DarkContrast",
+    "avgMaxScore": 0.049,
+    "coherenceDiscount": 0.0333,
+    "description": "Turbulent contrast field. Activates when distortion is high and unchecked."
+  },
+  "elder": {
+    "threshold": 0.2329,
+    "boostThreshold": 0.1803,
+    "decayRate": 0.02,
+    "derivedFrom": [
+      "Seated",
+      "PairA"
+    ],
+    "planet": "SourceVeil",
+    "avgMaxScore": 0.4294,
+    "coherenceDiscount": 0.0333,
+    "description": "Ancient presence. Requires sustained stillness, wonder, and source alignment together."
+  },
+  "ruin": {
+    "threshold": 0.1,
+    "boostThreshold": 0.0517,
+    "decayRate": 0.03,
+    "derivedFrom": [
+      "Seated",
+      "FlowDancer",
+      "PairA"
+    ],
+    "planet": "SourceVeil",
+    "avgMaxScore": 0.1231,
+    "coherenceDiscount": 0.0333,
+    "description": "Echo of ancient structures. Activates through wonder in combination with source presence."
+  }
+}
