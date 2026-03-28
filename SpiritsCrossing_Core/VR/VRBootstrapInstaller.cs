@@ -21,6 +21,7 @@ using SpiritsCrossing.BiometricInput;
 using SpiritsCrossing.Companions;
 using SpiritsCrossing.Memory;
 using SpiritsCrossing.Cosmos;
+using SpiritsCrossing.Vibration;
 using V243.SandstoneCave;
 
 namespace SpiritsCrossing.VR
@@ -60,6 +61,7 @@ namespace SpiritsCrossing.VR
         private CompanionBondSystem        _companionBonds;
         private ResonanceMemorySystem      _memorySystem;
         private CosmosGenerationSystem     _cosmosSystem;
+        private VibrationalResonanceSystem  _vibrationSystem;
 
         // -------------------------------------------------------------------------
         // Lifecycle
@@ -298,6 +300,16 @@ namespace SpiritsCrossing.VR
                 DontDestroyOnLoad(go);
                 _cosmosSystem = go.AddComponent<CosmosGenerationSystem>();
             }
+
+            // VibrationalResonanceSystem
+            if (_vibrationSystem == null)
+                _vibrationSystem = FindObjectOfType<VibrationalResonanceSystem>();
+            if (_vibrationSystem == null)
+            {
+                var go = new GameObject("[VibrationalResonanceSystem]");
+                DontDestroyOnLoad(go);
+                _vibrationSystem = go.AddComponent<VibrationalResonanceSystem>();
+            }
         }
 
         // =========================================================================
@@ -337,6 +349,9 @@ namespace SpiritsCrossing.VR
             sb.AppendLine($"║  [+] ResonanceMemory:     {StatusIcon(memory)} src={(learning?.sourceConnectionLevel.ToString("F2") ?? "N/A")} elem={(learning?.dominantElement ?? "?"),-13}║");
             var cosmos = FindObjectOfType<CosmosGenerationSystem>();
             sb.AppendLine($"║  [+] CosmosGeneration:    {StatusIcon(cosmos)} R={(CosmosGenerationSystem.Instance?.R_Universe.ToString("F3") ?? "N/A"),-24}║");
+            var vib = FindObjectOfType<VibrationalResonanceSystem>();
+            var vf  = VibrationalResonanceSystem.Instance?.PlayerField;
+            sb.AppendLine($"║  [+] VibrationalField:    {StatusIcon(vib)} dom={(vf?.DominantBandName() ?? "N/A")} top={(VibrationalResonanceSystem.Instance?.HighestHarmonyAnimal ?? "?"),-12}║");
             sb.AppendLine("╚══════════════════════════════════════════════╝");
 
             Debug.Log(sb.ToString());

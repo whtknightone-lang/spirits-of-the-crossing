@@ -1,25 +1,27 @@
 // SpiritsCrossing — CompanionBehaviorController.cs
-// Place on each companion prefab. Drives behavior through 4 bond tiers.
+// Place on each companion prefab.
+// Drives behavior from a single continuous float: vibrational harmony.
 //
-// Bond tiers → behavior:
-//   Distant  (< 0.25)  — stays far, avoids eye contact, occasional glance
-//   Curious  (0.25–0.50) — follows at distance, turns to face player, short approaches
-//   Bonded   (0.50–0.75) — stays nearby, performs element-specific idle animations
-//   Companion(> 0.75)  — fully present, myth reinforcement active, VR haptics on events
+// There is no state machine. Distance, speed, look-at weight, and animation
+// blends all derive continuously from harmony between the player's live
+// vibrational field and this animal's natural field.
 //
-// NPC companions: if linkedSpiritBrain is set, the companion mirrors the NPC's
-// drive mode (Rest→idle, Explore→wander, Signal→approach player, etc.)
+//   harmony 0.0  → animal at max distance, wandering, ignoring player
+//   harmony 0.5  → neutral — animal is aware, neither drawn nor repelled
+//   harmony 1.0  → animal drawn to minimum distance, fully present
 //
-// Wiring:
-//   1. Add this component to a companion prefab.
-//   2. Set animalId to match an entry in companion_registry.json.
-//   3. Assign transform anchors (player, wanderCenter).
-//   4. Optionally link a SpiritBrainController for NPC companions.
+// The feel is organic because harmony changes smoothly with physiology —
+// a player growing calmer is gently accompanied by the snake drawing closer,
+// not because a rule fired but because the fields aligned.
+//
+// NPC companions: if linkedSpiritBrain is set, the animal's orientation
+// also mirrors the NPC's drive mode.
 
 using System;
 using UnityEngine;
 using SpiritsCrossing.SpiritAI;
 using SpiritsCrossing.VR;
+using SpiritsCrossing.Vibration;
 
 namespace SpiritsCrossing.Companions
 {
@@ -36,39 +38,43 @@ namespace SpiritsCrossing.Companions
         public Transform playerTransform;
         public Transform wanderCenter;
 
-        [Header("Distances")]
-        public float distantDistance   = 12f;
-        public float curiousDistance   =  6f;
-        public float bondedDistance    =  2.5f;
-        public float companionDistance =  1.2f;
+        [Header("Distance Range (harmony drives continuously between these)")]
+        public float maxDistance = 12f;   // harmony = 0
+        public float minDistance =  1.2f; // harmony = 1
 
         [Header("Movement")]
-        public float moveSpeed          = 3f;
-        public float wanderRadius       = 5f;
+        public float maxMoveSpeed   = 4f;
+        public float wanderRadius   = 5f;
         [Range(0f, 10f)] public float wanderInterval = 4f;
+
+        [Header("Look-at")]
+        [Tooltip("How much the animal faces the player. 0=never, 1=always.")]
+        public float lookAtWeight = 1f;   // scales with harmony automatically
 
         [Header("NPC Link")]
         [Tooltip("Set for NPC companions. If null, companion tracks player only.")]
         public SpiritBrainController linkedSpiritBrain;
 
         [Header("Runtime — read-only")]
-        [SerializeField] private CompanionBondTier _currentTier = CompanionBondTier.Distant;
-        [SerializeField] private float             _bondLevel;
-        [SerializeField] private string            _behaviorMode;
+        [SerializeField] private float  _currentHarmony;    // 0-1, continuous
+        [SerializeField] private float  _harmonyVelocity;   // positive=rising
+        [SerializeField] private float  _targetDistance;
+        [SerializeField] private string _dominantBandMatch; // which band is driving the bond
 
         // -------------------------------------------------------------------------
         // Events
         // -------------------------------------------------------------------------
-        public event Action<CompanionBondTier> OnTierChanged;
+        /// <summary>Fires whenever harmony crosses a natural threshold.</summary>
+        public event Action<float> OnHarmonyChanged;  // new harmony value
 
         // -------------------------------------------------------------------------
         // Internal
         // -------------------------------------------------------------------------
-        private CompanionProfile   _profile;
-        private CompanionBondTier  _prevTier = CompanionBondTier.Distant;
-        private Vector3            _wanderTarget;
-        private float              _wanderTimer;
-        private Animator           _animator;
+        private CompanionProfile _profile;
+        private Vector3          _wanderTarget;
+        private float            _wanderTimer;
+        private Animator         _animator;
+        private float            _prevHarmony;
 
         // -------------------------------------------------------------------------
         // Lifecycle
@@ -88,110 +94,94 @@ namespace SpiritsCrossing.Companions
 
         private void OnDestroy()
         {
-            if (CompanionBondSystem.Instance != null)
-            {
-                CompanionBondSystem.Instance.OnBondTierChanged      -= OnBondTierChangedExternally;
-                CompanionBondSystem.Instance.OnCompanionFullyBonded -= OnFullyBonded;
-            }
+            if (VibrationalResonanceSystem.Instance != null)
+                VibrationalResonanceSystem.Instance.OnResonanceLock -= OnResonanceLock;
         }
 
         private void SubscribeToEvents()
         {
-            if (CompanionBondSystem.Instance == null) return;
-            CompanionBondSystem.Instance.OnBondTierChanged      += OnBondTierChangedExternally;
-            CompanionBondSystem.Instance.OnCompanionFullyBonded += OnFullyBonded;
+            if (VibrationalResonanceSystem.Instance != null)
+                VibrationalResonanceSystem.Instance.OnResonanceLock += OnResonanceLock;
         }
 
         private void Update()
         {
-            // Refresh profile and bond state
             if (_profile == null && CompanionBondSystem.Instance != null)
                 _profile = CompanionBondSystem.Instance.GetProfile(animalId);
-
             if (_profile == null) return;
 
-            _bondLevel    = CompanionBondSystem.Instance?.GetBondLevel(animalId)  ?? 0f;
-            _currentTier  = CompanionBondSystem.Instance?.GetBondTier(animalId)   ?? CompanionBondTier.Distant;
-            _behaviorMode = _profile.behaviorMode;
+            // Read live harmony from the vibrational system
+            var vrs = VibrationalResonanceSystem.Instance;
+            _currentHarmony  = vrs?.GetHarmony(animalId)          ?? 0.5f;
+            _harmonyVelocity = vrs?.GetHarmonyVelocity(animalId)  ?? 0f;
 
-            TickBehavior();
+            if (Mathf.Abs(_currentHarmony - _prevHarmony) > 0.02f)
+            {
+                OnHarmonyChanged?.Invoke(_currentHarmony);
+                _prevHarmony = _currentHarmony;
+            }
+
+            TickContinuousBehavior();
         }
 
         // -------------------------------------------------------------------------
-        // Behavior state machine
+        // Continuous vibrational behavior — no state machine, one flow
         // -------------------------------------------------------------------------
-        private void TickBehavior()
+        private void TickContinuousBehavior()
         {
-            switch (_currentTier)
+            float h = _currentHarmony;
+
+            // --- Distance: continuously lerps between max and min ---
+            _targetDistance = Mathf.Lerp(maxDistance, minDistance, h);
+
+            // --- Speed: faster when drawn in, slower when distant ---
+            float speed = h * maxMoveSpeed;
+
+            // --- Movement target ---
+            if (playerTransform != null && h > 0.25f)
             {
-                case CompanionBondTier.Distant:   BehaviorDistant();   break;
-                case CompanionBondTier.Curious:   BehaviorCurious();   break;
-                case CompanionBondTier.Bonded:    BehaviorBonded();    break;
-                case CompanionBondTier.Companion: BehaviorCompanion(); break;
+                // Drawn toward player orbit at harmony-derived distance
+                Vector3 target = OffsetFromPlayer(_targetDistance);
+                MoveToward(target, speed);
+            }
+            else
+            {
+                // Wander when harmony is low
+                MoveToward(_wanderTarget, speed * 0.4f);
             }
 
+            // --- Look-at: scales with harmony ---
+            if (playerTransform != null && h > 0.30f)
+            {
+                float lookWeight = Mathf.Clamp01((h - 0.30f) / 0.50f) * lookAtWeight;
+                if (lookWeight > 0.1f) LookAt(playerTransform.position);
+            }
+
+            // --- Animation: continuous floats, no trigger snaps ---
+            if (_animator != null)
+            {
+                _animator.SetFloat("Harmony",         _currentHarmony);
+                _animator.SetFloat("HarmonyVelocity", _harmonyVelocity);
+
+                // Element performance blend — rises above open threshold
+                float performBlend = Mathf.Clamp01((h - 0.65f) / 0.20f);
+                _animator.SetFloat("ElementPerform",  performBlend);
+
+                // Resonance lock pulse — full presence
+                _animator.SetFloat("ResonanceLock", h >= 0.85f ? 1f : 0f);
+            }
+
+            // --- NPC drive mirroring (still organic) ---
+            if (linkedSpiritBrain != null && h > 0.40f)
+                MirrorNPCDrive(linkedSpiritBrain.CurrentMode);
+
+            // --- Wander tick ---
             _wanderTimer += Time.deltaTime;
             if (_wanderTimer >= wanderInterval)
             {
                 _wanderTimer = 0f;
                 PickNewWanderTarget();
             }
-        }
-
-        // ---- Distant: wander near spawn, rarely look at player ----
-        private void BehaviorDistant()
-        {
-            MoveToward(_wanderTarget, moveSpeed * 0.5f);
-            SetAnimTriggerIf("Idle", true);
-        }
-
-        // ---- Curious: orbit at medium distance, faces player periodically ----
-        private void BehaviorCurious()
-        {
-            if (playerTransform == null) return;
-            Vector3 target = OffsetFromPlayer(curiousDistance);
-            MoveToward(target, moveSpeed * 0.8f);
-            if (UnityEngine.Random.value < 0.02f)
-                LookAt(playerTransform.position);
-            SetAnimTriggerIf("Alert", true);
-        }
-
-        // ---- Bonded: stays close, performs element-specific idle ----
-        private void BehaviorBonded()
-        {
-            if (playerTransform == null) return;
-            Vector3 target = OffsetFromPlayer(bondedDistance);
-            MoveToward(target, moveSpeed);
-            LookAt(playerTransform.position);
-
-            // Element-specific animation
-            string elemAnim = _profile?.element switch
-            {
-                "Air"   => "SoarIdle",
-                "Earth" => "GroundIdle",
-                "Water" => "FlowIdle",
-                "Fire"  => "FlameIdle",
-                _       => "Idle"
-            };
-            SetAnimTriggerIf(elemAnim, true);
-
-            // Mirror NPC spirit brain mode if linked
-            if (linkedSpiritBrain != null)
-                MirrorNPCDrive(linkedSpiritBrain.CurrentMode);
-        }
-
-        // ---- Companion: fully present, myth reinforcement, VR feedback ----
-        private void BehaviorCompanion()
-        {
-            if (playerTransform == null) return;
-            Vector3 target = OffsetFromPlayer(companionDistance);
-            MoveToward(target, moveSpeed * 1.2f);
-            LookAt(playerTransform.position);
-            SetAnimTriggerIf("CompanionIdle", true);
-
-            // Mirror NPC spirit brain
-            if (linkedSpiritBrain != null)
-                MirrorNPCDrive(linkedSpiritBrain.CurrentMode);
         }
 
         // -------------------------------------------------------------------------
@@ -213,23 +203,12 @@ namespace SpiritsCrossing.Companions
         // -------------------------------------------------------------------------
         // Event handlers
         // -------------------------------------------------------------------------
-        private void OnBondTierChangedExternally(string id, CompanionBondTier tier)
+        private void OnResonanceLock(string id)
         {
             if (id != animalId) return;
-            if (tier != _prevTier)
-            {
-                _prevTier = tier;
-                OnTierChanged?.Invoke(tier);
-                Debug.Log($"[CompanionBehaviorController] {_profile?.displayName} tier → {tier}");
-            }
-        }
+            Debug.Log($"[CompanionBehaviorController] {_profile?.displayName} — resonance lock!");
 
-        private void OnFullyBonded(string id)
-        {
-            if (id != animalId) return;
-            SetAnimTriggerIf("BondComplete", true);
-
-            // VR haptic pulse on full bond
+            // VR haptic pulse on resonance lock
             var vr = VRInputAdapter.Instance;
             if (vr != null && vr.IsVRActive)
             {
@@ -288,8 +267,8 @@ namespace SpiritsCrossing.Companions
         }
 
         // Public accessors for UI / other systems
-        public CompanionProfile   Profile    => _profile;
-        public CompanionBondTier  CurrentTier => _currentTier;
-        public float              BondLevel  => _bondLevel;
+        public CompanionProfile Profile        => _profile;
+        public float            CurrentHarmony => _currentHarmony;
+        public float            HarmonyVelocity => _harmonyVelocity;
     }
 }
