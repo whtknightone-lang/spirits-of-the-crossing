@@ -18,6 +18,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using SpiritsCrossing.SpiritAI;
 using SpiritsCrossing.BiometricInput;
+using SpiritsCrossing.Companions;
+using SpiritsCrossing.Memory;
 using V243.SandstoneCave;
 
 namespace SpiritsCrossing.VR
@@ -54,6 +56,8 @@ namespace SpiritsCrossing.VR
         private VRInputAdapter             _inputAdapter;
         private VRHapticsController        _haptics;
         private SpiritProfileLoader        _profileLoader;
+        private CompanionBondSystem        _companionBonds;
+        private ResonanceMemorySystem      _memorySystem;
 
         // -------------------------------------------------------------------------
         // Lifecycle
@@ -85,6 +89,7 @@ namespace SpiritsCrossing.VR
             Step3_HardwareReader();
             Step4_BreathInterpreter();
             Step5_SupportingSystems();
+            Step6_CompanionAndMemory();
 
             if (printStatusEachScene)
                 PrintStatus();
@@ -258,6 +263,32 @@ namespace SpiritsCrossing.VR
         }
 
         // =========================================================================
+        // STEP 6 — CompanionBondSystem + ResonanceMemorySystem
+        // =========================================================================
+        private void Step6_CompanionAndMemory()
+        {
+            // CompanionBondSystem
+            if (_companionBonds == null)
+                _companionBonds = FindObjectOfType<CompanionBondSystem>();
+            if (_companionBonds == null)
+            {
+                var go = new GameObject("[CompanionBondSystem]");
+                DontDestroyOnLoad(go);
+                _companionBonds = go.AddComponent<CompanionBondSystem>();
+            }
+
+            // ResonanceMemorySystem
+            if (_memorySystem == null)
+                _memorySystem = FindObjectOfType<ResonanceMemorySystem>();
+            if (_memorySystem == null)
+            {
+                var go = new GameObject("[ResonanceMemorySystem]");
+                DontDestroyOnLoad(go);
+                _memorySystem = go.AddComponent<ResonanceMemorySystem>();
+            }
+        }
+
+        // =========================================================================
         // Status report
         // =========================================================================
         private void PrintStatus()
@@ -288,6 +319,10 @@ namespace SpiritsCrossing.VR
             sb.AppendLine($"║  [+] PhysicalInputBridge: {StatusIcon(bridge)} {Name(bridge),-22}║");
             var loader = FindObjectOfType<SpiritProfileLoader>();
             sb.AppendLine($"║  [+] SpiritProfileLoader: {StatusIcon(loader)} loaded={(loader?.IsLoaded.ToString() ?? "N/A"),-22}║");
+            sb.AppendLine($"║  [+] CompanionBondSystem: {StatusIcon(_companionBonds)} loaded={(CompanionBondSystem.Instance?.IsLoaded.ToString() ?? "N/A"),-19}║");
+            var memory = FindObjectOfType<ResonanceMemorySystem>();
+            var learning = UniverseStateManager.Instance?.Current.learningState;
+            sb.AppendLine($"║  [+] ResonanceMemory:     {StatusIcon(memory)} src={(learning?.sourceConnectionLevel.ToString("F2") ?? "N/A")} elem={(learning?.dominantElement ?? "?"),-13}║");
             sb.AppendLine("╚══════════════════════════════════════════════╝");
 
             Debug.Log(sb.ToString());

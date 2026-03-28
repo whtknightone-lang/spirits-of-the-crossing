@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using SpiritsCrossing.Companions;
+using SpiritsCrossing.Memory;
 
 namespace SpiritsCrossing
 {
@@ -84,6 +85,9 @@ namespace SpiritsCrossing
         // Companion bonds (all 26 animal companions across 4 elements)
         public List<CompanionBondState> companions = new List<CompanionBondState>();
 
+        // Resonance learning — the game's memory of who the player is
+        public ResonanceLearningState learningState = new ResonanceLearningState();
+
         // -------------------------------------------------------------------------
 
         public PlanetState GetOrCreatePlanet(string planetId)
@@ -107,6 +111,9 @@ namespace SpiritsCrossing
 
             persistentResonance.BlendIn(result.resonanceSample, 0.15f);
             playerIdentity.IntegrateSession(result.resonanceSample);
+            // Learning state integration (ResonanceMemorySystem also subscribes, but
+            // we also integrate here so the state is correct immediately on load)
+            learningState.IntegrateSession(result.resonanceSample);
 
             // Update the planet that was targeted this session
             if (!string.IsNullOrEmpty(result.currentAffinityPlanet))
