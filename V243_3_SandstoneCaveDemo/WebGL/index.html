@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V243.3 — Sandstone Cave Attunement Demo</title>
+  <link rel="stylesheet" href="css/cave.css">
+</head>
+<body>
+<div id="layout">
+
+  <!-- ── Debug Panel (mirrors DemoBootstrapper.OnGUI) ── -->
+  <div id="debug-panel">
+    <div class="panel-title">Sandstone Cave Demo Debug</div>
+
+    <div class="hint">1: breath &nbsp;·&nbsp; 2: flow &nbsp;·&nbsp; 3: spin &nbsp;·&nbsp; 4: pair</div>
+    <div class="hint">Q: calm &nbsp;·&nbsp; W: joy &nbsp;·&nbsp; E: wonder</div>
+    <div class="hint">R: distortion &nbsp;·&nbsp; T: source alignment</div>
+
+    <div class="divider"></div>
+
+    <div class="stat-row">
+      <span class="stat-label">Breath</span><span class="stat-value" id="s-breath">0.00</span>
+      <span class="stat-label">Flow</span><span class="stat-value" id="s-flow">0.00</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Spin</span><span class="stat-value" id="s-spin">0.00</span>
+      <span class="stat-label">Pair</span><span class="stat-value" id="s-pair">0.00</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Calm</span><span class="stat-value" id="s-calm">0.00</span>
+      <span class="stat-label">Joy</span><span class="stat-value" id="s-joy">0.00</span>
+      <span class="stat-label">Wonder</span><span class="stat-value" id="s-wonder">0.00</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Distortion</span><span class="stat-value" id="s-distort">0.00</span>
+      <span class="stat-label">Source</span><span class="stat-value" id="s-source">0.00</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="stat-planet"><span class="stat-label">Current Planet: </span><span id="s-planet-cur">—</span></div>
+    <div class="stat-planet"><span class="stat-label">Achievable:&nbsp;&nbsp;&nbsp; </span><span id="s-planet-ach">—</span></div>
+
+    <div class="divider"></div>
+
+    <div class="stat-row"><span class="stat-label">Chakra&nbsp;</span><span id="s-chakra">Root</span></div>
+    <div class="stat-row"><span class="stat-label">Audio&nbsp;&nbsp;</span><span id="s-audio">Idle</span></div>
+    <div class="stat-row"><span class="stat-label">Portal&nbsp;</span><span id="s-portal">Locked</span></div>
+    <div class="stat-row"><span class="stat-label">Session</span><span id="s-session">0:00 / 12:00</span></div>
+
+    <div class="divider"></div>
+
+    <div class="hint small">Speed:</div>
+    <div class="speed-controls">
+      <button class="speed-btn" data-speed="1">×1</button>
+      <button class="speed-btn active" data-speed="10">×10</button>
+      <button class="speed-btn" data-speed="60">×60</button>
+    </div>
+    <button id="btn-restart">↺ Restart Session</button>
+
+    <div class="hint small">
+      Crown hold starts at 7:00 (420s).<br>
+      Portal needs 240s calm hold after crown.<br>
+      Full session: 12:00 (720s game-time).
+    </div>
+  </div>
+
+  <!-- ── Cave Canvas ── -->
+  <div id="cave-wrapper">
+    <canvas id="cave-canvas"></canvas>
+  </div>
+
+</div><!-- #layout -->
+
+<script src="js/engine.js"></script>
+<script src="js/renderer.js"></script>
+<script>
+  'use strict';
+
+  // ── Bootstrap ───────────────────────────────────────────────────────────────
+  let timeScale = 10;
+  let scene, renderer;
+  const canvas = document.getElementById('cave-canvas');
+
+  function init() {
+    scene = new DemoScene();
+    const wrapper = canvas.parentElement;
+    canvas.width  = wrapper.clientWidth;
+    canvas.height = wrapper.clientHeight;
+    renderer = new CaveRenderer(canvas, scene);
+  }
+
+  init();
+
+  // ── Keyboard input ──────────────────────────────────────────────────────────
+  const heldKeys = new Set();
+
+  window.addEventListener('keydown', e => {
+    const k = e.key.toLowerCase();
+    if ('1234qwert'.includes(k) && k.length === 1) {
+      if (!heldKeys.has(k)) { heldKeys.add(k); scene.onKeyDown(k); }
+      e.preventDefault();
+    }
+  });
+
+  window.addEventListener('keyup', e => {
+    const k = e.key.toLowerCase();
+    if (heldKeys.has(k)) { heldKeys.delete(k); scene.onKeyUp(k); }
+  });
+
+  // ── Resize ──────────────────────────────────────────────────────────────────
+  window.addEventListener('resize', () => {
+    const wrapper = canvas.parentElement;
+    renderer.resize(wrapper.clientWidth, wrapper.clientHeight);
+  });
+
+  // ── Speed buttons ───────────────────────────────────────────────────────────
+  document.querySelectorAll('.speed-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      timeScale = parseInt(btn.dataset.speed, 10);
+      document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // ── Restart ─────────────────────────────────────────────────────────────────
+  document.getElementById('btn-restart').addEventListener('click', init);
+
+  // ── HUD update ──────────────────────────────────────────────────────────────
+  const f2   = n => n.toFixed(2);
+  const fmtT = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+
+  function updateHUD() {
+    const s  = scene.responseTracker.liveState;
+    const ai = scene.affinityInterp;
+    const sc = scene.sessionCtrl;
+
+    document.getElementById('s-breath').textContent  = f2(s.breathCoherence);
+    document.getElementById('s-flow').textContent    = f2(s.movementFlow);
+    document.getElementById('s-spin').textContent    = f2(s.spinStability);
+    document.getElementById('s-pair').textContent    = f2(s.socialSync);
+    document.getElementById('s-calm').textContent    = f2(s.calm);
+    document.getElementById('s-joy').textContent     = f2(s.joy);
+    document.getElementById('s-wonder').textContent  = f2(s.wonder);
+    document.getElementById('s-distort').textContent = f2(s.distortion);
+    document.getElementById('s-source').textContent  = f2(s.sourceAlignment);
+
+    document.getElementById('s-planet-cur').textContent = ai.currentAffinityPlanet    || '—';
+    document.getElementById('s-planet-ach').textContent = ai.achievableAffinityPlanet || '—';
+
+    const holdSuffix = sc.chakraState.isHolding ? ' ⟳ Hold' : '';
+    document.getElementById('s-chakra').textContent  = ChakraBandName[sc.chakraState.activeBand] + holdSuffix;
+    document.getElementById('s-audio').textContent   = scene.audioCtrl.currentMode;
+    document.getElementById('s-portal').textContent  = scene.portalCtrl.portalUnlocked ? '✓ Open' : 'Locked';
+    document.getElementById('s-session').textContent = fmtT(sc.sessionTimer) + ' / ' + fmtT(sc.totalSessionLength);
+  }
+
+  // ── Game loop ───────────────────────────────────────────────────────────────
+  let lastTs = null;
+
+  function loop(ts) {
+    if (lastTs === null) lastTs = ts;
+    const rawDt = Math.min((ts - lastTs) / 1000, 0.05);
+    lastTs = ts;
+
+    const dt = rawDt * timeScale;
+    scene.update(dt);
+    renderer.draw(ts / 1000);
+    updateHUD();
+
+    requestAnimationFrame(loop);
+  }
+
+  requestAnimationFrame(loop);
+</script>
+</body>
+</html>

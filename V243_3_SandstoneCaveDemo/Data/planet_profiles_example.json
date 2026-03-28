@@ -1,0 +1,41 @@
+[
+  {
+    "planetId": "ForestHeart",
+    "groundingWeight": 0.8,
+    "flowWeight": 0.8,
+    "willWeight": 0.5,
+    "heartWeight": 1.4,
+    "expressionWeight": 0.7,
+    "visionWeight": 0.8,
+    "crownWeight": 0.6,
+    "socialWeight": 1.0,
+    "rotationWeight": 0.3,
+    "solitudeWeight": 0.5
+  },
+  {
+    "planetId": "SkySpiral",
+    "groundingWeight": 0.5,
+    "flowWeight": 0.6,
+    "willWeight": 0.7,
+    "heartWeight": 0.8,
+    "expressionWeight": 0.9,
+    "visionWeight": 1.1,
+    "crownWeight": 1.0,
+    "socialWeight": 0.5,
+    "rotationWeight": 1.4,
+    "solitudeWeight": 0.8
+  },
+  {
+    "planetId": "SourceVeil",
+    "groundingWeight": 0.7,
+    "flowWeight": 0.4,
+    "willWeight": 0.5,
+    "heartWeight": 0.9,
+    "expressionWeight": 0.7,
+    "visionWeight": 1.0,
+    "crownWeight": 1.5,
+    "socialWeight": 0.4,
+    "rotationWeight": 0.6,
+    "solitudeWeight": 1.1
+  }
+]

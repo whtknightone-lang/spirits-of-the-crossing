@@ -1,0 +1,139 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #07050200;
+  color: #c8a87a;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  height: 100vh;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ── Layout ─────────────────────────────────────────────────────────────────── */
+#layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* ── Debug Panel ─────────────────────────────────────────────────────────────── */
+#debug-panel {
+  width: 235px;
+  min-width: 235px;
+  background: rgba(7, 4, 1, 0.97);
+  border-right: 1px solid rgba(108, 78, 38, 0.32);
+  padding: 14px 13px 14px 13px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-title {
+  color: #ddc070;
+  font-size: 10.5px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 10px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(108, 78, 38, 0.28);
+}
+
+.hint {
+  color: #7a5c38;
+  font-size: 10px;
+  line-height: 1.55;
+  margin-bottom: 2px;
+}
+
+.hint.small {
+  font-size: 9.5px;
+  color: #4a3820;
+  margin-top: 7px;
+  line-height: 1.5;
+}
+
+.divider {
+  border-top: 1px solid rgba(108, 78, 38, 0.2);
+  margin: 7px 0;
+}
+
+/* ── Stat rows ───────────────────────────────────────────────────────────────── */
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 7px;
+  line-height: 1.75;
+  font-size: 11px;
+  color: #b89058;
+}
+
+.stat-label {
+  color: #7a5c38;
+}
+
+.stat-value {
+  color: #d4ae68;
+  min-width: 33px;
+}
+
+.stat-planet {
+  font-size: 11px;
+  line-height: 1.78;
+  color: #c09848;
+}
+
+/* ── Speed + Restart controls ────────────────────────────────────────────────── */
+.speed-controls {
+  display: flex;
+  gap: 5px;
+  margin-top: 4px;
+}
+
+.speed-btn,
+#btn-restart {
+  background: rgba(55, 34, 10, 0.72);
+  border: 1px solid rgba(118, 84, 36, 0.42);
+  color: #c8a87a;
+  padding: 5px 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 10.5px;
+  transition: background 0.14s, border-color 0.14s;
+}
+
+.speed-btn { flex: 1; }
+
+.speed-btn:hover,
+#btn-restart:hover {
+  background: rgba(85, 52, 14, 0.88);
+  border-color: rgba(168, 122, 52, 0.58);
+}
+
+.speed-btn.active {
+  background: rgba(98, 62, 16, 0.92);
+  border-color: rgba(200, 148, 62, 0.72);
+  color: #eed888;
+}
+
+#btn-restart {
+  margin-top: 7px;
+  width: 100%;
+  padding: 6px 0;
+  letter-spacing: 0.03em;
+}
+
+/* ── Cave canvas ─────────────────────────────────────────────────────────────── */
+#cave-wrapper {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+  background: #080503;
+}
+
+#cave-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

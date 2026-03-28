@@ -10,6 +10,8 @@ __pycache__/
 
 # Version archive folders (V36– V243 etc.) and their zips
 V[0-9]*/
+!V243_3_SandstoneCaveDemo/
+!V243_3_SandstoneCaveDemo/**
 rue-*/
 living_universe_*/
 ai_multiverse_*/
