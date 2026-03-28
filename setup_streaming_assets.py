@@ -38,6 +38,7 @@ JSON_FILES = {
     ROOT / "SpiritsCrossing_Core" / "BiometricInput" / "biometric_profiles.json": "biometric_profiles.json",
     ROOT / "SpiritsCrossing_Core" / "Companions"     / "companion_registry.json": "companion_registry.json",
     ROOT / "SpiritsCrossing_Core" / "Cosmos"         / "cosmos_data.json":        "cosmos_data.json",
+    ROOT / "SpiritsCrossing_Core" / "World"           / "ruins_data.json":         "ruins_data.json",
 }
 
 # Common Unity project subfolder names to search for

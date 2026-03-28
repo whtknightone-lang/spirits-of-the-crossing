@@ -23,6 +23,7 @@ using SpiritsCrossing.Memory;
 using SpiritsCrossing.Cosmos;
 using SpiritsCrossing.Vibration;
 using SpiritsCrossing.Lifecycle;
+using SpiritsCrossing.World;
 using V243.SandstoneCave;
 
 namespace SpiritsCrossing.VR
@@ -68,6 +69,7 @@ namespace SpiritsCrossing.VR
         private CosmosObserverMode          _cosmosObserver;
         private VibrationalMessenger        _messenger;
         private MeditationMode              _meditationMode;
+        private WorldSystem                 _worldSystem;
 
         // -------------------------------------------------------------------------
         // Lifecycle
@@ -336,6 +338,10 @@ namespace SpiritsCrossing.VR
             // MeditationMode
             if (_meditationMode == null) _meditationMode = FindObjectOfType<MeditationMode>();
             if (_meditationMode == null) { var go = new GameObject("[MeditationMode]"); DontDestroyOnLoad(go); _meditationMode = go.AddComponent<MeditationMode>(); }
+
+            // WorldSystem
+            if (_worldSystem == null) _worldSystem = FindObjectOfType<WorldSystem>();
+            if (_worldSystem == null) { var go = new GameObject("[WorldSystem]"); DontDestroyOnLoad(go); _worldSystem = go.AddComponent<WorldSystem>(); }
         }
 
         // =========================================================================
@@ -384,6 +390,10 @@ namespace SpiritsCrossing.VR
             sb.AppendLine($"║  [+] Lifecycle:           {StatusIcon(_lifecycleSystem)} {phase,-14} cycle={(lc?.cycleCount ?? 0),-3} depth={depth,-7}║");
             var med = MeditationMode.Instance;
             sb.AppendLine($"║  [+] MeditationMode:      {StatusIcon(med)} {(med?.GetStatusString() ?? "N/A"),-30}║");
+            var ws = WorldSystem.Instance;
+            int ruins = ws?.TotalDiscovered ?? 0;
+            string wname = ws?.CurrentActiveWorld?.planetId ?? "cosmos";
+            sb.AppendLine($"║  [+] WorldSystem:         {StatusIcon(ws)} ruins={ruins,-3} world={wname,-22}║");
             sb.AppendLine("╚══════════════════════════════════════════════╝");
 
             Debug.Log(sb.ToString());

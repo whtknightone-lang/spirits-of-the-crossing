@@ -9,6 +9,7 @@ using UnityEngine;
 using SpiritsCrossing.Companions;
 using SpiritsCrossing.Memory;
 using SpiritsCrossing.Lifecycle;
+using SpiritsCrossing.World;
 
 namespace SpiritsCrossing
 {
@@ -91,6 +92,9 @@ namespace SpiritsCrossing
 
         // Lifecycle — Birth / Source / Rebirth cycle state
         public LifecycleState lifecycle = new LifecycleState();
+
+        // Discovered ruins — ancient and newer ruins found across all planets
+        public List<string> discoveredRuinIds = new List<string>();
 
         // Vibrational messages sent to planets (cap 20)
         public List<VibrationalMessage> sentMessages = new List<VibrationalMessage>();

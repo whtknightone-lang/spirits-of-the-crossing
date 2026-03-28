@@ -1,0 +1,686 @@
+{
+  "planets": [
+    {
+      "planetId": "DarkContrast",
+      "element": "Fire",
+      "ancientRuins": [
+        {
+          "ruinId": "darkcontrast_ancient_01",
+          "planetId": "DarkContrast",
+          "layer": "Ancient",
+          "era": "The First Flame",
+          "frozenField": {
+            "red": 0.95,
+            "orange": 0.65,
+            "yellow": 0.5,
+            "green": 0.12,
+            "blue": 0.72,
+            "indigo": 0.35,
+            "violet": 0.98
+          },
+          "discoveryThreshold": 0.7,
+          "mythTrigger": "ruin",
+          "orbitalAngleOffset": 4.0176,
+          "description": "Echoes of The First Flame on DarkContrast. Dominant: violet."
+        },
+        {
+          "ruinId": "darkcontrast_ancient_02",
+          "planetId": "DarkContrast",
+          "layer": "Ancient",
+          "era": "The Age of Burning Sky",
+          "frozenField": {
+            "red": 0.92,
+            "orange": 0.65,
+            "yellow": 0.5,
+            "green": 0.12,
+            "blue": 0.72,
+            "indigo": 0.35,
+            "violet": 0.98
+          },
+          "discoveryThreshold": 0.7,
+          "mythTrigger": "ruin",
+          "orbitalAngleOffset": 0.1571,
+          "description": "Echoes of The Age of Burning Sky on DarkContrast. Dominant: violet."
+        }
+      ],
+      "newerRuins": [
+        {
+          "ruinId": "darkcontrast_newer_01",
+          "planetId": "DarkContrast",
+          "layer": "Newer",
+          "era": "The Ember Culture",
+          "frozenField": {
+            "red": 0.5946,
+            "orange": 0.4794,
+            "yellow": 0.4303,
+            "green": 0.0,
+            "blue": 0.4653,
+            "indigo": 0.0216,
+            "violet": 0.4569
+          },
+          "discoveryThreshold": 0.5,
+          "mythTrigger": "fire",
+          "orbitalAngleOffset": 1.7281,
+          "description": "Remnants of The Ember Culture on DarkContrast. Incomplete transition."
+        },
+        {
+          "ruinId": "darkcontrast_newer_02",
+          "planetId": "DarkContrast",
+          "layer": "Newer",
+          "era": "The Interrupted Forge",
+          "frozenField": {
+            "red": 0.4988,
+            "orange": 0.4919,
+            "yellow": 0.3116,
+            "green": 0.0,
+            "blue": 0.5645,
+            "indigo": 0.1786,
+            "violet": 0.3255
+          },
+          "discoveryThreshold": 0.5,
+          "mythTrigger": "fire",
+          "orbitalAngleOffset": 3.1752,
+          "description": "Remnants of The Interrupted Forge on DarkContrast. Incomplete transition."
+        }
+      ],
+      "activeWorld": {
+        "worldId": "darkcontrast_active",
+        "planetId": "DarkContrast",
+        "layer": "Active",
+        "element": "Fire",
+        "fieldStrength": 3.5714,
+        "couplingConstant": 1.25,
+        "npcArchetype": "FireDragon",
+        "npcDrives": {
+          "attack": 0.2347,
+          "flee": 0.1986,
+          "seek": 0.2166,
+          "rest": 0.0,
+          "signal": 0.087,
+          "explore": 0.2631
+        },
+        "ambientField": {
+          "red": 0.8,
+          "orange": 0.65,
+          "yellow": 0.5,
+          "green": 0.12,
+          "blue": 0.72,
+          "indigo": 0.2,
+          "violet": 0.78
+        },
+        "growthRate": 0.028571,
+        "description": "Living world of DarkContrast. Mercury-like. Highest field strength. Red/Orange dominant.",
+        "discoveryThreshold": 0.0
+      }
+    },
+    {
+      "planetId": "MachineOrder",
+      "element": "Earth",
+      "ancientRuins": [
+        {
+          "ruinId": "machineorder_ancient_01",
+          "planetId": "MachineOrder",
+          "layer": "Ancient",
+          "era": "The Root Age",
+          "frozenField": {
+            "red": 0.3,
+            "orange": 0.35,
+            "yellow": 0.9,
+            "green": 0.55,
+            "blue": 0.28,
+            "indigo": 0.8,
+            "violet": 0.52
+          },
+          "discoveryThreshold": 0.7,
+          "mythTrigger": "ruin",
+          "orbitalAngleOffset": 0.6077,
+          "description": "Echoes of The Root Age on MachineOrder. Dominant: yellow."
+        },
+        {
+          "ruinId": "machineorder_ancient_02",
+          "planetId": "MachineOrder",
+          "layer": "Ancient",
+          "era": "The Stone Dreaming",
+          "frozenField": {
+            "red": 0.3,
+            "orange": 0.35,
+            "yellow": 0.82,
+            "green": 0.55,
+            "blue": 0.28,
+            "indigo": 0.92,
+            "violet": 0.52
+          },
+          "discoveryThreshold": 0.7,
+          "mythTrigger": "ruin",
+          "orbitalAngleOffset": 5.325,
+          "description": "Echoes of The Stone Dreaming on MachineOrder. Dominant: indigo."
+        }
+      ],
+      "newerRuins": [
+        {
+          "ruinId": "machineorder_newer_01",
+          "planetId": "MachineOrder",
+          "layer": "Newer",
+          "era": "The Forest Keepers",
+          "frozenField": {
+            "red": 0.384,
+            "orange": 0.2644,
+            "yellow": 0.6616,
+            "green": 0.3727,
+            "blue": 0.2171,
+            "indigo": 0.554,
+            "violet": 0.2623
+          },
+          "discoveryThreshold": 0.5,
+          "mythTrigger": "forest",
+          "orbitalAngleOffset": 3.7933,
+          "description": "Remnants of The Forest Keepers on MachineOrder. Incomplete transition."
+        },
+        {
+          "ruinId": "machineorder_newer_02",
+          "planetId": "MachineOrder",
+          "layer": "Newer",
+          "era": "The Burrowed Cities",
+          "frozenField": {
+            "red": 0.3321,
+            "orange": 0.1604,
+            "yellow": 0.4439,
+            "green": 0.3179,
+            "blue": 0.0508,
+            "indigo": 0.3586,
+            "violet": 0.2006
+          },
+          "discoveryThreshold": 0.5,
+          "mythTrigger": "forest",
+          "orbitalAngleOffset": 5.4143,
+          "description": "Remnants of The Burrowed Cities on MachineOrder. Incomplete transition."
+        }
+      ],
+      "activeWorld": {
+        "worldId": "machineorder_active",
+        "planetId": "MachineOrder",
+        "layer": "Active",
+        "element": "Earth",
+        "fieldStrength": 3.125,
+        "couplingConstant": 1.0938,
+        "npcArchetype": "PairA",
+        "npcDrives": {
+          "attack": 0.091,
+          "flee": 0.127,
+          "seek": 0.3039,
+          "rest": 0.0945,
+          "signal": 0.2668,
+          "explore": 0.1169
+        },
+        "ambientField": {
+          "red": 0.45,
+          "orange": 0.35,
+          "yellow": 0.75,
+          "green": 0.55,
+          "blue": 0.28,
+          "indigo": 0.65,
+          "violet": 0.32
+        },
+        "growthRate": 0.025,
+        "description": "Living world of MachineOrder. Venus-like. High coupling. Ordered Yellow/Green.",
+        "discoveryThreshold": 0.0
+      }
+    },
+    {
+      "planetId": "ForestHeart",
+      "element": "Earth",
+      "ancientRuins": [
+        {
+          "ruinId": "forestheart_ancient_01",
+          "planetId": "ForestHeart",
+          "layer": "Ancient",
+          "era": "The Root Age",
+          "frozenField": {
+            "red": 0.0,
+            "orange": 0.6,
+            "yellow": 0.45,
+            "green": 1.0,
+            "blue": 0.1,
+            "indigo": 0.5,
+            "violet": 0.32
+          },
+          "discoveryThreshold": 0.7,
+          "mythTrigger": "ruin",
+          "orbitalAngleOffset": 4.0717,
+          "description": "Echoes of The Root Age on ForestHeart. Dominant: green."
+        },
+        {
+          "ruinId": "forestheart_ancient_02",
+          "planetId": "ForestHeart",
+          "layer": "Ancient",
+          "era": "The Stone Dreaming",
+          "frozenField": {
+            "red": 0.0,
+            "orange": 0.72,
+            "yellow": 0.45,
+            "green": 0.92,
+            "blue": 0.1,
+            "indigo": 0.5,
+            "violet": 0.32
+          },
+          "discoveryThreshold": 0.7,
+          "mythTrigger": "ruin",
+          "orbitalAngleOffset": 3.8273,
+          "description": "Echoes of The Stone Dreaming on ForestHeart. Dominant: green."
+        }
+      ],
+      "newerRuins": [
+        {
+          "ruinId": "forestheart_newer_01",
+          "planetId": "ForestHeart",
+          "layer": "Newer",
+          "era": "The Forest Keepers",
+          "frozenField": {
+            "red": 0.0,
+            "orange": 0.4048,
+            "yellow": 0.4428,
+            "green": 0.6842,
+            "blue": 0.086,
+            "indigo": 0.2973,
+            "violet": 0.169
+          },
+          "discoveryThreshold": 0.5,
+          "mythTrigger": "forest",
+          "orbitalAngleOffset": 1.0753,
+          "description": "Remnants of The Forest Keepers on ForestHeart. Incomplete transition."
+        },
+        {
+          "ruinId": "forestheart_newer_02",
+          "planetId": "ForestHeart",
+          "layer": "Newer",
+          "era": "The Burrowed Cities",
+          "frozenField": {
+            "red": 0.0249,
+            "orange": 0.3428,
+            "yellow": 0.3134,
+            "green": 0.5297,
+            "blue": 0.136,
+            "indigo": 0.2853,
+            "violet": 0.0461
+          },
+          "discoveryThreshold": 0.5,
+          "mythTrigger": "forest",
+          "orbitalAngleOffset": 4.8758,
+          "description": "Remnants of The Burrowed Cities on ForestHeart. Incomplete transition."
+        }
+      ],
+      "activeWorld": {
+        "worldId": "forestheart_active",
+        "planetId": "ForestHeart",
+        "layer": "Active",
+        "element": "Earth",
+        "fieldStrength": 2.7778,
+        "couplingConstant": 0.9722,
+        "npcArchetype": "EarthDragon",
+        "npcDrives": {
+          "attack": 0.0,
+          "flee": 0.0,
+          "seek": 0.2531,
+          "rest": 0.4617,
+          "signal": 0.2852,
+          "explore": 0.0
+        },
+        "ambientField": {
+          "red": 0.05,
+          "orange": 0.6,
+          "yellow": 0.45,
+          "green": 0.9,
+          "blue": 0.1,
+          "indigo": 0.35,
+          "violet": 0.12
+        },
+        "growthRate": 0.022222,
+        "description": "Living world of ForestHeart. Earth-like. Medium coupling. Green/Orange. Life-bearing.",
+        "discoveryThreshold": 0.0
+      }
+    },
+    {
+      "planetId": "WaterFlow",
+      "element": "Water",
+      "ancientRuins": [
+        {
+          "ruinId": "waterflow_ancient_01",
+          "planetId": "WaterFlow",
+          "layer": "Ancient",
+          "era": "The Deep Tide Era",
+          "frozenField": {
+            "red": 0.0,
+            "orange": 0.2,
+            "yellow": 0.3,
+            "green": 0.5,
+            "blue": 1.0,
+            "indigo": 0.85,
+            "violet": 0.45
+          },
+          "discoveryThreshold": 0.7,
+          "mythTrigger": "ruin",
+          "orbitalAngleOffset": 1.6509,
+          "description": "Echoes of The Deep Tide Era on WaterFlow. Dominant: blue."
+        },
+        {
+          "ruinId": "waterflow_ancient_02",
+          "planetId": "WaterFlow",
+          "layer": "Ancient",
+          "era": "The Time of Still Waters",
+          "frozenField": {
+            "red": 0.0,
+            "orange": 0.2,
+            "yellow": 0.3,
+            "green": 0.5,
+            "blue": 0.92,
+            "indigo": 0.97,
+            "violet": 0.45
+          },
+          "discoveryThreshold": 0.7,
+          "mythTrigger": "ruin",
+          "orbitalAngleOffset": 3.6731,
+          "description": "Echoes of The Time of Still Waters on WaterFlow. Dominant: indigo."
+        }
+      ],
+      "newerRuins": [
+        {
+          "ruinId": "waterflow_newer_01",
+          "planetId": "WaterFlow",
+          "layer": "Newer",
+          "era": "The Reef Builders",
+          "frozenField": {
+            "red": 0.0,
+            "orange": 0.2574,
+            "yellow": 0.2093,
+            "green": 0.2468,
+            "blue": 0.4778,
+            "indigo": 0.3893,
+            "violet": 0.2031
+          },
+          "discoveryThreshold": 0.5,
+          "mythTrigger": "ocean",
+          "orbitalAngleOffset": 5.6412,
+          "description": "Remnants of The Reef Builders on WaterFlow. Incomplete transition."
+        },
+        {
+          "ruinId": "waterflow_newer_02",
+          "planetId": "WaterFlow",
+          "layer": "Newer",
+          "era": "The Scattered Current",
+          "frozenField": {
+            "red": 0.0353,
+            "orange": 0.1391,
+            "yellow": 0.3326,
+            "green": 0.3158,
+            "blue": 0.724,
+            "indigo": 0.509,
+            "violet": 0.0454
+          },
+          "discoveryThreshold": 0.5,
+          "mythTrigger": "ocean",
+          "orbitalAngleOffset": 4.9768,
+          "description": "Remnants of The Scattered Current on WaterFlow. Incomplete transition."
+        }
+      ],
+      "activeWorld": {
+        "worldId": "waterflow_active",
+        "planetId": "WaterFlow",
+        "layer": "Active",
+        "element": "Water",
+        "fieldStrength": 2.5,
+        "couplingConstant": 0.875,
+        "npcArchetype": "WaterDragon",
+        "npcDrives": {
+          "attack": 0.0632,
+          "flee": 0.0,
+          "seek": 0.276,
+          "rest": 0.1571,
+          "signal": 0.3017,
+          "explore": 0.202
+        },
+        "ambientField": {
+          "red": 0.08,
+          "orange": 0.2,
+          "yellow": 0.3,
+          "green": 0.5,
+          "blue": 0.85,
+          "indigo": 0.7,
+          "violet": 0.25
+        },
+        "growthRate": 0.02,
+        "description": "Living world of WaterFlow. Venus-orbit water world. Blue/Indigo. Fluid resonance.",
+        "discoveryThreshold": 0.0
+      }
+    },
+    {
+      "planetId": "SkySpiral",
+      "element": "Air",
+      "ancientRuins": [
+        {
+          "ruinId": "skyspiral_ancient_01",
+          "planetId": "SkySpiral",
+          "layer": "Ancient",
+          "era": "The First Breath",
+          "frozenField": {
+            "red": 0.1,
+            "orange": 0.3,
+            "yellow": 0.4,
+            "green": 0.65,
+            "blue": 0.93,
+            "indigo": 0.6,
+            "violet": 0.92
+          },
+          "discoveryThreshold": 0.7,
+          "mythTrigger": "ruin",
+          "orbitalAngleOffset": 2.8508,
+          "description": "Echoes of The First Breath on SkySpiral. Dominant: blue."
+        },
+        {
+          "ruinId": "skyspiral_ancient_02",
+          "planetId": "SkySpiral",
+          "layer": "Ancient",
+          "era": "The Open Sky Civilization",
+          "frozenField": {
+            "red": 0.1,
+            "orange": 0.3,
+            "yellow": 0.4,
+            "green": 0.65,
+            "blue": 0.85,
+            "indigo": 0.6,
+            "violet": 1.0
+          },
+          "discoveryThreshold": 0.7,
+          "mythTrigger": "ruin",
+          "orbitalAngleOffset": 5.993,
+          "description": "Echoes of The Open Sky Civilization on SkySpiral. Dominant: violet."
+        }
+      ],
+      "newerRuins": [
+        {
+          "ruinId": "skyspiral_newer_01",
+          "planetId": "SkySpiral",
+          "layer": "Newer",
+          "era": "The Wind Carvers",
+          "frozenField": {
+            "red": 0.1692,
+            "orange": 0.1258,
+            "yellow": 0.3696,
+            "green": 0.5285,
+            "blue": 0.4792,
+            "indigo": 0.3377,
+            "violet": 0.5131
+          },
+          "discoveryThreshold": 0.5,
+          "mythTrigger": "sky",
+          "orbitalAngleOffset": 5.5031,
+          "description": "Remnants of The Wind Carvers on SkySpiral. Incomplete transition."
+        },
+        {
+          "ruinId": "skyspiral_newer_02",
+          "planetId": "SkySpiral",
+          "layer": "Newer",
+          "era": "The Half-Woven Sky",
+          "frozenField": {
+            "red": 0.2516,
+            "orange": 0.3378,
+            "yellow": 0.267,
+            "green": 0.2815,
+            "blue": 0.5848,
+            "indigo": 0.283,
+            "violet": 0.5596
+          },
+          "discoveryThreshold": 0.5,
+          "mythTrigger": "sky",
+          "orbitalAngleOffset": 0.9603,
+          "description": "Remnants of The Half-Woven Sky on SkySpiral. Incomplete transition."
+        }
+      ],
+      "activeWorld": {
+        "worldId": "skyspiral_active",
+        "planetId": "SkySpiral",
+        "layer": "Active",
+        "element": "Air",
+        "fieldStrength": 2.2727,
+        "couplingConstant": 0.7955,
+        "npcArchetype": "ElderAirDragon",
+        "npcDrives": {
+          "attack": 0.07,
+          "flee": 0.0329,
+          "seek": 0.2904,
+          "rest": 0.1109,
+          "signal": 0.1762,
+          "explore": 0.3195
+        },
+        "ambientField": {
+          "red": 0.25,
+          "orange": 0.3,
+          "yellow": 0.4,
+          "green": 0.65,
+          "blue": 0.78,
+          "indigo": 0.45,
+          "violet": 0.72
+        },
+        "growthRate": 0.018182,
+        "description": "Living world of SkySpiral. Mars-like. Lower coupling. Blue/Violet. Aerial expansion.",
+        "discoveryThreshold": 0.0
+      }
+    },
+    {
+      "planetId": "SourceVeil",
+      "element": "Source",
+      "ancientRuins": [
+        {
+          "ruinId": "sourceveil_ancient_01",
+          "planetId": "SourceVeil",
+          "layer": "Ancient",
+          "era": "The Silent Age",
+          "frozenField": {
+            "red": 0.0,
+            "orange": 0.15,
+            "yellow": 0.28,
+            "green": 0.55,
+            "blue": 0.4,
+            "indigo": 0.95,
+            "violet": 1.0
+          },
+          "discoveryThreshold": 0.7,
+          "mythTrigger": "elder",
+          "orbitalAngleOffset": 3.0536,
+          "description": "Echoes of The Silent Age on SourceVeil. Dominant: violet."
+        },
+        {
+          "ruinId": "sourceveil_ancient_02",
+          "planetId": "SourceVeil",
+          "layer": "Ancient",
+          "era": "The Before-Time",
+          "frozenField": {
+            "red": 0.0,
+            "orange": 0.15,
+            "yellow": 0.28,
+            "green": 0.55,
+            "blue": 0.4,
+            "indigo": 1.0,
+            "violet": 0.92
+          },
+          "discoveryThreshold": 0.7,
+          "mythTrigger": "elder",
+          "orbitalAngleOffset": 0.4349,
+          "description": "Echoes of The Before-Time on SourceVeil. Dominant: indigo."
+        }
+      ],
+      "newerRuins": [
+        {
+          "ruinId": "sourceveil_newer_01",
+          "planetId": "SourceVeil",
+          "layer": "Newer",
+          "era": "The Reaching Age",
+          "frozenField": {
+            "red": 0.0,
+            "orange": 0.1031,
+            "yellow": 0.2154,
+            "green": 0.3432,
+            "blue": 0.38,
+            "indigo": 0.5628,
+            "violet": 0.5484
+          },
+          "discoveryThreshold": 0.5,
+          "mythTrigger": "source",
+          "orbitalAngleOffset": 4.779,
+          "description": "Remnants of The Reaching Age on SourceVeil. Incomplete transition."
+        },
+        {
+          "ruinId": "sourceveil_newer_02",
+          "planetId": "SourceVeil",
+          "layer": "Newer",
+          "era": "The Unfinished Bridge",
+          "frozenField": {
+            "red": 0.0,
+            "orange": 0.0374,
+            "yellow": 0.3354,
+            "green": 0.3904,
+            "blue": 0.2296,
+            "indigo": 0.514,
+            "violet": 0.5446
+          },
+          "discoveryThreshold": 0.5,
+          "mythTrigger": "source",
+          "orbitalAngleOffset": 3.3885,
+          "description": "Remnants of The Unfinished Bridge on SourceVeil. Incomplete transition."
+        }
+      ],
+      "activeWorld": {
+        "worldId": "sourceveil_active",
+        "planetId": "SourceVeil",
+        "layer": "Active",
+        "element": "Source",
+        "fieldStrength": 1.9231,
+        "couplingConstant": 0.6731,
+        "npcArchetype": "ElderAirDragon",
+        "npcDrives": {
+          "attack": 0.0,
+          "flee": 0.0,
+          "seek": 0.2389,
+          "rest": 0.0934,
+          "signal": 0.3078,
+          "explore": 0.3599
+        },
+        "ambientField": {
+          "red": 0.12,
+          "orange": 0.15,
+          "yellow": 0.28,
+          "green": 0.55,
+          "blue": 0.4,
+          "indigo": 0.8,
+          "violet": 0.85
+        },
+        "growthRate": 0.015385,
+        "description": "Living world of SourceVeil. Asteroid belt. Lowest coupling. Violet/Indigo. Mystery.",
+        "discoveryThreshold": 0.0
+      }
+    }
+  ],
+  "totalAncientRuins": 12,
+  "totalNewerRuins": 12,
+  "totalActiveWorlds": 6,
+  "generatedAt": "2026-03-28T16:50:16.805656Z"
+}
