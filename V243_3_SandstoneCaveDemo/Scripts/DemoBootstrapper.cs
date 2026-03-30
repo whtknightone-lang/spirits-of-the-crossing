@@ -1,4 +1,5 @@
 using UnityEngine;
+using SpiritsCrossing.RUE;
 
 namespace V243.SandstoneCave
 {
@@ -24,6 +25,15 @@ namespace V243.SandstoneCave
             {
                 sessionController.StartSession();
             }
+
+            // Ensure RUEBridge is present for the standalone demo.
+            // It will connect to the Python server if running; otherwise sits idle.
+            if (RUEBridge.Instance == null)
+            {
+                var go = new GameObject("RUEBridge");
+                go.AddComponent<RUEBridge>();
+                DontDestroyOnLoad(go);
+            }
         }
 
         private void OnGUI()
@@ -44,6 +54,19 @@ namespace V243.SandstoneCave
             GUI.Label(new Rect(28, 166, 280, 22), $"Distortion {s.distortion:0.00}  Source {s.sourceAlignment:0.00}");
             GUI.Label(new Rect(28, 192, 290, 22), $"Current Planet: {affinityInterpreter.currentAffinityPlanet}");
             GUI.Label(new Rect(28, 214, 290, 22), $"Achievable Planet: {affinityInterpreter.achievableAffinityPlanet}");
+
+            // RUE sim state
+            var world = RUEBridge.Instance?.LastState;
+            string rueStatus = world != null
+                ? $"RUE age={world.age} sync={world.global_sync:F3} energy={world.global_energy:F0}"
+                : "RUE: waiting for server...";
+            GUI.Label(new Rect(28, 236, 290, 22), rueStatus);
+            if (world != null)
+            {
+                var planet = world.GetPlanet(affinityInterpreter.currentAffinityPlanet);
+                if (planet != null)
+                    GUI.Label(new Rect(28, 258, 290, 22), $"Myths: {planet.myth_summary}");
+            }
         }
     }
 }
