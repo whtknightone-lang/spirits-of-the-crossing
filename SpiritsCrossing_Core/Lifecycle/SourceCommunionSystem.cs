@@ -11,6 +11,7 @@ using UnityEngine;
 using SpiritsCrossing.Vibration;
 using SpiritsCrossing.Companions;
 using SpiritsCrossing.Memory;
+// UpsilonRiver is in SpiritsCrossing.Vibration — already covered above
 
 namespace SpiritsCrossing.Lifecycle
 {
@@ -152,9 +153,21 @@ namespace SpiritsCrossing.Lifecycle
 
                 if (harm >= communionHarmonyThreshold)
                 {
-                    float gain = communionAccumRate * (harm - communionHarmonyThreshold) /
-                                 (1f - communionHarmonyThreshold) * Time.deltaTime;
-                    _depth[id] = Mathf.Clamp01(_depth[id] + gain);
+                    // Base communion rate scaled by how in-phase the player is with the dragon
+                    float baseGain = communionAccumRate * (harm - communionHarmonyThreshold) /
+                                     (1f - communionHarmonyThreshold) * Time.deltaTime;
+
+                    // River boost: a coherent, harmonious river accelerates communion
+                    // — the Source is flowing toward the player, carrying them deeper
+                    float riverBoost = 1f;
+                    var river = UpsilonRiver.Instance;
+                    if (river != null)
+                    {
+                        float riverHarmony = playerField.Harmony(river.RiverField);
+                        riverBoost = 1f + riverHarmony * river.RiverCoherence * 0.45f;
+                    }
+
+                    _depth[id] = Mathf.Clamp01(_depth[id] + baseGain * riverBoost);
                 }
 
                 // Check milestones
@@ -164,6 +177,12 @@ namespace SpiritsCrossing.Lifecycle
                     OnCommunionDepthMilestone?.Invoke(DRAGON_ELEMENTS[id], _depth[id]);
                     if (logCommunionProgress)
                         Debug.Log($"[SourceCommunionSystem] {id} milestone: {_milestones[idx]:F2}");
+
+                    // Milestone reached: impose the dragon's field on the river
+                    // — the dragon's vibration begins pulling the whole river toward it
+                    if (_dragonFields.TryGetValue(id, out var df))
+                        UpsilonRiver.Instance?.ImposeDragonField(df, _depth[id]);
+
                     idx++;
                 }
                 _milestoneIdx[id] = idx;

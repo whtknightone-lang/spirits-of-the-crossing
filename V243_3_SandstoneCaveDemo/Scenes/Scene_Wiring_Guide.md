@@ -6,6 +6,7 @@
 SandstoneCaveAttunement
   CaveSystems
     DemoBootstrapper
+    CaveOriginStoryNarrator    ← NEW: plays founding myth before session
     CaveSessionController
     BreathMovementInterpreter
     PlayerResponseTracker
@@ -36,6 +37,7 @@ SandstoneCaveAttunement
 
 ## Wiring order
 
+0. Add `CaveOriginStoryNarrator` and assign `sessionController`. Set `storyFileName` to `cave_origin_story.json`. The narrator plays the founding myth (Shaman + Chief dialogue) before the session starts. First-time players always see the full story. After 3 sessions it becomes skippable.
 1. Add `BreathMovementInterpreter` and leave `useDebugKeyboardInput` on.
 2. Add `PlayerResponseTracker` and assign the interpreter.
 3. Add `PlanetAffinityInterpreter` and load `Data/planet_profiles_example.json` if you want custom profiles.
@@ -72,7 +74,8 @@ SandstoneCaveAttunement
 ## Expected test flow
 
 1. Start scene.
-2. Hold seated or movement keys to awaken a matching spirit.
+2. Origin story plays (Shaman and Chief dialogue on the bluff). Wait for it to complete, or press Space to skip if returning player.
+3. Hold seated or movement keys to awaken a matching spirit.
 3. Sustain a pattern long enough to build sample peaks.
 4. Let the 12-minute session complete, or reduce `totalSessionLength` in the inspector for fast tests.
 5. On completion, the system evaluates current and achievable planet affinity.

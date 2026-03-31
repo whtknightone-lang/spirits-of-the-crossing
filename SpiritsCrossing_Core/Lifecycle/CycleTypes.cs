@@ -171,4 +171,97 @@ namespace SpiritsCrossing.Lifecycle
             };
         }
     }
+
+    // =========================================================================
+    // AI Lifecycle Learning Path — data types
+    // =========================================================================
+
+    // -------------------------------------------------------------------------
+    // The four cosmological waypoints in the AI learning path
+    // -------------------------------------------------------------------------
+    public enum CycleWaypointId { Birth, Death, Source, Rebirth }
+
+    // -------------------------------------------------------------------------
+    // Resonance snapshot captured at one waypoint
+    // -------------------------------------------------------------------------
+    [Serializable]
+    public class CycleWaypointSnapshot
+    {
+        public CycleWaypointId                waypoint;
+        public string                         timestampUtc;
+        public SpiritsCrossing.PlayerResponseSample resonance = new SpiritsCrossing.PlayerResponseSample();
+        public float                          sourceConnectionLevel;
+        public float                          communionDepth;  // Source waypoint only
+        public bool                           valid;           // false = not yet captured
+
+        public void Capture(CycleWaypointId wp,
+                            SpiritsCrossing.PlayerResponseSample r,
+                            float scl, float communion = 0f)
+        {
+            waypoint              = wp;
+            timestampUtc          = DateTime.UtcNow.ToString("o");
+            resonance             = r;
+            sourceConnectionLevel = scl;
+            communionDepth        = communion;
+            valid                 = true;
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // A resonance collapse event — key metric fell critically low during Born
+    // -------------------------------------------------------------------------
+    [Serializable]
+    public class CollapseEvent
+    {
+        public string dimension;    // "calm" | "resonance"
+        public float  floorReached;
+        public string timestampUtc;
+    }
+
+    // -------------------------------------------------------------------------
+    // Full record of one Birth → Death → Source → Rebirth cycle
+    // -------------------------------------------------------------------------
+    [Serializable]
+    public class CycleLearningRecord
+    {
+        public int    cycleIndex;
+        public string completedUtc;
+
+        public CycleWaypointSnapshot birth   = new CycleWaypointSnapshot();
+        public CycleWaypointSnapshot death   = new CycleWaypointSnapshot();
+        public CycleWaypointSnapshot source  = new CycleWaypointSnapshot();
+        public CycleWaypointSnapshot rebirth = new CycleWaypointSnapshot();
+
+        public List<CollapseEvent> collapseEvents = new List<CollapseEvent>();
+
+        // How much key signals rose from Birth to Source (the deepest state)
+        public float CalmGrowth   => source.valid
+            ? source.resonance.calmScore            - birth.resonance.calmScore            : 0f;
+        public float WonderGrowth => source.valid
+            ? source.resonance.wonderScore          - birth.resonance.wonderScore          : 0f;
+        public float SourceGrowth => source.valid
+            ? source.resonance.sourceAlignmentScore - birth.resonance.sourceAlignmentScore : 0f;
+        public float OverallGrowth => (CalmGrowth + WonderGrowth + SourceGrowth) / 3f;
+    }
+
+    // -------------------------------------------------------------------------
+    // Drive-weight modifier produced by AILifecycleLearningPath.
+    // Consumed by SpiritBrainController to adapt spirits to cycle position.
+    // -------------------------------------------------------------------------
+    [Serializable]
+    public class CyclePhaseModifier
+    {
+        public PlayerCyclePhase phase;
+
+        // Additive shifts applied to normalised drive weights (small but felt)
+        public float attackShift;
+        public float fleeShift;
+        public float seekShift;
+        public float restShift;
+        public float signalShift;
+        public float exploreShift;
+
+        // 0–1: overall AI atmosphere responsiveness for this phase
+        public float atmosphereIntensity;
+    }
 }

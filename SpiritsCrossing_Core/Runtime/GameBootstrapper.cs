@@ -17,6 +17,8 @@ using UnityEngine.SceneManagement;
 using SpiritsCrossing.Runtime;
 using SpiritsCrossing.VR;
 using SpiritsCrossing.RUE;
+using SpiritsCrossing.Lifecycle;
+using SpiritsCrossing.Vibration;
 
 namespace SpiritsCrossing
 {
@@ -27,10 +29,12 @@ namespace SpiritsCrossing
         public string ritualCaveScene = "SandstoneCave";
 
         [Header("References (auto-found if null)")]
-        public UniverseStateManager  universeStateManager;
-        public MythInterpreter       mythInterpreter;
-        public VRBootstrapInstaller  vrInstaller;
-        public RUEBridge             rueBridge;
+        public UniverseStateManager        universeStateManager;
+        public MythInterpreter             mythInterpreter;
+        public VRBootstrapInstaller        vrInstaller;
+        public RUEBridge                   rueBridge;
+        public AILifecycleLearningPath     lifecycleLearningPath;
+        public VibrationalResonanceSystem  vibrationalResonanceSystem;
 
         // Cave session controller reference — set when Ritual scene loads
         private V243.SandstoneCave.CaveSessionController _caveController;
@@ -75,6 +79,28 @@ namespace SpiritsCrossing
             if (rueBridge == null)
                 rueBridge = gameObject.AddComponent<RUEBridge>();
 
+            // Ensure AILifecycleLearningPath exists — tracks Birth/Death/Source/Rebirth.
+            if (lifecycleLearningPath == null)
+                lifecycleLearningPath = FindObjectOfType<AILifecycleLearningPath>();
+
+            if (lifecycleLearningPath == null)
+                lifecycleLearningPath = gameObject.AddComponent<AILifecycleLearningPath>();
+
+            // Ensure VibrationalResonanceSystem exists — drives living Upsilon nodes.
+            if (vibrationalResonanceSystem == null)
+                vibrationalResonanceSystem = FindObjectOfType<VibrationalResonanceSystem>();
+
+            if (vibrationalResonanceSystem == null)
+                vibrationalResonanceSystem = gameObject.AddComponent<VibrationalResonanceSystem>();
+
+            // Ensure LifecycleSystem exists — manages Born/InSource/Rebirth phases.
+            // (If already in the scene as its own GameObject, FindObjectOfType picks it up.)
+            if (LifecycleSystem.Instance == null)
+            {
+                var lsGo = new GameObject("LifecycleSystem");
+                lsGo.AddComponent<LifecycleSystem>();
+            }
+
             // Wire RUEBridge events into the cosmos and myth systems.
             RUEBridge.OnWorldStateReceived += OnRUEWorldState;
             RUEBridge.OnMythTierChanged    += OnRUEMythTierChanged;
@@ -88,6 +114,19 @@ namespace SpiritsCrossing
             Debug.Log($"[GameBootstrapper] Universe loaded. Sessions={universeStateManager.Current.totalSessionCount} " +
                       $"Planets={universeStateManager.Current.planets.Count} " +
                       $"ActiveMyths={universeStateManager.Current.mythState.activeMyths.Count}");
+
+            // Subscribe lifecycle phase events now — all singletons are guaranteed
+            // to have run Awake() before any Start() is called.
+            if (LifecycleSystem.Instance != null)
+            {
+                LifecycleSystem.Instance.OnPhaseChanged += OnLifecyclePhaseChanged;
+                Debug.Log("[GameBootstrapper] Wired LifecycleSystem → VibrationalResonanceSystem.");
+            }
+            else
+            {
+                Debug.LogWarning("[GameBootstrapper] LifecycleSystem not found. " +
+                                 "Lifecycle→Vibration wiring skipped.");
+            }
 
             SceneManager.sceneLoaded += OnSceneLoaded;
 
@@ -104,6 +143,9 @@ namespace SpiritsCrossing
             RUEBridge.OnWorldStateReceived -= OnRUEWorldState;
             RUEBridge.OnMythTierChanged    -= OnRUEMythTierChanged;
             RUEBridge.OnMayanCycleTurn     -= OnRUEMayanCycleTurn;
+
+            if (LifecycleSystem.Instance != null)
+                LifecycleSystem.Instance.OnPhaseChanged -= OnLifecyclePhaseChanged;
         }
 
         // -------------------------------------------------------------------------
@@ -182,9 +224,52 @@ namespace SpiritsCrossing
         // RUE Bridge event handlers
         // -------------------------------------------------------------------------
 
+        // -------------------------------------------------------------------------
+        // Lifecycle phase → Vibrational system wiring
+        //
+        // When the player moves through the cosmological cycle, the strength of
+        // their field reaching every animal's Upsilon node changes:
+        //
+        //   Born     → 1.00×  — full player presence in the world
+        //   InSource → 0.20×  — player has left; animals sense the absence
+        //   Rebirth  → 1.80×  — player returns transformed; brief surge then normalises
+        // -------------------------------------------------------------------------
+        private void OnLifecyclePhaseChanged(PlayerCyclePhase phase)
+        {
+            if (vibrationalResonanceSystem == null) return;
+
+            switch (phase)
+            {
+                case PlayerCyclePhase.Born:
+                    vibrationalResonanceSystem.SetCycleMultiplier(1.00f);
+                    break;
+                case PlayerCyclePhase.InSource:
+                    vibrationalResonanceSystem.SetCycleMultiplier(0.20f);
+                    break;
+                case PlayerCyclePhase.Rebirth:
+                    vibrationalResonanceSystem.SetCycleMultiplier(1.80f);
+                    // Rebirth surge is brief — normalise back to Born level after a moment
+                    StartCoroutine(NormaliseAfterRebirth());
+                    break;
+            }
+
+            Debug.Log($"[GameBootstrapper] Lifecycle phase → {phase}. " +
+                      $"VRS cycle multiplier updated.");
+        }
+
+        private System.Collections.IEnumerator NormaliseAfterRebirth()
+        {
+            // Hold the surge for 3 seconds, then smoothly return to Born level
+            yield return new WaitForSeconds(3f);
+            if (vibrationalResonanceSystem != null)
+                vibrationalResonanceSystem.SetCycleMultiplier(1.00f);
+        }
+
         /// <summary>
         /// Called every simulation tick with the full world state from Python.
         /// Drives planet visuals, portal availability, and cosmos map state.
+        /// Also feeds RUE global coherence into animal Upsilon nodes as a
+        /// world-field transient boost.
         /// </summary>
         private void OnRUEWorldState(RUE.WorldState state)
         {
@@ -201,6 +286,17 @@ namespace SpiritsCrossing
 
             // Mayan cycle progress can drive ambient visual intensity on cosmos map.
             // CosmosMapDirector.Instance?.SetCycleProgress(state.mayan_cycle_progress);
+
+            // RUE → Upsilon nodes: when the Python simulation is in a high-coherence
+            // state, all animals feel a gentle green (coherence) and violet (source)
+            // boost through their Upsilon nodes. The world's resonance reaches them.
+            if (vibrationalResonanceSystem != null && state.global_sync > 0.55f)
+            {
+                float boost = (state.global_sync - 0.55f) * 0.12f; // 0–0.054 range
+                vibrationalResonanceSystem.ApplyTransientBoost("green",  boost);
+                if (state.global_sync > 0.75f)
+                    vibrationalResonanceSystem.ApplyTransientBoost("violet", boost * 0.5f);
+            }
         }
 
         /// <summary>

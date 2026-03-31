@@ -54,6 +54,9 @@ namespace SpiritsCrossing.World
         public VibrationalField ambientField = new VibrationalField(); // current orbital equilibrium
         public float  growthRate;
         public float  discoveryThreshold = 0f; // always visible
+
+        // Terrain regions — the physical geography of this world
+        public List<TerrainRegion> terrainRegions = new List<TerrainRegion>();
     }
 
     // -------------------------------------------------------------------------
@@ -67,6 +70,9 @@ namespace SpiritsCrossing.World
         public List<RuinRecord> ancientRuins = new List<RuinRecord>();
         public List<RuinRecord> newerRuins   = new List<RuinRecord>();
         public ActiveWorldRecord activeWorld;
+
+        /// <summary>All terrain regions across all layers of this planet.</summary>
+        public List<TerrainRegion> terrainRegions = new List<TerrainRegion>();
 
         public List<RuinRecord> AllRuins()
         {

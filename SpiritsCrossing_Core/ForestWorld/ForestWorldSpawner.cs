@@ -194,6 +194,10 @@ namespace SpiritsCrossing.ForestWorld
             var playerField = VibrationalResonanceSystem.Instance?.PlayerField;
             if (playerField == null) return;
 
+            // Myth modifier: environmental intensity lowers discovery barriers
+            float envIntensity = UniverseStateManager.Instance?.Current.mythState.environmentalIntensity ?? 0f;
+            float thresholdScale = 1f - envIntensity * 0.15f;
+
             // Stone rings
             foreach (var ring in zone.stoneRings)
             {
@@ -208,7 +212,7 @@ namespace SpiritsCrossing.ForestWorld
                     DryadSystem.Instance?.ApplyAltarBonus(ring.ringId);
                 }
 
-                if (effectiveHarmony >= ring.discoveryThreshold)
+                if (effectiveHarmony >= ring.discoveryThreshold * thresholdScale)
                     DiscoverRing(ring);
             }
 
@@ -218,12 +222,12 @@ namespace SpiritsCrossing.ForestWorld
                 float harmony = playerField.WeightedHarmony(temple.templeField);
 
                 if (!_discoveredTempleOuter.Contains(temple.templeId) &&
-                    harmony >= temple.outerDiscoveryThreshold)
+                    harmony >= temple.outerDiscoveryThreshold * thresholdScale)
                     DiscoverTempleOuter(temple);
 
                 if (_discoveredTempleOuter.Contains(temple.templeId) &&
                     !_unlockedSanctums.Contains(temple.templeId) &&
-                    harmony >= temple.innerDiscoveryThreshold)
+                    harmony >= temple.innerDiscoveryThreshold * thresholdScale)
                     UnlockTempleSanctum(temple);
 
                 // Individual chambers

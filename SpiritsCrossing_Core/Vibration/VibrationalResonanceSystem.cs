@@ -65,6 +65,16 @@ namespace SpiritsCrossing.Vibration
         [Range(0f, 1f)] public float awareThreshold    = 0.25f; // animal notices / watches
         // Below awareThreshold = natural distance
 
+        [Header("Environmental Sensing")]
+        [Range(0f, 1f)]
+        [Tooltip("Strength at which the player's field feeds into each Upsilon node.")]
+        public float playerSenseStrength  = 0.60f;
+
+        [Range(0f, 0.5f)]
+        [Tooltip("Strength at which co-resonating animals feed into each other. " +
+                 "0 = no cross-sensing (disable emergent ecology).")]
+        public float crossSenseStrength   = 0.15f;
+
         [Header("Debug")]
         public bool showDebugEverySecond;
 
@@ -105,15 +115,24 @@ namespace SpiritsCrossing.Vibration
         // -------------------------------------------------------------------------
         // Internal
         // -------------------------------------------------------------------------
-        private readonly Dictionary<string, VibrationalField> _animalFields  = new();
-        private readonly Dictionary<string, float>            _harmony        = new();
-        private readonly Dictionary<string, float>            _prevHarmony    = new();
-        private readonly Dictionary<string, float>            _velocity       = new();
-        private readonly HashSet<string>                      _locked         = new();
+        private readonly Dictionary<string, VibrationalField>  _animalFields  = new();
+        private readonly Dictionary<string, UpsilonNodeBrain>   _upsilonNodes  = new();
+        private readonly Dictionary<string, float>              _harmony        = new();
+        private readonly Dictionary<string, float>              _prevHarmony    = new();
+        private readonly Dictionary<string, float>              _velocity       = new();
+        private readonly HashSet<string>                        _locked         = new();
 
         private SpiritBrainOrchestrator _orchestrator;
         private string                  _prevDominantBand;
         private float                   _debugTimer;
+
+        // Set by GameBootstrapper via SetCycleMultiplier() when the player's
+        // cosmological phase changes. Scales how strongly the player field
+        // reaches animal Upsilon nodes.
+        //   Born     → 1.00  (full presence)
+        //   InSource → 0.20  (player left — animals sense the absence)
+        //   Rebirth  → 1.80  (player returns changed — brief surge, then normalises)
+        private float _cycleMultiplier = 1.00f;
 
         // -------------------------------------------------------------------------
         // Lifecycle
@@ -131,6 +150,7 @@ namespace SpiritsCrossing.Vibration
         private void Update()
         {
             UpdatePlayerField();
+            FeedEnvironmentalInputs();
             UpdateHarmonyScores();
             FireEvents();
 
@@ -174,6 +194,53 @@ namespace SpiritsCrossing.Vibration
             }
 
             Debug.Log($"[VibrationalResonanceSystem] Loaded {_animalFields.Count} animal fields.");
+
+            // Seed any Upsilon nodes that registered before profiles were loaded
+            foreach (var kvp in _upsilonNodes)
+                SeedUpsilonNode(kvp.Key, kvp.Value);
+        }
+
+        // -------------------------------------------------------------------------
+        // Upsilon node registration — called by UpsilonNodeBrain.OnEnable/Disable
+        // -------------------------------------------------------------------------
+
+        /// <summary>
+        /// Register a living Upsilon node for an entity. Once registered, harmony
+        /// computation uses the node's LiveField instead of the static profile.
+        /// The node is seeded from the static profile immediately if profiles are loaded.
+        /// </summary>
+        public void RegisterUpsilonNode(string entityId, UpsilonNodeBrain node)
+        {
+            if (string.IsNullOrEmpty(entityId) || node == null) return;
+            _upsilonNodes[entityId] = node;
+
+            // Seed immediately if profiles are already loaded, otherwise seeding
+            // happens at end of LoadAnimalFields()
+            if (_animalFields.Count > 0)
+                SeedUpsilonNode(entityId, node);
+        }
+
+        /// <summary>Unregister a node (called when the component is disabled).</summary>
+        public void UnregisterUpsilonNode(string entityId)
+        {
+            _upsilonNodes.Remove(entityId);
+        }
+
+        private void SeedUpsilonNode(string entityId, UpsilonNodeBrain node)
+        {
+            if (node.IsInitialised) return;
+
+            if (_animalFields.TryGetValue(entityId, out var baseline))
+            {
+                node.Initialise(baseline);
+            }
+            else
+            {
+                // No profile found — seed from neutral mid-field
+                node.Initialise(new VibrationalField(0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f));
+                Debug.LogWarning($"[VibrationalResonanceSystem] No static profile for '{entityId}'. " +
+                                 $"Upsilon node seeded from neutral field.");
+            }
         }
 
         // -------------------------------------------------------------------------
@@ -192,6 +259,44 @@ namespace SpiritsCrossing.Vibration
         }
 
         // -------------------------------------------------------------------------
+        // Feed environmental inputs into all registered Upsilon nodes
+        //
+        // Primary: every node receives the player's live field.
+        // Secondary: animals that are both resonating with the player (above
+        //   curiousThreshold) sense each other's LiveField — emergent vibrational
+        //   ecology. A wolf and a raven both drawn to the same player will start
+        //   to subtly influence each other over time.
+        // -------------------------------------------------------------------------
+        private void FeedEnvironmentalInputs()
+        {
+            if (_upsilonNodes.Count == 0) return;
+
+            // Primary: player field into every node — strength modulated by cycle phase
+            float effectiveStrength = playerSenseStrength * _cycleMultiplier;
+            foreach (var kvp in _upsilonNodes)
+                kvp.Value.Sense(PlayerField, effectiveStrength);
+
+            // Secondary: cross-sensing among co-resonating animals
+            if (crossSenseStrength <= 0f) return;
+
+            var resonating = GetAnimalsAboveHarmony(curiousThreshold);
+            for (int i = 0; i < resonating.Count; i++)
+            {
+                if (!_upsilonNodes.TryGetValue(resonating[i].animalId, out var nodeA)) continue;
+                for (int j = i + 1; j < resonating.Count; j++)
+                {
+                    if (!_upsilonNodes.TryGetValue(resonating[j].animalId, out var nodeB)) continue;
+
+                    // Strength scales with both animals' harmony: animals deeply
+                    // resonating with the player sense each other most clearly
+                    float cross = resonating[i].harmony * resonating[j].harmony * crossSenseStrength;
+                    nodeA.Sense(nodeB.LiveField, cross);
+                    nodeB.Sense(nodeA.LiveField, cross);
+                }
+            }
+        }
+
+        // -------------------------------------------------------------------------
         // Compute harmony scores for all registered animals
         // -------------------------------------------------------------------------
         private void UpdateHarmonyScores()
@@ -201,8 +306,12 @@ namespace SpiritsCrossing.Vibration
 
             foreach (var kvp in _animalFields)
             {
-                string id          = kvp.Key;
-                VibrationalField af = kvp.Value;
+                string id = kvp.Key;
+
+                // Use LiveField from Upsilon node if present, otherwise static profile
+                VibrationalField af = _upsilonNodes.TryGetValue(id, out var node)
+                    ? node.LiveField
+                    : kvp.Value;
 
                 // Weighted harmony: animal's characteristic bands weighted more heavily
                 float rawHarmony = PlayerField.WeightedHarmony(af);
@@ -298,6 +407,16 @@ namespace SpiritsCrossing.Vibration
         public void RegisterAnimalField(string animalId, VibrationalField field)
         {
             _animalFields[animalId] = field;
+        }
+
+        /// <summary>
+        /// Set the cycle phase field multiplier. Called by GameBootstrapper when
+        /// the player's cosmological phase changes.
+        /// Born=1.0, InSource=0.20, Rebirth=1.80 (briefly).
+        /// </summary>
+        public void SetCycleMultiplier(float multiplier)
+        {
+            _cycleMultiplier = Mathf.Clamp(multiplier, 0f, 2f);
         }
 
         /// <summary>

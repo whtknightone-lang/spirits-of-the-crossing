@@ -71,6 +71,15 @@ namespace SpiritsCrossing
         public string lastPlayedUtc;
         public int    totalSessionCount;
 
+        // Age tier — set at profile creation, determines myth filtering,
+        // companion behavior, AI learning, and solo/co-op mode
+        public AgeTier ageTier = AgeTier.Voyager;
+
+        /// <summary>Cached tier config. Not serialized — rebuilt from ageTier on load.</summary>
+        [NonSerialized] private AgeTierProfile _ageTierConfig;
+        public AgeTierProfile AgeTierConfig =>
+            _ageTierConfig ?? (_ageTierConfig = AgeTierProfile.ForTier(ageTier));
+
         // Long-term player identity (accumulates across all sessions)
         public PlayerIdentityProfile playerIdentity = new PlayerIdentityProfile();
 
@@ -96,6 +105,11 @@ namespace SpiritsCrossing
         [Range(0f, 1f)] public float universeBirthPotential;
         [Range(0f, 1f)] public float universeRebirthPotential;
 
+        // RUE Universe.time — total simulation steps elapsed across all sessions.
+        // Incremented by RUELiveLoop during live play and by RecordRealmOutcome.
+        // Equivalent to Universe.time in rue-engine/simulation/universe.py.
+        public long universeTimeSteps;
+
         // Companion bonds (all 26 animal companions across 4 elements)
         public List<CompanionBondState> companions = new List<CompanionBondState>();
 
@@ -103,6 +117,10 @@ namespace SpiritsCrossing
         public List<NpcEvolutionState>    npcStates             = new List<NpcEvolutionState>();
         public List<PlanetAutonomyState>  planetAutonomyStates  = new List<PlanetAutonomyState>();
         public string                     lastSessionUtc;
+
+        // NPC autonomy — memories, creations, bonds, emergent identities
+        public List<NpcAutonomyState>     npcAutonomyStates     = new List<NpcAutonomyState>();
+        public List<VibrationalCreation>  worldCreations        = new List<VibrationalCreation>();
 
         // User companion assignments (primary / elemental / realm / session)
         public CompanionAssignment userAssignment = new CompanionAssignment();
@@ -121,6 +139,9 @@ namespace SpiritsCrossing
 
         // Forest World — dryad whisper progress (which lines each dryad has spoken)
         public List<DryadWhisperEntry> dryadWhisperProgress = new List<DryadWhisperEntry>();
+
+        // Portal sites discovered and activated across all worlds
+        public List<DiscoveredPortalSiteRecord> discoveredPortalSites = new List<DiscoveredPortalSiteRecord>();
 
         // Vibrational messages sent to planets (cap 20)
         public List<VibrationalMessage> sentMessages = new List<VibrationalMessage>();
@@ -168,6 +189,15 @@ namespace SpiritsCrossing
             lastRealmOutcome = outcome;
             lastPlayedUtc    = DateTime.UtcNow.ToString("o");
 
+            // Each realm visit counts as RUE universe steps proportional to its duration.
+            // 720 steps/hour (from NpcEvolutionSystem.STEPS_PER_HOUR) → ~1 step/5 seconds.
+            // A typical realm outcome doesn't carry exact duration, so we use a fixed
+            // per-visit quantum that approximates a meaningful universe advancement.
+            universeTimeSteps += 720;   // 1 simulated hour per realm visit
+
+            // Age-tier contrast dampening — younger tiers experience less contrast
+            outcome.contrast *= AgeTierConfig.contrastDampen;
+
             if (!string.IsNullOrEmpty(outcome.planetId))
                 GetOrCreatePlanet(outcome.planetId).RecordVisit(outcome);
 
@@ -207,12 +237,45 @@ namespace SpiritsCrossing
                 GetOrCreateBond(animalId).isActive = true;
         }
 
+        /// <summary>The animalId of the companion currently accompanying the player, or null.</summary>
+        public string activeCompanionId => GetActiveCompanion()?.animalId;
+
         public List<VibrationalMessage> GetMessagesByPlanet(string planetId)
         {
             var result = new List<VibrationalMessage>();
             foreach (var m in sentMessages)
                 if (m.planetId == planetId) result.Add(m);
             return result;
+        }
+
+        // -------------------------------------------------------------------------
+        // Portal site discovery helpers
+        // -------------------------------------------------------------------------
+        public void AddDiscoveredPortalSite(DiscoveredPortalSiteRecord record)
+        {
+            if (record == null || string.IsNullOrEmpty(record.siteId)) return;
+            foreach (var s in discoveredPortalSites)
+                if (s.siteId == record.siteId) return; // already recorded
+            discoveredPortalSites.Add(record);
+        }
+
+        public DiscoveredPortalSiteRecord GetDiscoveredPortalSite(string siteId)
+        {
+            foreach (var s in discoveredPortalSites)
+                if (s.siteId == siteId) return s;
+            return null;
+        }
+
+        /// <summary>
+        /// Called by PortalTransitionController when the player travels to another planet
+        /// via a world-travel portal site. Unlocks the planet and logs the travel timestamp.
+        /// </summary>
+        public void RecordWorldTravel(string planetId)
+        {
+            if (string.IsNullOrEmpty(planetId)) return;
+            var planet = GetOrCreatePlanet(planetId);
+            planet.unlocked = true;
+            lastPlayedUtc = DateTime.UtcNow.ToString("o");
         }
 
         public void RecalculateUniverseCycle()

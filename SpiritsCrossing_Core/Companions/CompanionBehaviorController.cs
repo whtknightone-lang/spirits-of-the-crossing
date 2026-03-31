@@ -78,13 +78,16 @@ namespace SpiritsCrossing.Companions
         private CompanionRuleAction   _overrideAction;
         private float                 _overrideTimer;  // >0 = override active
         private bool                  _hasOverride;
+        private UpsilonNodeBrain      _upsilonNode;    // living oscillator (optional)
 
         // -------------------------------------------------------------------------
         // Lifecycle
         // -------------------------------------------------------------------------
         private void Start()
         {
-            _animator = GetComponentInChildren<Animator>();
+            _animator    = GetComponentInChildren<Animator>();
+            _upsilonNode = GetComponent<UpsilonNodeBrain>();
+
             if (playerTransform == null)
                 playerTransform = Camera.main?.transform;
 
@@ -192,6 +195,10 @@ namespace SpiritsCrossing.Companions
 
                 // Resonance lock pulse — full presence
                 _animator.SetFloat("ResonanceLock", h >= 0.85f ? 1f : 0f);
+
+                // Discovery: animal is encountering something new — curiosity anim
+                if (_upsilonNode != null)
+                    _animator.SetFloat("DiscoveryLevel", _upsilonNode.DiscoveryLevel);
             }
 
             // --- NPC drive mirroring (still organic) ---

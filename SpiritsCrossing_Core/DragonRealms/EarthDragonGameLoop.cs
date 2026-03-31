@@ -119,8 +119,19 @@ namespace SpiritsCrossing
                 ancientEcho = Mathf.Clamp01(ancientEcho + planetState.healing  * 0.15f);
             }
 
+            // Myth memory: accumulated forest myth means the earth opens faster.
+            // Those who have walked this path before descend from a higher starting point.
+            float forestMythStrength = UniverseStateManager.Instance?.Current.mythState
+                                           .GetStrength("forest") ?? 0f;
+            if (forestMythStrength > 0f)
+            {
+                rootDepth   = Mathf.Clamp01(rootDepth   + forestMythStrength * 0.18f);
+                ancientEcho = Mathf.Clamp01(ancientEcho + forestMythStrength * 0.12f);
+            }
+
             stats.SeedFromPlayer(playerSample, harmonyBase: 0.65f, resonanceBase: 0.35f);
-            stats.elementalCharge = Mathf.Clamp01(earthAffinity * 0.5f);
+            stats.elementalCharge = Mathf.Clamp01(earthAffinity * 0.5f
+                                                   + forestMythStrength * 0.15f);
 
             Debug.Log($"[EarthDragonGameLoop] Realm begun. rootDepth={rootDepth:F2} visits={planetState?.visitCount ?? 0}");
         }

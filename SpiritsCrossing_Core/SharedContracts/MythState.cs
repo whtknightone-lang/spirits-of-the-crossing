@@ -24,12 +24,16 @@ namespace SpiritsCrossing
     {
         public List<ActiveMyth> activeMyths = new List<ActiveMyth>();
 
+        // Age tier — synced from UniverseState so Activate() can self-gate
+        public AgeTier ageTier = AgeTier.Voyager;
+
         // --- Portal bias modifiers applied by MythInterpreter ---
         [Range(0f, 1f)] public float portalBiasForest;
         [Range(0f, 1f)] public float portalBiasSky;
         [Range(0f, 1f)] public float portalBiasOcean;
         [Range(0f, 1f)] public float portalBiasFire;
         [Range(0f, 1f)] public float portalBiasMachine;
+        [Range(0f, 1f)] public float portalBiasMartial;
         [Range(0f, 1f)] public float portalBiasSource;
 
         // --- Environmental/companion modifiers ---
@@ -53,9 +57,21 @@ namespace SpiritsCrossing
             return 0f;
         }
 
-        /// <summary>Activate or reinforce a myth.</summary>
+        /// <summary>Activate or reinforce a myth. Age-gated: blocked myths are silently skipped,
+        /// seedling-only myths only activate for younger tiers, and strength is capped per tier.</summary>
         public void Activate(string key, string sourceTag, float strength)
         {
+            var config = AgeTierProfile.ForTier(ageTier);
+
+            // Block myths that are inappropriate for this age tier
+            if (config.IsMythBlocked(key)) return;
+
+            // Seedling-only myths (wonder, friendship, etc.) only activate for tiers that allow them
+            if (config.tier == AgeTier.Voyager && config.IsSeedlingOnlyMyth(key)) return;
+
+            // Cap strength to age-appropriate maximum
+            strength = Mathf.Clamp01(Mathf.Min(strength, config.strengthCap));
+
             foreach (var m in activeMyths)
             {
                 if (m.mythKey != key) continue;
@@ -110,6 +126,7 @@ namespace SpiritsCrossing
             portalBiasOcean   = GetStrength("ocean")    * 0.6f;
             portalBiasFire    = GetStrength("fire")     * 0.6f;
             portalBiasMachine = GetStrength("machine")  * 0.6f;
+            portalBiasMartial = GetStrength("martial")  * 0.6f;
             portalBiasSource  = GetStrength("source")   * 0.6f;
 
             companionSensitivity   = Mathf.Clamp01(GetStrength("elder") + GetStrength("source") * 0.5f);

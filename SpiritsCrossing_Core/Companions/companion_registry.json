@@ -637,6 +637,160 @@
       "mythTrigger": "fire",
       "preferredPlanet": "DarkContrast",
       "npcArchetype": "FireDragon"
+    },
+    {
+      "animalId": "spirit_monkey",
+      "displayName": "Spirit Monkey",
+      "element": "Earth",
+      "tier": 1,
+      "behaviorMode": "trickster-wise",
+      "description": "The jungle’s living question mark. Swings between worlds with equal ease \u2014 at home in every canopy, every ruin, every rooftop. Bonds through joy expressed in motion and social connection. The monkey teaches that play IS wisdom.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.40,
+        "wonder": 0.15,
+        "socialSync": 0.30,
+        "movementFlow": 0.15,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.28,
+      "mythTrigger": "forest",
+      "preferredPlanet": "ForestHeart",
+      "npcArchetype": "FlowDancer"
+    },
+    {
+      "animalId": "great_macaw",
+      "displayName": "Great Macaw",
+      "element": "Air",
+      "tier": 1,
+      "behaviorMode": "herald-joyful",
+      "description": "Larger and wilder than the sky macaw. Carries the colors of the tropical canopy across every world it visits. Its call announces change. Bonds through pure joy and social resonance \u2014 the great macaw only stays where laughter lives.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.50,
+        "wonder": 0.10,
+        "socialSync": 0.25,
+        "movementFlow": 0.15,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.27,
+      "mythTrigger": "forest",
+      "preferredPlanet": "ForestHeart",
+      "npcArchetype": "DryadTree"
+    },
+    {
+      "animalId": "koi",
+      "displayName": "Koi",
+      "element": "Water",
+      "tier": 1,
+      "behaviorMode": "patient-flow",
+      "description": "Lives wherever water collects \u2014 rivers, ponds, temple pools, rain-filled ruins. The koi does not hurry. It has been swimming the same circle since before the temple was built. Bonds through calm and gentle flow \u2014 the slowest water bond.",
+      "resonanceWeights": {
+        "calm": 0.45,
+        "joy": 0.10,
+        "wonder": 0.0,
+        "socialSync": 0.0,
+        "movementFlow": 0.30,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.15,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.26,
+      "mythTrigger": "ocean",
+      "preferredPlanet": "WaterFlow",
+      "npcArchetype": "Seated"
+    },
+    {
+      "animalId": "fire_fox",
+      "displayName": "Fire Fox",
+      "element": "Fire",
+      "tier": 2,
+      "behaviorMode": "swift-ember",
+      "description": "A desert spirit with fur the color of dusk. Runs across hot sand and volcanic glass without slowing. The fire fox does not fight \u2014 it outwits. It appears where heat and cleverness meet. Bonds through wonder held alongside intensity \u2014 the quick-thinking fire bond.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.20,
+        "wonder": 0.35,
+        "socialSync": 0.0,
+        "movementFlow": 0.30,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.15,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.38,
+      "mythTrigger": "fire",
+      "preferredPlanet": "DarkContrast",
+      "npcArchetype": "Dervish"
+    },
+    {
+      "animalId": "otter",
+      "displayName": "Otter",
+      "element": "Water",
+      "tier": 1,
+      "behaviorMode": "playful-river",
+      "description": "The river\u2019s comedian. Found wherever fresh water meets joy \u2014 forest streams, ocean estuaries, even rain puddles in ruins. The otter plays because playing IS the point. Bonds through joy and movement flow in the presence of water.",
+      "resonanceWeights": {
+        "calm": 0.0,
+        "joy": 0.45,
+        "wonder": 0.0,
+        "socialSync": 0.20,
+        "movementFlow": 0.35,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.27,
+      "mythTrigger": "ocean",
+      "preferredPlanet": "WaterFlow",
+      "npcArchetype": "FlowDancer"
+    },
+    {
+      "animalId": "walrus",
+      "displayName": "Walrus",
+      "element": "Water",
+      "tier": 2,
+      "behaviorMode": "elder-shore",
+      "description": "The coastline\u2019s philosopher. Sits where ocean meets earth and translates between them. The walrus has been listening to both sides of the argument since before the first tide. The best water-earth communicator in the game. Bonds through calm social presence and breath \u2014 the diplomatic water bond.",
+      "resonanceWeights": {
+        "calm": 0.35,
+        "joy": 0.0,
+        "wonder": 0.0,
+        "socialSync": 0.35,
+        "movementFlow": 0.0,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.10,
+        "breathCoherence": 0.20
+      },
+      "bondThreshold": 0.40,
+      "mythTrigger": "ocean",
+      "preferredPlanet": "WaterFlow",
+      "npcArchetype": "EarthDragon"
+    },
+    {
+      "animalId": "seal",
+      "displayName": "Seal",
+      "element": "Water",
+      "tier": 1,
+      "behaviorMode": "shore-dancer",
+      "description": "Slides between water and land like it was born in both. The seal is the first friend of the coastline \u2014 curious, warm, social. It sings to the ocean and the ocean sings back. Bonds through social warmth and joyful calm \u2014 the easiest water-earth bond.",
+      "resonanceWeights": {
+        "calm": 0.30,
+        "joy": 0.30,
+        "wonder": 0.0,
+        "socialSync": 0.25,
+        "movementFlow": 0.15,
+        "spinStability": 0.0,
+        "sourceAlignment": 0.0,
+        "breathCoherence": 0.0
+      },
+      "bondThreshold": 0.27,
+      "mythTrigger": "ocean",
+      "preferredPlanet": "WaterFlow",
+      "npcArchetype": "PairA"
     }
   ],
   "npcDefaultCompanions": {

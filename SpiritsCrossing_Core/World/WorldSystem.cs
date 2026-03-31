@@ -142,6 +142,10 @@ namespace SpiritsCrossing.World
                 ? new[] { planetData }
                 : (IEnumerable<PlanetWorldData>)Data.planets;
 
+            // Myth modifier: active ruin myths make further ruins slightly easier to find
+            float ruinEcho = UniverseStateManager.Instance?.Current.mythState.ruinEchoStrength ?? 0f;
+            float thresholdScale = 1f - ruinEcho * 0.2f;
+
             foreach (var planet in planetsToScan)
             {
                 foreach (var ruin in planet.AllRuins())
@@ -149,7 +153,7 @@ namespace SpiritsCrossing.World
                     if (_discoveredIds.Contains(ruin.ruinId)) continue;
 
                     float harmony = playerField.WeightedHarmony(ruin.frozenField);
-                    if (harmony >= ruin.discoveryThreshold)
+                    if (harmony >= ruin.discoveryThreshold * thresholdScale)
                         DiscoverRuin(ruin);
                 }
             }
@@ -199,12 +203,19 @@ namespace SpiritsCrossing.World
             CurrentActiveWorld = planetData.activeWorld;
             RebuildAmbientField(planetId);
 
+            // Load terrain regions for the planet
+            var allTerrain = new List<TerrainRegion>(planetData.terrainRegions);
+            if (planetData.activeWorld?.terrainRegions != null)
+                allTerrain.AddRange(planetData.activeWorld.terrainRegions);
+            TerrainResonanceSystem.Instance?.LoadTerrainForPlanet(allTerrain);
+
             // Seed NPC presences into CosmosObserverMode
             SeedWorldNpcPresences(planetData);
 
             OnActiveWorldEntered?.Invoke(CurrentActiveWorld);
             Debug.Log($"[WorldSystem] Entered: {planetId} ({CurrentActiveWorld.element}) " +
-                      $"arch={CurrentActiveWorld.npcArchetype} F={CurrentActiveWorld.fieldStrength:F2}");
+                      $"arch={CurrentActiveWorld.npcArchetype} F={CurrentActiveWorld.fieldStrength:F2} " +
+                      $"terrain={allTerrain.Count} regions");
         }
 
         public void ExitActiveWorld()
@@ -212,6 +223,7 @@ namespace SpiritsCrossing.World
             string pid = CurrentActiveWorld?.planetId;
             CurrentActiveWorld = null;
             AmbientField = new VibrationalField(0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f);
+            TerrainResonanceSystem.Instance?.UnloadTerrain();
             OnActiveWorldExited?.Invoke(pid);
         }
 
@@ -243,6 +255,11 @@ namespace SpiritsCrossing.World
                 ambient.LerpToward(ruin.frozenField, Mathf.Clamp01(w));
                 count++;
             }
+
+            ambient.Clamp01();
+
+            // Blend in terrain resonance from nearby terrain regions
+            TerrainResonanceSystem.Instance?.BlendIntoAmbient(ambient);
 
             ambient.Clamp01();
             AmbientField = ambient;

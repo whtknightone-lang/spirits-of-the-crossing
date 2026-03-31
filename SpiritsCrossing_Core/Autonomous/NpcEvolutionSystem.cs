@@ -24,6 +24,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SpiritsCrossing.Cosmos;
+using SpiritsCrossing.Vibration;
 
 namespace SpiritsCrossing.Autonomous
 {
@@ -48,6 +49,14 @@ namespace SpiritsCrossing.Autonomous
         // Spectral drift: how far the NPC has drifted from its initial signature
         // [red, orange, yellow, green, blue, indigo, violet]
         public float[] spectralDrift = new float[7];
+
+        // Terrain affinity: pull scores for each of the 13 terrain types.
+        // Computed from spectral drift by TerrainResonanceSystem.
+        // Determines which terrain regions the NPC is naturally drawn to.
+        public float[] terrainPull = new float[13];
+
+        // The terrain type this NPC is currently most drawn to
+        public string preferredTerrain;
 
         // Current dominant archetype (may shift over time)
         public string currentArchetype;
@@ -79,6 +88,7 @@ namespace SpiritsCrossing.Autonomous
         private const float ENERGY_ACTIVITY_W      = 0.05f; // RUE behavior.py
         private const float RESONANCE_ACCUM_RATE   = 0.008f; // AME v7 evolution.resonance
         private const float SPECTRAL_DRIFT_RATE    = 0.0002f;
+        private const float DEFAULT_DRIFT_CLAMP    = 0.25f;  // base drift freedom
         private const float ARCHETYPE_SHIFT_THRESH = 0.75f;  // resonance level to trigger shift
         private const float STEPS_PER_HOUR         = 720f;   // simulation steps per real hour
 
@@ -233,8 +243,27 @@ namespace SpiritsCrossing.Autonomous
             for (int i = 0; i < BRAIN_SIZE; i++)
                 state.phasesNorm[i] = phases[i] / (Mathf.PI * 2f);
 
-            // Check archetype shift
-            CheckArchetypeShift(state);
+            // Emergent identity replaces fixed archetype shift when autonomy is active
+            if (NpcAutonomySystem.Instance != null)
+                NpcAutonomySystem.Instance.StepAutonomy(state);
+            else
+                CheckArchetypeShift(state);
+
+            // Update terrain affinity from evolved spectral state
+            UpdateTerrainAffinity(state);
+        }
+
+        // -------------------------------------------------------------------------
+        // Terrain affinity — recompute which terrain the NPC is drawn to
+        // -------------------------------------------------------------------------
+        private void UpdateTerrainAffinity(NpcEvolutionState state)
+        {
+            var terrainSystem = SpiritsCrossing.World.TerrainResonanceSystem.Instance;
+            if (terrainSystem == null) return;
+
+            state.terrainPull = terrainSystem.ComputeNpcTerrainAffinity(state.spectralDrift);
+            var preferred = terrainSystem.GetNpcPreferredTerrain(state.spectralDrift);
+            state.preferredTerrain = preferred.ToString();
         }
 
         // -------------------------------------------------------------------------
@@ -255,10 +284,16 @@ namespace SpiritsCrossing.Autonomous
                 config.equilibriumSpectral.violet,
             };
 
+            // Drift freedom widens with experience — more experience = more freedom to change
+            float driftClamp = DEFAULT_DRIFT_CLAMP;
+            var autonomy = NpcAutonomySystem.Instance?.GetState(state.archetypeId);
+            if (autonomy != null)
+                driftClamp = autonomy.DriftFreedom; // 0.25 → 0.50 based on experience
+
             for (int i = 0; i < 7; i++)
             {
                 float drift = (equilibrium[i] - 0.5f) * SPECTRAL_DRIFT_RATE * state.activity;
-                state.spectralDrift[i] = Mathf.Clamp(state.spectralDrift[i] + drift, -0.25f, 0.25f);
+                state.spectralDrift[i] = Mathf.Clamp(state.spectralDrift[i] + drift, -driftClamp, driftClamp);
             }
         }
 
@@ -312,6 +347,50 @@ namespace SpiritsCrossing.Autonomous
 
         public float GetCoherence(string archetypeId) => GetState(archetypeId)?.coherence ?? 0f;
         public float GetActivity(string archetypeId)  => GetState(archetypeId)?.activity  ?? 0f;
+
+        // -------------------------------------------------------------------------
+        // Live step — RUE EngineLoop.step() equivalent during live play
+        //
+        // Called by RUELiveLoop every liveStepInterval seconds.
+        // Advances every NPC one step, then pushes evolved spectral signatures back
+        // into VibrationalResonanceSystem so harmony scoring stays current.
+        //
+        // This closes Gap 1 (NPCs freeze during play) and Gap 2 (evolved spectral
+        // never reaches harmony scoring) from the RUE incorporation audit.
+        // -------------------------------------------------------------------------
+        public void AdvanceLiveStep()
+        {
+            if (!_loaded) return;
+
+            var universe = UniverseStateManager.Instance?.Current;
+            if (universe == null) return;
+
+            foreach (var state in universe.npcStates)
+            {
+                StepNpc(state, 1);
+                PushSpectralToVibrationalSystem(state);
+            }
+        }
+
+        /// <summary>
+        /// Push an NPC's current evolved spectral signature into VibrationalResonanceSystem
+        /// so live harmony scoring uses the post-drift field rather than the static
+        /// profile loaded at startup.
+        /// </summary>
+        private void PushSpectralToVibrationalSystem(NpcEvolutionState state)
+        {
+            var vibSystem = SpiritsCrossing.Vibration.VibrationalResonanceSystem.Instance;
+            if (vibSystem == null) return;
+
+            float[] spec = GetEffectiveSpectral(state.archetypeId);
+            var field = new SpiritsCrossing.Vibration.VibrationalField(
+                spec[0], spec[1], spec[2], spec[3], spec[4], spec[5], spec[6]);
+
+            // Register under both the original archetype id and any shifted archetype
+            vibSystem.RegisterAnimalField(state.archetypeId, field);
+            if (state.currentArchetype != state.archetypeId)
+                vibSystem.RegisterAnimalField(state.currentArchetype, field);
+        }
         public string GetCurrentArchetype(string archetypeId)
             => GetState(archetypeId)?.currentArchetype ?? archetypeId;
 
@@ -335,5 +414,45 @@ namespace SpiritsCrossing.Autonomous
                 effective[i] = Mathf.Clamp01(baseline[i] + state.spectralDrift[i]);
             return effective;
         }
+
+        // -------------------------------------------------------------------------
+        // Spatial query — find NPCs near a world position
+        // Used by PortalSiteActivationSystem for cooperative portal activation.
+        // -------------------------------------------------------------------------
+        public List<NpcNearbyPresence> GetNpcsNearPosition(Vector3 position, float radius)
+        {
+            // Currently NPC positions are not spatially tracked (they live on
+            // planets, not in world-space). Return all NPCs on the current planet
+            // as a simplification — spatial tracking can be added when NPC world
+            // placement is implemented.
+            var universe = UniverseStateManager.Instance?.Current;
+            if (universe == null) return null;
+
+            var result = new List<NpcNearbyPresence>();
+            foreach (var state in universe.npcStates)
+            {
+                float[] spec = GetEffectiveSpectral(state.archetypeId);
+                var field = new VibrationalField(
+                    spec[0], spec[1], spec[2], spec[3], spec[4], spec[5], spec[6]);
+
+                result.Add(new NpcNearbyPresence
+                {
+                    archetypeId     = state.archetypeId,
+                    vibrationalField = field,
+                    activity         = state.activity,
+                });
+            }
+            return result;
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Lightweight presence data returned by spatial NPC queries
+    // -------------------------------------------------------------------------
+    public class NpcNearbyPresence
+    {
+        public string           archetypeId;
+        public VibrationalField vibrationalField;
+        public float            activity;
     }
 }

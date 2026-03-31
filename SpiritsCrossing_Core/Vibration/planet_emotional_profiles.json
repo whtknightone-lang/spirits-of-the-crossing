@@ -1,0 +1,88 @@
+{
+  "profiles": [
+    {
+      "planetId": "ForestHeart",
+      "element": "Earth",
+      "description": "Nurturing calm. The forest remembers stillness and rewards it with peace. Love grows slowly here, like roots.",
+      "weights": {
+        "stillness": 1.60,
+        "peace":     1.55,
+        "joy":       0.85,
+        "love":      1.20,
+        "source":    0.90
+      },
+      "modulationStrength": 0.45,
+      "modulationStyle": "gentle"
+    },
+    {
+      "planetId": "SkySpiral",
+      "element": "Air",
+      "description": "Expansive wonder. The sky lifts joy and source connection but doesn't hold stillness easily. Everything here wants to fly.",
+      "weights": {
+        "stillness": 0.65,
+        "peace":     0.85,
+        "joy":       1.40,
+        "love":      0.90,
+        "source":    1.50
+      },
+      "modulationStrength": 0.50,
+      "modulationStyle": "gentle"
+    },
+    {
+      "planetId": "WaterFlow",
+      "element": "Water",
+      "description": "Communal flow. The ocean amplifies love and social connection. Peace rises naturally with the tides. Joy moves like currents.",
+      "weights": {
+        "stillness": 0.90,
+        "peace":     1.30,
+        "joy":       1.15,
+        "love":      1.65,
+        "source":    1.00
+      },
+      "modulationStrength": 0.50,
+      "modulationStyle": "gentle"
+    },
+    {
+      "planetId": "DarkContrast",
+      "element": "Fire",
+      "description": "Transformative fire. Joy here is fierce — the joy of overcoming, of intensity met and survived. Peace is dampened but source burns bright.",
+      "weights": {
+        "stillness": 0.55,
+        "peace":     0.50,
+        "joy":       1.55,
+        "love":      0.75,
+        "source":    1.35
+      },
+      "modulationStrength": 0.60,
+      "modulationStyle": "intense"
+    },
+    {
+      "planetId": "MachineOrder",
+      "element": "Earth",
+      "description": "Precise engagement. Stillness and joy find balance in rhythm. Love is muted — the machine respects precision over connection.",
+      "weights": {
+        "stillness": 1.25,
+        "peace":     1.10,
+        "joy":       1.20,
+        "love":      0.65,
+        "source":    0.85
+      },
+      "modulationStrength": 0.40,
+      "modulationStyle": "gentle"
+    },
+    {
+      "planetId": "SourceVeil",
+      "element": "Source",
+      "description": "Deep mystery. Source and peace dominate. The veil rewards stillness and dissolves the boundary between self and world.",
+      "weights": {
+        "stillness": 1.35,
+        "peace":     1.45,
+        "joy":       0.70,
+        "love":      1.10,
+        "source":    1.80
+      },
+      "modulationStrength": 0.55,
+      "modulationStyle": "gentle"
+    }
+  ]
+}

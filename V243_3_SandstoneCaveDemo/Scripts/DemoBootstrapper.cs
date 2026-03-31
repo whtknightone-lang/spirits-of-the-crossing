@@ -8,6 +8,7 @@ namespace V243.SandstoneCave
         public CaveSessionController sessionController;
         public PlanetAffinityInterpreter affinityInterpreter;
         public PlayerResponseTracker responseTracker;
+        public CaveOriginStoryNarrator originStoryNarrator;
 
         private void Start()
         {
@@ -21,7 +22,15 @@ namespace V243.SandstoneCave
                 responseTracker.ResetTracking();
             }
 
-            if (sessionController != null && !sessionController.sessionRunning)
+            // If the origin story narrator is present, it will handle session start
+            // after the story completes. Otherwise fall back to direct start.
+            if (originStoryNarrator != null)
+            {
+                // Narrator handles session start — don't start manually
+                if (sessionController != null)
+                    sessionController.autoStart = false;
+            }
+            else if (sessionController != null && !sessionController.sessionRunning)
             {
                 sessionController.StartSession();
             }

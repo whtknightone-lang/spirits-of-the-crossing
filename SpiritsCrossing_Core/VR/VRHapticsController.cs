@@ -398,6 +398,160 @@ namespace SpiritsCrossing.VR
         }
 
         // -------------------------------------------------------------------------
+        // Portal Glimpse haptic patterns — each realm has a distinct feel
+        // Called by PortalGlimpseSystem during the realm preview sequence.
+        // -------------------------------------------------------------------------
+        public void PlayGlimpseHaptic(string patternKey, float duration)
+        {
+            switch (patternKey)
+            {
+                case "glimpse_source":
+                    // Peace, calm, warmth — slow deep bilateral rumble
+                    StartCoroutine(GlimpseSource(duration));
+                    break;
+                case "glimpse_fire":
+                    // Martial energy — sharp rhythmic pulses, drumbeat
+                    StartCoroutine(GlimpseFire(duration));
+                    break;
+                case "glimpse_forest":
+                    // Hiking, grounding — steady alternating left-right footsteps
+                    StartCoroutine(GlimpseForest(duration));
+                    break;
+                case "glimpse_sky":
+                    // Climbing, ascending — rising bilateral shimmer
+                    StartCoroutine(GlimpseSky(duration));
+                    break;
+                case "glimpse_machine":
+                    // Precision gears — metronomic clicks, locked rhythm
+                    StartCoroutine(GlimpseMachine(duration));
+                    break;
+                case "glimpse_ocean":
+                    // Waves — flowing bilateral wash, tidal breath
+                    StartCoroutine(GlimpseOcean(duration));
+                    break;
+                case "glimpse_martial":
+                    // Sacred combat — alternating drumbeat, Hero Twins' ball game
+                    StartCoroutine(GlimpseMartial(duration));
+                    break;
+            }
+        }
+
+        // Source: slow, deep, sustained bilateral warmth — like being held
+        private IEnumerator GlimpseSource(float duration)
+        {
+            float end = Time.time + duration;
+            while (Time.time < end)
+            {
+                float i = 0.30f * globalIntensityScale;
+                Pulse(_leftController,  i, 0.4f);
+                Pulse(_rightController, i, 0.4f);
+                yield return new WaitForSeconds(1.2f);
+            }
+        }
+
+        // Fire: sharp staccato drumbeats — alternating hands, increasing intensity
+        private IEnumerator GlimpseFire(float duration)
+        {
+            float end = Time.time + duration;
+            float t = 0f;
+            bool left = true;
+            while (Time.time < end)
+            {
+                t += 0.35f;
+                float ramp = Mathf.Clamp01(t / duration);
+                float i = (0.40f + ramp * 0.35f) * globalIntensityScale;
+                Pulse(left ? _leftController : _rightController, i, 0.08f);
+                left = !left;
+                yield return new WaitForSeconds(0.35f);
+            }
+        }
+
+        // Forest: steady alternating footsteps — left, right, left, right
+        private IEnumerator GlimpseForest(float duration)
+        {
+            float end = Time.time + duration;
+            bool left = true;
+            while (Time.time < end)
+            {
+                float i = 0.35f * globalIntensityScale;
+                Pulse(left ? _leftController : _rightController, i, 0.15f);
+                left = !left;
+                yield return new WaitForSeconds(0.7f); // walking pace
+            }
+        }
+
+        // Sky: rising shimmer — bilateral pulses that get lighter and faster
+        private IEnumerator GlimpseSky(float duration)
+        {
+            float end = Time.time + duration;
+            float t = 0f;
+            while (Time.time < end)
+            {
+                t += Time.deltaTime;
+                float ramp = Mathf.Clamp01(t / duration);
+                // Intensity decreases (lighter), speed increases (faster)
+                float i = (0.45f - ramp * 0.20f) * globalIntensityScale;
+                float gap = Mathf.Lerp(0.6f, 0.15f, ramp);
+                Pulse(_leftController,  i, 0.06f);
+                Pulse(_rightController, i, 0.06f);
+                yield return new WaitForSeconds(gap);
+            }
+        }
+
+        // Machine: metronomic clicks — precise, even, bilateral, locked tempo
+        private IEnumerator GlimpseMachine(float duration)
+        {
+            float end = Time.time + duration;
+            while (Time.time < end)
+            {
+                float i = 0.50f * globalIntensityScale;
+                // Both hands simultaneously — the machine is synchronised
+                Pulse(_leftController,  i, 0.04f);
+                Pulse(_rightController, i, 0.04f);
+                yield return new WaitForSeconds(0.4f); // metronome at 150 BPM
+            }
+        }
+
+        // Ocean: tidal wash — intensity rises and falls like waves
+        private IEnumerator GlimpseOcean(float duration)
+        {
+            float end = Time.time + duration;
+            float phase = 0f;
+            while (Time.time < end)
+            {
+                phase += Time.deltaTime;
+                float wave = (Mathf.Sin(phase * 0.8f) + 1f) * 0.5f; // ~4s tidal period
+                float i = (0.15f + wave * 0.35f) * globalIntensityScale;
+                // Left leads slightly — wave washing left to right
+                Pulse(_leftController,  i, 0.08f);
+                yield return new WaitForSeconds(0.12f);
+                Pulse(_rightController, i * 0.85f, 0.08f);
+                yield return new WaitForSeconds(0.15f);
+            }
+        }
+
+        // Martial: alternating drumbeat — the Hero Twins' ball court rhythm
+        private IEnumerator GlimpseMartial(float duration)
+        {
+            float end = Time.time + duration;
+            bool left = true;
+            float t = 0f;
+            while (Time.time < end)
+            {
+                t += 0.30f;
+                float ramp = Mathf.Clamp01(t / duration);
+                // Intensity builds then holds — discipline through repetition
+                float i = (0.35f + ramp * 0.25f) * globalIntensityScale;
+                Pulse(left ? _leftController : _rightController, i, 0.07f);
+                left = !left;
+                yield return new WaitForSeconds(0.30f); // martial tempo
+            }
+            // Final bilateral thud — victory
+            Pulse(_leftController,  0.65f * globalIntensityScale, 0.12f);
+            Pulse(_rightController, 0.65f * globalIntensityScale, 0.12f);
+        }
+
+        // -------------------------------------------------------------------------
         // Core haptic send
         // -------------------------------------------------------------------------
         private static void Pulse(InputDevice device, float amplitude, float duration)

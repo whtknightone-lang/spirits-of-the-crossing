@@ -1,0 +1,92 @@
+{
+  "forest": {
+    "seedling":  "Your friend found a hidden trail through the soft green moss. The trees are humming a song just for you.",
+    "explorer":  "The forest stirs around you. Roots shift and leaves whisper — something old is waking.",
+    "voyager":   "The forest myth deepens. Ancient growth responds to your resonance. Overgrown temples and stone rings pulse faintly."
+  },
+  "sky": {
+    "seedling":  "Look up! The clouds are swirling into shapes — a spiral, a wing, a smile. The sky is playing with you!",
+    "explorer":  "The sky opens in spirals. Wind patterns follow your breath. Something above is watching and learning.",
+    "voyager":   "Sky myth activates. Spiral currents respond to spin stability. The atmosphere carries traces of ancient flight."
+  },
+  "ocean": {
+    "seedling":  "The tide pool sparkles! Little fish dart around, and the water hums a gentle tune. Dip your hand in — it's warm.",
+    "explorer":  "The ocean pulls gently. Currents align with your flow and calm. Deeper waters hold something patient.",
+    "voyager":   "Ocean myth resonates. Deep currents mirror your flow state. The water remembers every visitor."
+  },
+  "source": {
+    "seedling":  "A soft, warm glow rises from the ground. It feels like a hug from the world itself. Close your eyes and breathe.",
+    "explorer":  "The source hums beneath everything. When you are still, you can feel it — the heartbeat under the world.",
+    "voyager":   "Source myth intensifies. Stillness and alignment open deeper communion. The veil between player and origin thins."
+  },
+  "elder": {
+    "seedling":  "Something very old and very kind is nearby. It has been here since before the stars. It is happy you came.",
+    "explorer":  "An elder presence stirs. It has watched many travelers. It sees something in you that others missed.",
+    "voyager":   "Elder myth activated. Ancient intelligence recognizes the bond pattern. Deeper history begins to surface."
+  },
+  "wonder": {
+    "seedling":  "Your eyes go wide — everything glows a little brighter! Your companion bounces with excitement. What did you find?",
+    "explorer":  "Wonder fills the air. The world leans in, curious about what you will do next.",
+    "voyager":   null
+  },
+  "friendship": {
+    "seedling":  "Your companion presses close and purrs. You did something kind, and the whole world noticed.",
+    "explorer":  "The bond between you and your companion deepens. Something warm echoes through the realm.",
+    "voyager":   null
+  },
+  "garden": {
+    "seedling":  "Flowers bloom where you walk! Tiny butterflies land on your shoulder. The garden grows because you are calm.",
+    "explorer":  "The garden responds to your stillness. Vines unfurl and blossoms open in quiet recognition.",
+    "voyager":   null
+  },
+  "starlight": {
+    "seedling":  "Stars appear even though it's daytime! They twinkle and dance above you. One floats down and rests on your hand.",
+    "explorer":  "Starlight pierces through. Constellations shift to match the shape of your wonder.",
+    "voyager":   null
+  },
+  "discovery": {
+    "seedling":  "Your spirit friend tilts its head — it just learned something new from watching you! It chirps happily.",
+    "explorer":  "The AI spirit pauses and recalibrates. It found a pattern in your behavior it hadn't seen before.",
+    "voyager":   null
+  },
+  "insight": {
+    "seedling":  "Your companion glows a little brighter — it figured something out! It wants to show you what it learned.",
+    "explorer":  "An insight crystallizes in the spirit network. The AI shares what it discovered about your resonance pattern.",
+    "voyager":   null
+  },
+  "exploration": {
+    "seedling":  "Let's go see what's over there! Your companion runs ahead, tail wagging, leading you somewhere new and safe.",
+    "explorer":  "The AI spirits fan out, mapping new territory. They report back what they find — inviting you deeper.",
+    "voyager":   null
+  },
+  "storm": {
+    "seedling":  null,
+    "explorer":  "Thunder rolls in the distance. The world tests your resolve — but your companion stands firm beside you.",
+    "voyager":   "Storm myth surges. Distortion fields intensify. The world pushes back against comfortable patterns."
+  },
+  "fire": {
+    "seedling":  null,
+    "explorer":  "Warmth rises — not danger, but intensity. The fire realm calls to those who spin with courage.",
+    "voyager":   "Fire myth ignites. Spin and distortion combine into transformative intensity. The realm burns away what is false."
+  },
+  "harmony": {
+    "seedling":  "All the colors of the world sing together! Your companion dances and the flowers and stars join in!",
+    "explorer":  "All four elements hum in balance. You have touched each one, and they remember.",
+    "voyager":   "Harmony myth achieved. All elemental bonds converge. The cosmos recognizes a complete resonance signature."
+  },
+  "wanderer": {
+    "seedling":  "You have visited so many places! The map fills with little stars wherever you have been.",
+    "explorer":  "The cosmos map lights up — you are becoming a true wanderer. Planets remember your visits.",
+    "voyager":   "Wanderer myth activated. Multiple planetary histories converge. The universe maps your trajectory."
+  },
+  "convergence": {
+    "seedling":  "All your animal friends are here together! They form a circle around you and the world shines.",
+    "explorer":  "Your companion bonds converge into something greater. The animals form a living constellation.",
+    "voyager":   "Convergence myth achieved. Five or more companion bonds reach full depth. A collective intelligence stirs."
+  },
+  "rebirth": {
+    "seedling":  null,
+    "explorer":  "The universe hums with renewal. Something vast is preparing to begin again — and you are part of it.",
+    "voyager":   "Rebirth potential reaches critical threshold. The universe cycle nears completion. Transformation approaches."
+  }
+}

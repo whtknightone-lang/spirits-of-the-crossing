@@ -147,8 +147,10 @@ namespace SpiritsCrossing.Companions
                 if (score >= profile.bondThreshold)
                 {
                     // Grow bond — slower for higher tier companions
+                    // Age-tier scaling: younger players bond faster
+                    float ageBondMult = UniverseStateManager.Instance?.Current?.AgeTierConfig?.companionBondMultiplier ?? 1f;
                     float tierMultiplier = 1f / profile.tier;
-                    float growth = score * bondGrowthRate * tierMultiplier * updateInterval * 0.015f;
+                    float growth = score * bondGrowthRate * tierMultiplier * ageBondMult * updateInterval * 0.015f;
                     bond.bondLevel = Mathf.Clamp01(bond.bondLevel + growth);
                     bond.lastSeenUtc = DateTime.UtcNow.ToString("o");
                 }

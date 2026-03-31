@@ -1,0 +1,486 @@
+{
+  "worldAnimals": [
+    {
+      "worldId": "ForestHeart",
+      "realmId": "ForestRealm",
+      "residents": [
+        {
+          "animalId": "elder_white_stag",
+          "spawnCondition": "dawn_near_sanctum",
+          "storyGrimm": "The white hart that no hunter can catch. It leads the lost child through the dark wood to the clearing where the grandmother waits.",
+          "storyIndigenous": "White Deer walks the old paths. Where its hooves touch, the earth remembers how to heal. It only shows itself to those who have stopped running.",
+          "storyAsian": "In the bamboo forest, a white deer with golden antlers appears to the monk who has walked in silence for forty days. It bows once and the path opens.",
+          "storyArabian": "In the garden of the sleeping king, a silver stag guards the tree of memory. Only the truly patient may approach."
+        },
+        {
+          "animalId": "tiger",
+          "spawnCondition": "rootDepth_above_0.5",
+          "storyGrimm": "The great cat that sleeps beneath the roots of the world-tree. When it opens one eye, the forest holds its breath.",
+          "storyIndigenous": "Mountain Lion sits in the shadow of the oldest cedar. It does not move. Its stillness is its power.",
+          "storyAsian": "The tiger descends from the mountain painting. It has watched the same valley for a thousand years. It knows every leaf.",
+          "storyArabian": "In the sultan's forbidden garden, a tiger paces behind jasmine walls. It is not caged — it chose to stay."
+        },
+        {
+          "animalId": "bison",
+          "spawnCondition": "forestResonance_above_0.4",
+          "storyGrimm": "The great ox who carries the world on its back. When it stamps its foot, new rivers are born.",
+          "storyIndigenous": "White Buffalo comes when the people remember how to listen to the ground. Its breath is the wind through prairie grass.",
+          "storyAsian": "The ox in the tenth painting stands in an empty field. It has returned home. There was never anywhere else to go.",
+          "storyArabian": "The bull of the earth stands in the cave beneath the mountain. Its heartbeat is the drum the world dances to."
+        },
+        {
+          "animalId": "groundhog",
+          "spawnCondition": "always_in_zone",
+          "storyGrimm": "The little creature who knows whether winter will end. It reads the shadow and tells the truth.",
+          "storyIndigenous": "Mole digs the first tunnel. 'There are whole worlds down here,' Mole says. 'You just have to be small enough to fit.'",
+          "storyAsian": "The badger monk lives under the temple steps. It meditates upside down and sees the world more clearly than anyone.",
+          "storyArabian": "Beneath the bazaar, a small creature keeps the accounts of every kind deed. Its ledger is longer than the street above."
+        },
+        {
+          "animalId": "mouse",
+          "spawnCondition": "always_in_zone",
+          "storyGrimm": "The mouse who freed the lion from the net. The smallest help matters most.",
+          "storyIndigenous": "Mouse sees what Eagle misses — the tiny flowers, the single seed, the smallest prayer.",
+          "storyAsian": "The temple mouse carries a grain of rice to the offering bowl every morning. The monks pretend not to notice.",
+          "storyArabian": "A mouse gnaws through the rope that holds the treasure chest shut. 'Every knot has a weakness,' it says."
+        },
+        {
+          "animalId": "snake",
+          "spawnCondition": "sourceAlignment_above_0.35",
+          "storyGrimm": "The white serpent whose flesh grants the power to understand all living speech.",
+          "storyIndigenous": "Serpent sheds its skin and is reborn. It knows the oldest road — the one that circles back to the beginning.",
+          "storyAsian": "The dragon that was once a river. It still flows. You can hear it if you press your ear to the stone.",
+          "storyArabian": "The serpent in the well guards the water of life. It does not bite — it asks a question. Answer truly and drink."
+        },
+        {
+          "animalId": "parrot",
+          "spawnCondition": "near_temple_causeway",
+          "storyGrimm": "The bird that repeats every word until you hear what you actually said.",
+          "storyIndigenous": "Parrot carries the colors of every season in its feathers. It speaks the language of laughter.",
+          "storyAsian": "In the palace of the monkey king, a parrot recites poetry it has heard from a thousand travelers.",
+          "storyArabian": "Scheherazade's parrot remembers every story ever told and tells them back in a different order."
+        },
+        {
+          "animalId": "forest_hawk",
+          "spawnCondition": "near_temple_tower",
+          "storyGrimm": "The hawk that nests in the tower where the princess sleeps. It watches over her dreams.",
+          "storyIndigenous": "Hawk sees the mouse and the mountain in the same glance. It teaches the balance between close and far.",
+          "storyAsian": "The temple hawk circles the pagoda. Monks read its flight path like a sutra.",
+          "storyArabian": "The falcon of the king sees truth from a hundred leagues. It never lies about what it finds."
+        },
+        {
+          "animalId": "chipmunk",
+          "spawnCondition": "always_in_zone",
+          "storyGrimm": "The little one who stole three stripes from the dawn and wears them on its back forever.",
+          "storyIndigenous": "Chipmunk races Rabbit. Chipmunk wins — not by speed, but by knowing a shortcut through the roots.",
+          "storyAsian": "A tiny spirit runs along the temple eaves carrying a single acorn. Inside the acorn: a whole forest, sleeping.",
+          "storyArabian": "The smallest djinn hides in a walnut shell and grants wishes the size of heartbeats."
+        }
+        ,{
+          "animalId": "spirit_monkey",
+          "spawnCondition": "always_in_zone",
+          "storyGrimm": "The monkey who stole the golden key from the giant's pocket while the giant was counting his gold. It didn't want the gold. It wanted the key.",
+          "storyIndigenous": "Monkey swings between the branches of the world-tree. Every branch is a different story. Monkey has read them all and mixed them up on purpose.",
+          "storyAsian": "The Monkey King who fought heaven and lost, then sat under a mountain for five hundred years and learned the one thing fighting couldn't teach.",
+          "storyArabian": "In the sultan's garden, a monkey solves the puzzle-lock that has stumped every vizier. It takes five seconds. Then it eats a fig."
+        },
+        {
+          "animalId": "great_macaw",
+          "spawnCondition": "always_in_zone",
+          "storyGrimm": "The bird whose feathers are every color the forest has ever worn. It screams at dawn and the trees remember their names.",
+          "storyIndigenous": "Great Macaw carries the seeds of the first forest in its crop. Wherever it lands and calls, a new grove begins.",
+          "storyAsian": "The phoenix's loud cousin. It has no fire, but it has every color, and color is older than flame.",
+          "storyArabian": "The bird of the hanging gardens. Its call opens flowers. Its silence closes them."
+        },
+        {
+          "animalId": "koi",
+          "spawnCondition": "near_river_or_pond",
+          "storyGrimm": "The golden fish in the well who grants three wishes — but only to those who sit long enough to see it.",
+          "storyIndigenous": "The painted fish that swims in every sacred pool. It carries prayers downstream to where the water meets the earth.",
+          "storyAsian": "The koi that swam upstream for a thousand years. At the top of the waterfall, it became a dragon. But it still remembers being a fish.",
+          "storyArabian": "In the courtyard fountain, a fish with scales of hammered gold. It has heard every conversation held beside the water. It keeps every secret."
+        },
+        {
+          "animalId": "otter",
+          "spawnCondition": "near_river_or_pond",
+          "storyGrimm": "The creature that taught children how to slide down hills and laugh at the bottom. Some lessons require no words.",
+          "storyIndigenous": "Otter knows every river by taste. 'This one is happy,' Otter says. 'This one is remembering. This one is about to sing.'",
+          "storyAsian": "The river monk who meditates by floating on its back. It has achieved enlightenment and decided to keep playing anyway.",
+          "storyArabian": "The creature that swims beneath the merchant's barge and tickles the hull. The merchant thinks the river is laughing. He's right."
+        }
+      ],
+      "visitors": ["raven", "eagle", "seal"]
+    },
+    {
+      "worldId": "SkySpiral",
+      "realmId": "SkyRealm",
+      "residents": [
+        {
+          "animalId": "harpy_eagle",
+          "spawnCondition": "skyResonance_above_0.5",
+          "storyGrimm": "The eagle with a crown of storm feathers. It flies above the glass mountain where no one else can breathe.",
+          "storyIndigenous": "Thunderbird opens its wings and lightning falls like rain. It is not angry — it is singing.",
+          "storyAsian": "Garuda carries the gods between worlds. Its wingbeat is the sound between heartbeats.",
+          "storyArabian": "The Roc's shadow covers the valley. It is so large it carries elephants. But it is gentle with the small."
+        },
+        {
+          "animalId": "eagle",
+          "spawnCondition": "summit_or_nesting_ground",
+          "storyGrimm": "The eagle who sits atop the world-ash. It sees past, present, and the shape of what comes next.",
+          "storyIndigenous": "Eagle carries prayers to the sky people. It flies so high that its feathers touch the stars.",
+          "storyAsian": "The golden eagle perches on the sword of the wind god. Where it looks, the wind follows.",
+          "storyArabian": "The eagle of Sinbad's mountain. 'Climb on,' it says. 'I will show you what brave looks like from above.'"
+        },
+        {
+          "animalId": "hawk",
+          "spawnCondition": "spinLift_above_0.3",
+          "storyGrimm": "The hawk that teaches the prince to see truly — not with eyes, but with falling.",
+          "storyIndigenous": "Red-tailed Hawk hangs in the wind without moving. It teaches: 'Stillness in motion is the highest art.'",
+          "storyAsian": "The hawk on the warrior's arm. It does not hunt for food. It hunts for the moment when everything is clear.",
+          "storyArabian": "The sultan's hawk returns with a jewel in its talons — not from the earth, but from the cloud palace above."
+        },
+        {
+          "animalId": "raven",
+          "spawnCondition": "near_aerial_ruin",
+          "storyGrimm": "Two ravens sit on the old god's shoulders. One remembers, one thinks. Together they see everything.",
+          "storyIndigenous": "Raven stole the sun and hid it in a box. Then opened the box and laughed. That laugh became daylight.",
+          "storyAsian": "The three-legged crow lives inside the sun. It carries messages between heaven and earth.",
+          "storyArabian": "A raven leads the lost prince through the labyrinth. 'Follow the one who flies crooked,' the wise woman said."
+        },
+        {
+          "animalId": "macaw",
+          "spawnCondition": "always_in_zone",
+          "storyGrimm": "The bird of seven colors who sings the rainbow back into the sky after every storm.",
+          "storyIndigenous": "Macaw carries the first colors from the spirit world. Each feather is a different song.",
+          "storyAsian": "The phoenix's little cousin — too joyful to burn, too colorful to hide.",
+          "storyArabian": "In the garden of the djinn, parrots argue in verse. The winner gets to name the next color of sunset."
+        }
+        ,{
+          "animalId": "spirit_monkey",
+          "spawnCondition": "near_aerial_ruin",
+          "storyGrimm": "The monkey that lives in the ruined tower. It throws down puzzles to anyone who tries to climb up.",
+          "storyIndigenous": "Sky Monkey rides the thermals. It doesn't have wings — it has confidence. And very long arms.",
+          "storyAsian": "The monkey on the cloud. It learned to fly by refusing to believe it couldn't.",
+          "storyArabian": "The djinn's monkey sits on the minaret and imitates the muezzin's call. The djinn pretends to be annoyed. It is secretly proud."
+        },
+        {
+          "animalId": "great_macaw",
+          "spawnCondition": "always_in_zone",
+          "storyGrimm": "The bird that outflew the storm by laughing at the thunder. Color is lighter than rain.",
+          "storyIndigenous": "Great Macaw flies between the cloud people and the ground people. It is the only messenger that both sides trust, because it never carries bad news.",
+          "storyAsian": "In the sky kingdom, this bird announces the changing of the wind gods. Its voice carries from horizon to horizon.",
+          "storyArabian": "The Roc's jest-keeper. It sits on the Roc's head and tells jokes so old that even the clouds laugh."
+        }
+      ],
+      "visitors": ["griffin", "osprey", "koi", "otter"]
+    },
+    {
+      "worldId": "WaterFlow",
+      "realmId": "OceanRealm",
+      "residents": [
+        {
+          "animalId": "whale",
+          "spawnCondition": "deepResonance_above_0.5",
+          "storyGrimm": "The fish that swallowed the boy. Inside its belly: a whole city, still lit, still breathing.",
+          "storyIndigenous": "Whale sings the ocean's memory. Its song reaches from shore to shore. Every wave is a verse.",
+          "storyAsian": "Ryūjin rides a whale between the tidal palaces. 'The ocean is not deep,' the dragon says. 'You are.'",
+          "storyArabian": "The whale that carries the world on its back. When it shifts, the tides change. When it dreams, storms come."
+        },
+        {
+          "animalId": "kraken",
+          "spawnCondition": "trench_discovered",
+          "storyGrimm": "The sea-witch's oldest friend. It is not dark — it is vast. It holds the deepest library in its arms.",
+          "storyIndigenous": "The great octopus painted the first cave art — eight arms, eight colors, eight stories at once.",
+          "storyAsian": "The dragon turtle sleeps at the bottom of the sea. Its shell is an island. Its dreams are currents.",
+          "storyArabian": "At the bottom of the seventh sea, a creature with a thousand eyes. Each eye holds a different truth."
+        },
+        {
+          "animalId": "dolphin",
+          "spawnCondition": "always_in_shallows",
+          "storyGrimm": "The fish that saved the drowning musician and carried them to an island made of song.",
+          "storyIndigenous": "Dolphin teaches: 'Breathe together and the ocean parts. Play together and nothing can sink you.'",
+          "storyAsian": "River dolphins guide lost boats home. They know every bend, every stone, every sleeping crocodile.",
+          "storyArabian": "The djinn of the sea takes the form of a dolphin to test whether sailors have kind hearts."
+        },
+        {
+          "animalId": "octopus",
+          "spawnCondition": "bioluminescent_zone_active",
+          "storyGrimm": "The creature that knits the sea-king's robe from moonlight threads. Each arm holds a different skill.",
+          "storyIndigenous": "Octopus changes color to match whatever it loves. It cannot lie. Its skin is its heart.",
+          "storyAsian": "The ink-painter of the deep. Every cloud of ink becomes a landscape. Every escape is a masterpiece.",
+          "storyArabian": "In the palace of coral, an architect with eight arms builds rooms that rearrange themselves each tide."
+        },
+        {
+          "animalId": "starfish",
+          "spawnCondition": "always_in_shallows",
+          "storyGrimm": "The star that fell into the sea and grew arms so it could hold the ocean floor.",
+          "storyIndigenous": "Starfish teaches regeneration. 'If you lose a part of yourself, grow it back. You remember how.'",
+          "storyAsian": "The sea-star meditates at the tide line. Half in water, half in air. The place between is the place of power.",
+          "storyArabian": "A thousand fallen stars became a carpet on the sea floor. Walk on them and your wishes come back to life."
+        },
+        {
+          "animalId": "gull",
+          "spawnCondition": "always_in_zone",
+          "storyGrimm": "The bird that lives between sky and sea, belonging to both, owned by neither.",
+          "storyIndigenous": "Seagull carries messages between the water people and the sky people. It complains about the commute.",
+          "storyAsian": "The crane of the shore — not the elegant one, but the scrappy one. It survives everything and laughs about it.",
+          "storyArabian": "The shore bird that stole a fish from the fisherman and returned it to the sea. 'Some things belong where they are.'"
+        },
+        {
+          "animalId": "pelican",
+          "spawnCondition": "near_coral_garden",
+          "storyGrimm": "The mother bird who feeds her children from her own heart. The original act of generosity.",
+          "storyIndigenous": "Pelican carries water to the desert animals in its great pouch. It asks for nothing in return.",
+          "storyAsian": "The pelican's pouch holds a lake. It shares it drop by drop with anyone who is thirsty.",
+          "storyArabian": "The generous bird of the harbor. Sailors say: feed a pelican and your voyage will be calm."
+        },
+        {
+          "animalId": "osprey",
+          "spawnCondition": "tidalFlow_above_0.5",
+          "storyGrimm": "The fisher-king's bird. It dives between worlds and brings back silver truth.",
+          "storyIndigenous": "Osprey's feet grip the water without breaking the surface. It takes only what it needs.",
+          "storyAsian": "The bird that fishes with its shadow. By the time the prey sees the real talons, the lesson is already learned.",
+          "storyArabian": "The osprey nests on the mast of every great ship. 'I am your good luck,' it says. 'And your conscience.'"
+        }
+        ,{
+          "animalId": "otter",
+          "spawnCondition": "always_in_shallows",
+          "storyGrimm": "The otter who taught the mermaids to laugh. They had been too beautiful and too serious for too long.",
+          "storyIndigenous": "Sea Otter floats on the waves holding a stone on its belly. It cracks open truth the way it cracks open shells — with patience and a good rock.",
+          "storyAsian": "The river otter who became a sea otter when the river met the ocean. It did not choose sides. It chose both.",
+          "storyArabian": "The harbor otter who guides lost ships by swimming ahead of their prow. Sailors call it the little pilot."
+        },
+        {
+          "animalId": "koi",
+          "spawnCondition": "near_river_or_pond",
+          "storyGrimm": "The fish at the bottom of the wishing pool. Every coin that falls is a story. Every story becomes a scale.",
+          "storyIndigenous": "The painted fish swims in the river between worlds. Its colors change with the season of the soul.",
+          "storyAsian": "One koi in every pond remembers being a dragon. You can tell which one — it swims against the current even when there is no current.",
+          "storyArabian": "In the palace reflecting pool, a hundred koi circle the moon's reflection. They have been circling since the palace was built. The moon does not mind."
+        },
+        {
+          "animalId": "walrus",
+          "spawnCondition": "near_coastline",
+          "storyGrimm": "The old man of the shore who tells riddles to the waves. The waves always answer, but nobody else can hear.",
+          "storyIndigenous": "Walrus sits at the place where land ends and water begins. It speaks both languages. It translates between them so neither side feels lonely.",
+          "storyAsian": "The shore guardian who watched the first boat leave and the last boat return. It remembers every voyage in between.",
+          "storyArabian": "The great tusked sage of the harbor. Ships ask its permission before they dock. It grants permission by closing its eyes. Denial is a bark."
+        },
+        {
+          "animalId": "seal",
+          "spawnCondition": "near_coastline",
+          "storyGrimm": "The seal who takes off its skin and dances on the shore at midnight. If you find the skin, you must give it back. That is the only rule.",
+          "storyIndigenous": "Seal sings to the moon and the moon raises the tide. 'We are in conversation,' Seal says. 'We have been talking since before you arrived.'",
+          "storyAsian": "The seal monks of the northern temple. They meditate on ice floes and their breath makes clouds the shape of mantras.",
+          "storyArabian": "The seal that guards the island of the seven sleepers. It barks once for each century they have slept. It is very hoarse."
+        }
+      ],
+      "visitors": ["snake", "raven", "spirit_monkey", "great_macaw"]
+    },
+    {
+      "worldId": "DarkContrast",
+      "realmId": "FireRealm",
+      "residents": [
+        {
+          "animalId": "fire_drake",
+          "spawnCondition": "phoenixRise_above_0.5",
+          "storyGrimm": "The dragon who sleeps on gold. But the gold is not coin — it is every brave deed ever done, melted together.",
+          "storyIndigenous": "Fire Serpent lives in the heart of the volcano. It is not angry. It is the earth's way of breathing out.",
+          "storyAsian": "The fire dragon coils around the pearl of courage. To claim the pearl, you must pass through the flame without flinching.",
+          "storyArabian": "The ifrit of the deepest lamp. It has burned for a thousand years and still has not consumed itself."
+        },
+        {
+          "animalId": "lion",
+          "spawnCondition": "willForce_above_0.4",
+          "storyGrimm": "The lion in the witch's castle who remembers it was once a prince. Courage returns when someone is kind.",
+          "storyIndigenous": "Mountain Lion guards the passage between the world of fear and the world of courage. You must meet its gaze.",
+          "storyAsian": "The guardian lions at the temple gate. One mouth open, one mouth closed — beginning and ending, breath in, breath out.",
+          "storyArabian": "Ali's lion — the one that bowed not to force, but to a heart that was fearless and gentle at the same time."
+        },
+        {
+          "animalId": "griffin",
+          "spawnCondition": "flamePressure_below_0.5_and_willForce_above_0.3",
+          "storyGrimm": "Half eagle, half lion — the guardian of gold that is not gold. It guards the treasure of self-knowledge.",
+          "storyIndigenous": "Thunderbird and Mountain Lion made a pact. Their child flies and roars and knows both sky and fire.",
+          "storyAsian": "The qilin appears when a true leader walks the earth. It does not judge power — it judges character.",
+          "storyArabian": "The beast that guards the valley of diamonds. It cannot be bribed, but it can be befriended."
+        },
+        {
+          "animalId": "jaguar",
+          "spawnCondition": "always_in_zone",
+          "storyGrimm": "The spotted cat that walks through shadows as if they were doors to other rooms.",
+          "storyIndigenous": "Jaguar is the night sun. It walks the underworld without fear because it carries its own light.",
+          "storyAsian": "The warrior's companion — the leopard that fights beside you and never ahead of you.",
+          "storyArabian": "The hunting cat of the desert prince. It runs like water over sand and strikes like a thrown star."
+        },
+        {
+          "animalId": "panther",
+          "spawnCondition": "distortion_below_0.3",
+          "storyGrimm": "The black cat from the forest's edge. It is not evil — it is the part of courage that looks like calm.",
+          "storyIndigenous": "Black Panther walks the shadow trail. Where others see darkness, Panther sees the road home.",
+          "storyAsian": "The shadow tiger. It moves without sound because it has nothing to prove and nothing to fear.",
+          "storyArabian": "The night guardian of the caravan. It paces the perimeter so the travelers can sleep."
+        },
+        {
+          "animalId": "mountain_lion",
+          "spawnCondition": "willForce_above_0.3",
+          "storyGrimm": "The wild cat on the high pass. It tests every climber. Those who keep walking, it lets pass. Those who run, it follows.",
+          "storyIndigenous": "Cougar teaches: 'Your power is not in your claws. It is in your willingness to use them only when you must.'",
+          "storyAsian": "The cat that guards the monastery gate. Students must sit with it for three days before they are allowed inside.",
+          "storyArabian": "The lion of the mountain pass. Merchants say: 'If it roars, you are going the right way.'"
+        }
+        ,{
+          "animalId": "fire_fox",
+          "spawnCondition": "willForce_above_0.3",
+          "storyGrimm": "The fox made of embers. It runs so fast that fire trails behind it like a scarf. Where it runs, dead wood catches flame and new things grow from the ash.",
+          "storyIndigenous": "Desert Fox knows every oasis by scent. It runs between water and fire and belongs to both. Its tracks glow for one heartbeat, then fade.",
+          "storyAsian": "The nine-tailed fox's youngest child. It only has one tail, but it's on fire, and that's enough.",
+          "storyArabian": "The fox of the burning sands. It outruns the simoom. The wind respects it because it does not try to stop — it tries to outthink."
+        },
+        {
+          "animalId": "spirit_monkey",
+          "spawnCondition": "willForce_above_0.3",
+          "storyGrimm": "The monkey that juggled the coals from the blacksmith's forge. It didn't get burned because it never held any single coal long enough.",
+          "storyIndigenous": "Fire Monkey dances on the caldera rim. It is not brave. It just knows exactly where the heat ends and the cool begins.",
+          "storyAsian": "The Monkey King walked through the furnace of heaven for forty-nine days. He came out with golden eyes that see through every illusion.",
+          "storyArabian": "The ifrit's pet monkey. It is the only creature that can make an ifrit laugh. Laughter cools even fire."
+        },
+        {
+          "animalId": "great_macaw",
+          "spawnCondition": "phoenixRise_above_0.3",
+          "storyGrimm": "The bird that flew through the fire and came out brighter. Its feathers are not burned — they are tempered.",
+          "storyIndigenous": "Fire Macaw screams at the volcano and the volcano answers. They are having an argument about who was here first. Neither will win.",
+          "storyAsian": "The phoenix's painting partner. The phoenix provides the fire. The macaw provides the color. Together they paint the sunset.",
+          "storyArabian": "The bird of the fire garden. It eats cinders and sings sparks. Its nest is made of cooled lava and old songs."
+        }
+      ],
+      "visitors": ["razorback_boar", "hawk", "koi", "otter"]
+    },
+    {
+      "worldId": "SourceVeil",
+      "realmId": "SourceRealm",
+      "residents": [
+        {
+          "animalId": "snake",
+          "spawnCondition": "sourceAlignment_above_0.35",
+          "storyGrimm": "The white serpent coiled around the root of the world-tree. It has eaten the fruit of knowing and forgotten nothing.",
+          "storyIndigenous": "Serpent is the oldest road. It moves without legs because it trusts the earth to carry it.",
+          "storyAsian": "The naga guards the pool of awakening. It does not test your strength. It tests your stillness.",
+          "storyArabian": "The serpent in the garden speaks only once. What it says is different for every listener."
+        },
+        {
+          "animalId": "octopus",
+          "spawnCondition": "veilThinning_above_0.3",
+          "storyGrimm": "The creature at the bottom of the wishing well. Every wish sinks down to it. It remembers them all.",
+          "storyIndigenous": "Octopus holds eight directions at once. It is the dreamkeeper — the one who weaves all stories into one.",
+          "storyAsian": "The ink-sage of the deep. It paints the truth on water, which means the truth is always moving.",
+          "storyArabian": "The keeper of the eighth door. Seven doors you can open with keys. The eighth opens when you stop trying."
+        },
+        {
+          "animalId": "groundhog",
+          "spawnCondition": "innerStillness_above_0.25",
+          "storyGrimm": "The creature who sleeps half the year. In its dreams, it solves the riddles the waking world cannot.",
+          "storyIndigenous": "Mole knows the way to the center of the earth. 'It's not far,' Mole says. 'You just have to be willing to go down.'",
+          "storyAsian": "The burrowing sage. It has never seen the sky but knows every star by the way the earth trembles beneath them.",
+          "storyArabian": "The small one who digs beneath the walls. 'Every fortress has a foundation,' it says. 'I know them all.'"
+        },
+        {
+          "animalId": "whale",
+          "spawnCondition": "communionDepth_above_0.4",
+          "storyGrimm": "The great fish of the deep that sings the world to sleep each night and wakes it each morning.",
+          "storyIndigenous": "Whale's song reaches from the bottom of the ocean to the top of the sky. Everything in between is listening.",
+          "storyAsian": "The whale that swallowed the moon. Inside it, the moon still shines. That light is communion.",
+          "storyArabian": "Bahamut, the great fish beneath all things. Its back is the foundation. Its song is the origin."
+        },
+        {
+          "animalId": "elder_white_stag",
+          "spawnCondition": "communionDepth_above_0.5",
+          "storyGrimm": "The white hart at the edge of the enchanted spring. It has been drinking there since before the first story.",
+          "storyIndigenous": "White Deer stands at the source. It does not drink. It watches. It has always been here.",
+          "storyAsian": "The jade deer at the spring of enlightenment. Its antlers hold the last light of every sunset.",
+          "storyArabian": "The silver stag that drinks from the river of paradise. Its reflection shows you who you will become."
+        }
+        ,{
+          "animalId": "spirit_monkey",
+          "spawnCondition": "innerStillness_above_0.25",
+          "storyGrimm": "The monkey that stopped swinging. It sat so still that the veil opened and it saw what was on the other side. It has never spoken about what it saw. But it smiles.",
+          "storyIndigenous": "At the source, even Monkey is quiet. It sits at the edge of the origin pool and watches its own reflection dissolve.",
+          "storyAsian": "The Monkey King at the end of the journey. No more fighting. No more tricks. Just sitting. Just watching. Just being.",
+          "storyArabian": "The monkey at the center of the labyrinth. It found the exit years ago. It stayed because the center is more interesting."
+        },
+        {
+          "animalId": "koi",
+          "spawnCondition": "communionDepth_above_0.3",
+          "storyGrimm": "The fish in the origin pool. It swims in circles so old that the circles have become the pool.",
+          "storyIndigenous": "The first fish. It swam before there was water. It made the water by swimming.",
+          "storyAsian": "The koi that reached the top of the final waterfall. It did not become a dragon. It became the waterfall.",
+          "storyArabian": "The fish that lives in the well of souls. Every soul that enters the world swims past it first. It blesses each one with a flick of its tail."
+        }
+      ],
+      "visitors": ["bison", "eagle", "harpy_eagle", "great_macaw", "seal"]
+    },
+    {
+      "worldId": "MachineOrder",
+      "realmId": "MachineRealm",
+      "residents": [
+        {
+          "animalId": "raven",
+          "spawnCondition": "patternSync_above_0.3",
+          "storyGrimm": "The clockmaker's raven. It learned to count by watching the gears turn and now it knows every number's secret name.",
+          "storyIndigenous": "Raven built the first trap — not for prey, but to catch a pattern. It is the original engineer.",
+          "storyAsian": "The three-legged crow that counts the heartbeats of the universe. It keeps perfect time.",
+          "storyArabian": "The raven on the automaton's shoulder. 'I taught the machine to think,' it says. 'But it taught me to be precise.'"
+        },
+        {
+          "animalId": "hawk",
+          "spawnCondition": "harmonyLock_above_0.5",
+          "storyGrimm": "The hawk trained by the prince to return in exactly seven heartbeats. Precision as devotion.",
+          "storyIndigenous": "Hawk's dive is the straightest line in nature. It does not hesitate. It does not miss. It is geometry made alive.",
+          "storyAsian": "The falcon master's finest bird — it returns to the wrist at the exact moment the bell rings. Always.",
+          "storyArabian": "The mechanical hawk on the vizier's arm. Half bird, half clockwork. It hunts only truth."
+        },
+        {
+          "animalId": "octopus",
+          "spawnCondition": "gearMomentum_above_0.4",
+          "storyGrimm": "The creature that solves every puzzle because it can try eight solutions at once.",
+          "storyIndigenous": "Spider's cousin from the deep. Instead of webs, it builds with pressure and patience.",
+          "storyAsian": "The eight-armed artificer. It built the first water clock by watching the tides.",
+          "storyArabian": "The inventor's muse. Eight arms, eight tools, eight ideas happening at the same time."
+        },
+        {
+          "animalId": "jaguar",
+          "spawnCondition": "systemResonance_above_0.3",
+          "storyGrimm": "The cat in the clocktower. It walks between the gears without disturbing a single one.",
+          "storyIndigenous": "Jaguar's heartbeat is perfectly steady. The machine recognizes it as kin.",
+          "storyAsian": "The monastery cat that learned the schedule before the monks did. It rings the bell itself now.",
+          "storyArabian": "The palace cat that guards the astronomical instruments. It knows every constellation by scent."
+        },
+        {
+          "animalId": "razorback_boar",
+          "spawnCondition": "gearMomentum_above_0.5",
+          "storyGrimm": "The boar that turns the millstone. Not from labor, but from love of the rhythm.",
+          "storyIndigenous": "Boar digs with a purpose. Every furrow is a line, every line is a path, every path is a plan.",
+          "storyAsian": "The iron boar of the forge. It works the bellows and does not tire because it has found its tempo.",
+          "storyArabian": "The beast that turns the great wheel beneath the palace. 'I am not trapped,' it says. 'I am the heartbeat.'"
+        }
+        ,{
+          "animalId": "spirit_monkey",
+          "spawnCondition": "patternSync_above_0.3",
+          "storyGrimm": "The monkey that learned the clockwork by breaking it first, then putting it back together better. Every engineer starts as a vandal.",
+          "storyIndigenous": "Coyote's cousin from the machine world. It takes things apart to see how they dream.",
+          "storyAsian": "The monkey in the emperor's workshop. It builds automata that build smaller automata. The smallest one builds songs.",
+          "storyArabian": "The monkey who fixed the astrolabe by hitting it. The astronomer was furious. The astrolabe was grateful."
+        },
+        {
+          "animalId": "koi",
+          "spawnCondition": "near_river_or_pond",
+          "storyGrimm": "The fish in the fountain at the center of the clockwork garden. The gears turn the water. The water turns the fish. The fish turns the story.",
+          "storyIndigenous": "Water finds its way into every machine. And where water goes, fish follow. This fish has been riding the pipes since the first valve opened.",
+          "storyAsian": "The koi in the water clock. It swims in measured time. Every circle is exactly one minute. It has never been late.",
+          "storyArabian": "In the automaton's aquarium, a golden fish swims. The automaton was built to feed it. The fish was placed to give the automaton purpose."
+        }
+      ],
+      "visitors": ["snake", "griffin", "macaw", "great_macaw", "otter", "fire_fox"]
+    }
+  ]
+}

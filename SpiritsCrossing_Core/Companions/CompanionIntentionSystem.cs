@@ -47,6 +47,7 @@ namespace SpiritsCrossing.Companions
         Learning,    // observing and absorbing
         Riding,      // peaceful co-presence
         Departing,   // leaving on own terms
+        Playing,     // Seedling tier: joyful play instead of trick
     }
 
     [Serializable]
@@ -179,6 +180,10 @@ namespace SpiritsCrossing.Companions
             // Read player's assignment once per evaluation cycle
             var assignment = CompanionAssignmentManager.Instance?.Assignment;
 
+            // Myth modifier: companion sensitivity makes companions more responsive
+            float companionSens = UniverseStateManager.Instance?.Current.mythState.companionSensitivity ?? 0f;
+            float sensScale = 1f - companionSens * 0.15f;
+
             foreach (var kvp in _states)
             {
                 string id     = kvp.Key;
@@ -221,31 +226,37 @@ namespace SpiritsCrossing.Companions
                     return CompanionIntention.Departing;
             }
 
-            // ---- TRICK: player too predictable + this is a trickster ----
-            // Assigned tricksters wait longer before tricking — the relationship
-            // makes them less likely to disrupt, though they still do eventually.
+            // ---- TRICK / PLAY: player too predictable + this is a trickster ----
+            // Age-tier aware: Seedling gets Playing, Explorer gets gentle trick, Voyager full trick.
+            var ageTierConfig = UniverseStateManager.Instance?.Current?.AgeTierConfig;
+            string trickMode = ageTierConfig?.tricksterMode ?? "full";
             float effectiveTrickTime = trickActivateTime + (assignmentBonus > 0f ? 30f : 0f);
+            if (trickMode == "gentle") effectiveTrickTime *= 1.5f; // gentler = more patience
             if (TRICKSTERS.Contains(id) &&
                 _playerCalmTimer >= effectiveTrickTime &&
                 !istate.trickActive &&
                 harmony > 0.30f)
+            {
+                if (trickMode == "play")
+                    return CompanionIntention.Playing; // Seedling: joyful play instead
                 return CompanionIntention.Tricking;
+            }
 
             // ---- HELP: player in distress ----
-            bool playerDistressed = playerState.distortion >= helpDistressThreshold ||
-                                    harmony < helpHarmonyThreshold;
+            bool playerDistressed = playerState.distortion >= helpDistressThreshold * sensScale ||
+                                    harmony < helpHarmonyThreshold / Mathf.Max(0.5f, sensScale);
             if (playerDistressed && MatchesElement(profile.element, playerState))
                 return CompanionIntention.Helping;
 
             // ---- LEARN: novel player behavior, animal wants to observe ----
-            bool novelPlayerState = playerState.wonder >= learnWonderThreshold &&
+            bool novelPlayerState = playerState.wonder >= learnWonderThreshold * sensScale &&
                                     vrs.GetHarmonyVelocity(id) > 0.01f; // harmony rising
             float npcResonanceNeed = npcEvo != null ? (1f - npcEvo.resonance) : 0.5f;
             if (novelPlayerState && npcResonanceNeed > 0.3f && harmony > 0.40f)
                 return CompanionIntention.Learning;
 
             // ---- RIDE: good harmony, no specific need ----
-            if (harmony >= rideHarmonyThreshold)
+            if (harmony >= rideHarmonyThreshold * sensScale)
                 return CompanionIntention.Riding;
 
             // ---- WANDER: harmony too low to engage ----
@@ -296,9 +307,20 @@ namespace SpiritsCrossing.Companions
 
                 case CompanionIntention.Tricking:
                     istate.trickActive = true;
-                    ctrl.SetBehaviorOverride(CompanionRuleAction.Explore, trickDuration);
+                    // Explorer tier: half trick duration
+                    float effectiveDuration = trickDuration;
+                    var tierConfig = UniverseStateManager.Instance?.Current?.AgeTierConfig;
+                    if (tierConfig?.tricksterMode == "gentle") effectiveDuration *= 0.5f;
+                    ctrl.SetBehaviorOverride(CompanionRuleAction.Explore, effectiveDuration);
                     OnTrickBegins?.Invoke(istate.animalId);
                     Debug.Log($"[CompanionIntentionSystem] TRICK: {istate.animalId} breaking player's pattern!");
+                    break;
+
+                case CompanionIntention.Playing:
+                    // Seedling: joyful, non-disruptive play — same Explore animation but shorter, no distortion
+                    istate.trickActive = false;
+                    ctrl.SetBehaviorOverride(CompanionRuleAction.Explore, trickDuration * 0.4f);
+                    Debug.Log($"[CompanionIntentionSystem] PLAY: {istate.animalId} wants to play!");
                     break;
 
                 case CompanionIntention.Learning:
@@ -504,6 +526,7 @@ namespace SpiritsCrossing.Companions
                     CompanionIntention.Learning  => "watching and learning",
                     CompanionIntention.Riding    => "riding along",
                     CompanionIntention.Departing => "saying goodbye",
+                    CompanionIntention.Playing   => "wants to play!",
                     _                            => "nearby"
                 };
                 parts.Append($"{name} — {label}\n");

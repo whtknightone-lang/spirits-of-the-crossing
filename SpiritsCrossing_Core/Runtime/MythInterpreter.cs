@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using SpiritsCrossing.SpiritAI;
+using SpiritsCrossing.Companions;
+using SpiritsCrossing.World;
 
 namespace SpiritsCrossing
 {
@@ -56,16 +58,32 @@ namespace SpiritsCrossing
 
         private void OnEnable()
         {
-            if (UniverseStateManager.Instance == null) return;
-            UniverseStateManager.Instance.OnSessionApplied      += OnSessionApplied;
-            UniverseStateManager.Instance.OnRealmOutcomeApplied += OnRealmOutcomeApplied;
+            if (UniverseStateManager.Instance != null)
+            {
+                UniverseStateManager.Instance.OnSessionApplied      += OnSessionApplied;
+                UniverseStateManager.Instance.OnRealmOutcomeApplied += OnRealmOutcomeApplied;
+            }
+
+            if (CompanionBondSystem.Instance != null)
+                CompanionBondSystem.Instance.OnCompanionFullyBonded += OnCompanionFullyBonded;
+
+            if (WorldSystem.Instance != null)
+                WorldSystem.Instance.OnRuinDiscovered += OnRuinDiscovered;
         }
 
         private void OnDisable()
         {
-            if (UniverseStateManager.Instance == null) return;
-            UniverseStateManager.Instance.OnSessionApplied      -= OnSessionApplied;
-            UniverseStateManager.Instance.OnRealmOutcomeApplied -= OnRealmOutcomeApplied;
+            if (UniverseStateManager.Instance != null)
+            {
+                UniverseStateManager.Instance.OnSessionApplied      -= OnSessionApplied;
+                UniverseStateManager.Instance.OnRealmOutcomeApplied -= OnRealmOutcomeApplied;
+            }
+
+            if (CompanionBondSystem.Instance != null)
+                CompanionBondSystem.Instance.OnCompanionFullyBonded -= OnCompanionFullyBonded;
+
+            if (WorldSystem.Instance != null)
+                WorldSystem.Instance.OnRuinDiscovered -= OnRuinDiscovered;
         }
 
         // -------------------------------------------------------------------------
@@ -225,7 +243,88 @@ namespace SpiritsCrossing
             if (!string.IsNullOrEmpty(result.currentAffinityPlanet) && result.portalUnlocked)
                 UniverseStateManager.Instance.UnlockPlanet(result.currentAffinityPlanet);
 
+            // Cross-system history pattern detection
+            CheckHistoryPatterns(myth);
+
+            // Age-appropriate activations (seedling/explorer gentle myths + young AI learning)
+            CheckAgeTierActivations(myth, s);
+
             Debug.Log($"[MythInterpreter] Session processed. Active myths: {myth.activeMyths.Count}");
+        }
+
+        // -------------------------------------------------------------------------
+        // Age-tier activations  (gentle myths + young AI learning)
+        // -------------------------------------------------------------------------
+        private void CheckAgeTierActivations(MythState myth, PlayerResponseSample s)
+        {
+            var universe = UniverseStateManager.Instance?.Current;
+            if (universe == null) return;
+            var config = universe.AgeTierConfig;
+
+            // Sync age tier into MythState so Activate() can self-gate
+            myth.ageTier = universe.ageTier;
+
+            // --- Seedling and Explorer: gentle myth triggers ---
+            if (config.tier <= AgeTier.Explorer)
+            {
+                if (s.joyScore >= 0.35f)
+                    myth.Activate("friendship", "age_tier", s.joyScore * 0.8f);
+
+                if (s.wonderScore >= 0.30f)
+                    myth.Activate("starlight", "age_tier", s.wonderScore * 0.9f);
+
+                if (s.calmScore >= 0.40f)
+                    myth.Activate("garden", "age_tier", s.calmScore * 0.7f);
+
+                // Any companion at Curious+ tier triggers wonder
+                foreach (var bond in universe.companions)
+                {
+                    if (bond.bondLevel >= 0.25f)
+                    {
+                        myth.Activate("wonder", "age_tier", 0.50f);
+                        break;
+                    }
+                }
+            }
+
+            // --- Young AI learning myths (Seedling and Explorer) ---
+            if (config.aiLearning.narrateLearning)
+            {
+                // Discovery: AI learned something new (wonder rising session-over-session)
+                int hc = universe.sessionHistory.Count;
+                if (hc >= 2)
+                {
+                    float prevWonder = universe.sessionHistory[hc - 2].resonanceSample.wonderScore;
+                    if (s.wonderScore > prevWonder + 0.10f)
+                        myth.Activate("discovery", "ai_learning",
+                            Mathf.Clamp01((s.wonderScore - prevWonder) * config.aiLearning.encouragementMultiplier));
+                }
+
+                // Insight: AI found a pattern (same dominant quality 3+ sessions)
+                if (hc >= 3)
+                {
+                    string dom = s.DominantQuality();
+                    bool pattern = true;
+                    for (int i = hc - 2; i >= Mathf.Max(0, hc - 3); i--)
+                    {
+                        if (universe.sessionHistory[i].resonanceSample.DominantQuality() != dom)
+                        { pattern = false; break; }
+                    }
+                    if (pattern)
+                        myth.Activate("insight", "ai_learning", 0.55f * config.aiLearning.encouragementMultiplier);
+                }
+
+                // Exploration: player visited a new planet this session
+                var result = universe.sessionHistory.Count > 0
+                    ? universe.sessionHistory[universe.sessionHistory.Count - 1] : null;
+                if (result != null && !string.IsNullOrEmpty(result.currentAffinityPlanet))
+                {
+                    var planet = universe.GetOrCreatePlanet(result.currentAffinityPlanet);
+                    if (planet.visitCount <= 1) // first or second visit
+                        myth.Activate("exploration", "ai_learning",
+                            0.60f * config.aiLearning.encouragementMultiplier);
+                }
+            }
         }
 
         // Activate a myth using profile scoring when loader is available,
@@ -295,6 +394,153 @@ namespace SpiritsCrossing
 
             Debug.Log($"[MythInterpreter] Realm processed. Realm={outcome.realmId} Active myths={myth.activeMyths.Count}");
         }
+
+        // -------------------------------------------------------------------------
+        // Companion bond rules  (companion fully bonded → pattern myths)
+        // -------------------------------------------------------------------------
+        private void OnCompanionFullyBonded(string animalId)
+        {
+            var universe = UniverseStateManager.Instance?.Current;
+            if (universe == null) return;
+            var myth   = universe.mythState;
+            var profile = CompanionBondSystem.Instance?.GetProfile(animalId);
+            if (profile == null) return;
+
+            // Count fully-bonded companions per element
+            int sameElementBonds = 0;
+            int totalFullBonds   = 0;
+            var elementsWithBonds = new HashSet<string>();
+
+            foreach (var bond in universe.companions)
+            {
+                if (bond.Tier < CompanionBondTier.Companion) continue;
+                totalFullBonds++;
+                var p = CompanionBondSystem.Instance.GetProfile(bond.animalId);
+                if (p == null) continue;
+                elementsWithBonds.Add(p.element);
+                if (p.element == profile.element) sameElementBonds++;
+            }
+
+            // 3+ full bonds in the same element → reinforce that element's myth
+            if (sameElementBonds >= 3)
+            {
+                string elementMyth = ElementToMythKey(profile.element);
+                if (!string.IsNullOrEmpty(elementMyth))
+                    myth.Activate(elementMyth, "companion_pattern", 0.80f);
+            }
+
+            // 5+ total full bonds → convergence
+            if (totalFullBonds >= 5)
+                myth.Activate("convergence", "companion_pattern", 0.70f);
+
+            // Bonds across all 4 elements → harmony
+            if (elementsWithBonds.Count >= 4)
+                myth.Activate("harmony", "companion_pattern", 0.75f);
+
+            Debug.Log($"[MythInterpreter] Companion fully bonded: {profile.displayName} " +
+                      $"(element={profile.element}, sameElement={sameElementBonds}, total={totalFullBonds})");
+        }
+
+        private static string ElementToMythKey(string element) => element switch
+        {
+            "Earth" => "forest",
+            "Air"   => "sky",
+            "Water" => "ocean",
+            "Fire"  => "fire",
+            _       => string.Empty
+        };
+
+        // -------------------------------------------------------------------------
+        // Ruin discovery rules  (planet mastery detection)
+        // -------------------------------------------------------------------------
+        private void OnRuinDiscovered(RuinRecord ruin)
+        {
+            var universe = UniverseStateManager.Instance?.Current;
+            if (universe == null || string.IsNullOrEmpty(ruin.planetId)) return;
+            var myth = universe.mythState;
+
+            // Check if all ruins on this planet are now discovered
+            var ws = WorldSystem.Instance;
+            if (ws == null || ws.Data == null) return;
+
+            var planetData = ws.Data.GetPlanet(ruin.planetId);
+            if (planetData == null) return;
+
+            bool allDiscovered = true;
+            foreach (var r in planetData.AllRuins())
+            {
+                if (!ws.IsDiscovered(r.ruinId)) { allDiscovered = false; break; }
+            }
+
+            if (allDiscovered)
+            {
+                myth.Activate("mastery_" + ruin.planetId.ToLower(), "ruin_mastery", 0.85f);
+                myth.Activate("ruin", "ruin_mastery", 0.70f);
+                Debug.Log($"[MythInterpreter] Planet ruin mastery achieved: {ruin.planetId}");
+            }
+        }
+
+        // -------------------------------------------------------------------------
+        // Cross-system history patterns (called after each session)
+        // -------------------------------------------------------------------------
+        private void CheckHistoryPatterns(MythState myth)
+        {
+            var universe = UniverseStateManager.Instance?.Current;
+            if (universe == null) return;
+
+            // --- Session consistency: same dominant quality across last 5 sessions ---
+            int historyCount = universe.sessionHistory.Count;
+            if (historyCount >= 5)
+            {
+                string firstDom = universe.sessionHistory[historyCount - 1].resonanceSample.DominantQuality();
+                bool consistent = true;
+                for (int i = historyCount - 2; i >= historyCount - 5; i--)
+                {
+                    if (universe.sessionHistory[i].resonanceSample.DominantQuality() != firstDom)
+                    { consistent = false; break; }
+                }
+                if (consistent)
+                {
+                    string consistencyMyth = QualityToMythKey(firstDom);
+                    if (!string.IsNullOrEmpty(consistencyMyth))
+                        myth.Activate(consistencyMyth, "history", 0.65f);
+                }
+            }
+
+            // --- Cross-realm: visited 3+ different planets ---
+            int visitedPlanets = 0;
+            foreach (var p in universe.planets)
+                if (p.visitCount >= 1) visitedPlanets++;
+            if (visitedPlanets >= 3)
+                myth.Activate("wanderer", "history", Mathf.Clamp01(visitedPlanets * 0.15f));
+
+            // --- Rebirth proximity ---
+            if (universe.universeRebirthPotential >= 0.75f)
+                myth.Activate("rebirth", "history", universe.universeRebirthPotential);
+
+            // --- Companion diversity: bonds across all 4 elements ---
+            var elements = new HashSet<string>();
+            foreach (var bond in universe.companions)
+            {
+                if (bond.bondLevel < 0.25f) continue; // at least Curious tier
+                var p = CompanionBondSystem.Instance?.GetProfile(bond.animalId);
+                if (p != null) elements.Add(p.element);
+            }
+            if (elements.Count >= 4)
+                myth.Activate("harmony", "history", 0.60f);
+        }
+
+        private static string QualityToMythKey(string quality) => quality switch
+        {
+            "stillness" => "source",
+            "flow"      => "ocean",
+            "spin"      => "sky",
+            "calm"      => "forest",
+            "joy"       => "forest",
+            "wonder"    => "elder",
+            "source"    => "source",
+            _           => string.Empty
+        };
 
         // -------------------------------------------------------------------------
         // Helpers

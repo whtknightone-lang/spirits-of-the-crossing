@@ -114,8 +114,19 @@ namespace SpiritsCrossing
             if (planetState != null && planetState.visitCount > 0)
                 currentDepth = Mathf.Clamp01(currentDepth + planetState.growth * 0.15f);
 
+            // Myth memory: accumulated ocean myth means the water accepts the player sooner.
+            // The tidal flow starts stronger and depth opens more readily.
+            float oceanMythStrength = UniverseStateManager.Instance?.Current.mythState
+                                          .GetStrength("ocean") ?? 0f;
+            if (oceanMythStrength > 0f)
+            {
+                tidalFlow    = Mathf.Clamp01(tidalFlow    + oceanMythStrength * 0.15f);
+                currentDepth = Mathf.Clamp01(currentDepth + oceanMythStrength * 0.12f);
+            }
+
             stats.SeedFromPlayer(playerSample, harmonyBase: 0.55f, resonanceBase: 0.30f);
-            Debug.Log($"[WaterDragonGameLoop] Realm begun. tidalFlow={tidalFlow:F2} depth={currentDepth:F2}");
+            Debug.Log($"[WaterDragonGameLoop] Realm begun. tidalFlow={tidalFlow:F2} " +
+                      $"depth={currentDepth:F2} oceanMythBoost={oceanMythStrength:F2}");
         }
 
         public RealmOutcome BuildOutcome()

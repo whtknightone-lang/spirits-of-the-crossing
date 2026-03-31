@@ -140,8 +140,20 @@ namespace SpiritsCrossing
                 breathExpansion = Mathf.Clamp01(breathExpansion + planetState.healing * 0.20f);
             }
 
+            // Myth memory: accumulated sky myth gives a deeper warm start.
+            // The dragon has sensed this player's resonance across many sessions.
+            float skyMythStrength = UniverseStateManager.Instance?.Current.mythState
+                                        .GetStrength("sky") ?? 0f;
+            if (skyMythStrength > 0f)
+            {
+                skyFlow         = Mathf.Clamp01(skyFlow         + skyMythStrength * 0.20f);
+                breathExpansion = Mathf.Clamp01(breathExpansion + skyMythStrength * 0.15f);
+                spinLift        = Mathf.Clamp01(spinLift        + skyMythStrength * 0.10f);
+            }
+
             stats.SeedFromPlayer(playerSample, harmonyBase: 0.60f, resonanceBase: 0.40f);
-            stats.elementalCharge = Mathf.Clamp01(airAffinity * 0.60f);
+            stats.elementalCharge = Mathf.Clamp01(airAffinity * 0.60f
+                                                   + skyMythStrength * 0.20f);
             // Air starts charged — it meets you where you are
 
             Debug.Log($"[AirDragonGameLoop] Realm begun. skyFlow={skyFlow:F2} " +

@@ -16,6 +16,7 @@
 using System;
 using UnityEngine;
 using SpiritsCrossing;
+using SpiritsCrossing.Lifecycle;
 
 namespace SpiritsCrossing.SpiritAI
 {
@@ -133,6 +134,7 @@ namespace SpiritsCrossing.SpiritAI
             float[] sensory = BuildSensoryVector(playerState);
             UpdateAmplitudeAndPhase(sensory);
             var drives = ComputeDrives(health01, energy01);
+            drives = ApplyLifecycleModifier(drives);
             CurrentDrives = drives;
 
             SpiritDriveMode newMode = Arbitrate(drives);
@@ -285,6 +287,32 @@ namespace SpiritsCrossing.SpiritAI
             {
                 if (value > best) { best = value; winner = mode; }
             }
+        }
+
+        // -------------------------------------------------------------------------
+        // Lifecycle phase modifier — shifts drive weights toward cycle-appropriate
+        // behaviour (welcoming on Birth, quiet in Source, surge on Rebirth)
+        // -------------------------------------------------------------------------
+        private SpiritDriveWeights ApplyLifecycleModifier(SpiritDriveWeights d)
+        {
+            var mod = AILifecycleLearningPath.Instance?.CurrentModifier;
+            if (mod == null) return d;
+
+            d.attack  = Mathf.Clamp01(d.attack  + mod.attackShift);
+            d.flee    = Mathf.Clamp01(d.flee    + mod.fleeShift);
+            d.seek    = Mathf.Clamp01(d.seek    + mod.seekShift);
+            d.rest    = Mathf.Clamp01(d.rest    + mod.restShift);
+            d.signal  = Mathf.Clamp01(d.signal  + mod.signalShift);
+            d.explore = Mathf.Clamp01(d.explore + mod.exploreShift);
+
+            // Renormalise so drives still sum to 1
+            float total = d.attack + d.flee + d.seek + d.rest + d.signal + d.explore;
+            if (total > 1e-6f)
+            {
+                d.attack  /= total; d.flee    /= total; d.seek    /= total;
+                d.rest    /= total; d.signal  /= total; d.explore /= total;
+            }
+            return d;
         }
 
         // -------------------------------------------------------------------------

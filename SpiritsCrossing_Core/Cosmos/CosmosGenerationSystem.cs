@@ -28,8 +28,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using Resonance.Planets;
 using SpiritsCrossing.Memory;
+using SpiritsCrossing.Lifecycle;
 
 namespace SpiritsCrossing.Cosmos
 {
@@ -105,7 +105,9 @@ namespace SpiritsCrossing.Cosmos
         private void OnDestroy()
         {
             if (UniverseStateManager.Instance != null)
-                UniverseStateManager.Instance.OnSessionApplied    -= OnSessionApplied;
+                UniverseStateManager.Instance.OnSessionApplied -= OnSessionApplied;
+            OnCosmosBirth  -= HandleCosmosBirth;
+            OnCosmosRebirth -= HandleCosmosRebirth;
         }
 
         // -------------------------------------------------------------------------
@@ -152,6 +154,39 @@ namespace SpiritsCrossing.Cosmos
         {
             if (UniverseStateManager.Instance != null)
                 UniverseStateManager.Instance.OnSessionApplied += OnSessionApplied;
+
+            // Forward cosmos threshold events to the lifecycle and meditation systems
+            OnCosmosBirth   += HandleCosmosBirth;
+            OnCosmosRebirth += HandleCosmosRebirth;
+        }
+
+        // -------------------------------------------------------------------------
+        // Cosmos threshold → lifecycle bridging
+        // -------------------------------------------------------------------------
+        private void HandleCosmosBirth()
+        {
+            // Cosmos birth is a moment of world emergence — activate source myth
+            // and note the event for the away-report (CosmosClockSystem picks it up
+            // through the UniverseState utc fields).
+            Debug.Log($"[CosmosGenerationSystem] Cosmos birth registered. R={R_Universe:F3}");
+        }
+
+        private void HandleCosmosRebirth()
+        {
+            // Cosmos rebirth is the second natural gateway to Source drop-in,
+            // alongside deep personal meditation (MeditationMode.DropInAvailable).
+            // If the player can already drop in, signal MeditationMode so the UI
+            // can present the choice even if meditation depth hasn't been reached.
+            if (LifecycleSystem.Instance?.CanDropIn() == true)
+            {
+                Debug.Log($"[CosmosGenerationSystem] Cosmos rebirth unlocked Source drop-in. R={R_Universe:F3}");
+                MeditationMode.Instance?.Enter();  // surface the availability signal
+            }
+            else
+            {
+                Debug.Log($"[CosmosGenerationSystem] Cosmos rebirth: R={R_Universe:F3} " +
+                          "(sourceConnectionLevel not yet sufficient for drop-in).");
+            }
         }
 
         // -------------------------------------------------------------------------

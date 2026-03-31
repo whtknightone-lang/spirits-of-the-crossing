@@ -30,6 +30,12 @@ namespace SpiritsCrossing
         public bool   hasCommitted;
         public string utcTimestamp;
 
+        // --- Site-discovered portal destinations ---
+        public PortalDestinationType destinationType;  // Realm, WorldTravel, AncientRuin, ElderDragonEncounter
+        public string targetPlanetId;   // for WorldTravel — which planet to travel to
+        public string targetRuinId;     // for AncientRuin — which ruin interior to load
+        public string targetDragonElement; // for ElderDragonEncounter — which dragon element
+
         public void Commit(PortalSlot slot, string realmId)
         {
             committedPortalId = slot?.portalId;
@@ -47,11 +53,30 @@ namespace SpiritsCrossing
     {
         public static string RealmForPortal(string portalId) => portalId switch
         {
+            // --- Base cave portals ---
             "ForestCalm"         => "ForestRealm",
             "OceanSurf"          => "OceanRealm",
             "FireMilitary"       => "FireRealm",
             "AirDancing"         => "SkyRealm",
             "SourceEnergyWells"  => "SourceRealm",
+
+            // --- Evolved realm portals (discovered at world sites) ---
+            "DeepForestGate"     => "DeepForestRealm",
+            "AbyssalOceanGate"   => "AbyssalOceanRealm",
+            "InnerForgeGate"     => "InnerForgeRealm",
+            "SkyCathedralGate"   => "SkyCathedralRealm",
+            "SourceWellspringGate" => "SourceWellspringRealm",
+
+            // --- Martial realm portal (sacred combat, Popol Vuh / Krishna) ---
+            "MartialDiscipline"  => "MartialRealm",
+
+            // --- Elder dragon realm portals (convergence sites, post-rebirth) ---
+            "ElderAirConvergence"    => "ElderSkyRealm",
+            "ElderEarthConvergence"  => "ElderForestRealm",
+            "ElderFireConvergence"   => "ElderFireRealm",
+            "ElderWaterConvergence"  => "ElderOceanRealm",
+            "ElderSourceConvergence" => "ElderSourceRealm",
+
             _                    => "UnknownRealm"
         };
     }

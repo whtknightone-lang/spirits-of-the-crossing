@@ -105,8 +105,23 @@ namespace SpiritsCrossing
             if (planetState != null && planetState.visitCount > 0)
                 flamePressure = Mathf.Clamp01(flamePressure - planetState.healing * 0.2f);
 
+            // Myth memory: accumulated fire or storm myth means the player has faced
+            // the fire before mythically — willForce seeds higher, flamePressure seeds lower.
+            float fireMythStrength = UniverseStateManager.Instance?.Current.mythState
+                                         .GetStrength("fire") ?? 0f;
+            float stormMythStrength = UniverseStateManager.Instance?.Current.mythState
+                                          .GetStrength("storm") ?? 0f;
+            float combinedFireMyth = Mathf.Max(fireMythStrength, stormMythStrength * 0.6f);
+            if (combinedFireMyth > 0f)
+            {
+                flamePressure = Mathf.Clamp01(flamePressure - combinedFireMyth * 0.12f);
+                willForce     = Mathf.Clamp01(willForce     + combinedFireMyth * 0.15f);
+            }
+
             stats.SeedFromPlayer(playerSample, harmonyBase: 0.35f, resonanceBase: 0.20f);
-            Debug.Log($"[FireDragonGameLoop] Realm begun. flamePressure={flamePressure:F2} visits={planetState?.visitCount ?? 0}");
+            Debug.Log($"[FireDragonGameLoop] Realm begun. flamePressure={flamePressure:F2} " +
+                      $"willForce={willForce:F2} visits={planetState?.visitCount ?? 0} " +
+                      $"fireMythBoost={combinedFireMyth:F2}");
         }
 
         public RealmOutcome BuildOutcome()

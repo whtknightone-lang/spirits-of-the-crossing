@@ -11,7 +11,9 @@
 //   - growthTrend:         is the player growing, stable, or oscillating?
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using SpiritsCrossing.Lifecycle;
 
 namespace SpiritsCrossing.Memory
 {
@@ -137,6 +139,12 @@ namespace SpiritsCrossing.Memory
         // ---- Trend window ----
         public SessionQualityWindow sessionWindow = new SessionQualityWindow();
 
+        // ---- Cycle-level history ----
+        // One entry per completed Birth→Death→Source→Rebirth cycle.
+        // Persists multi-cycle growth arcs that session windows miss.
+        public List<CycleLearningRecord> cycleHistory     = new List<CycleLearningRecord>();
+        public float                     cycleGrowthTrend; // -1..1 across last two cycles
+
         // -------------------------------------------------------------------------
         // Integration — called by ResonanceMemorySystem after each session
         // -------------------------------------------------------------------------
@@ -159,6 +167,67 @@ namespace SpiritsCrossing.Memory
 
             sessionsAnalyzed++;
             lastUpdatedUtc = DateTime.UtcNow.ToString("o");
+        }
+
+        // -------------------------------------------------------------------------
+        // Cycle integration — called by AILifecycleLearningPath at Rebirth
+        // -------------------------------------------------------------------------
+
+        /// <summary>
+        /// Integrate one complete Birth→Death→Source→Rebirth cycle into the
+        /// persistent learning state.
+        ///
+        /// The Source waypoint receives the highest signature weight — it is the
+        /// deepest state the player reached. Birth anchors the cycle baseline.
+        /// Collapse events modestly trim personal bests in fragile dimensions.
+        /// </summary>
+        public void IntegrateCycleRecord(CycleLearningRecord record)
+        {
+            // Source waypoint: highest learning weight — the player's deepest state
+            if (record.source.valid)
+                IntegrateSession(record.source.resonance, 0.25f);
+
+            // Birth waypoint: anchor for where the cycle began
+            if (record.birth.valid)
+                IntegrateSession(record.birth.resonance, 0.08f);
+
+            // Collapse events: modestly trim personal bests in fragile dimensions
+            // so the AI doesn't overfit to brief peaks the player can't sustain
+            foreach (var ev in record.collapseEvents)
+                ApplyCollapseSignal(ev);
+
+            // Cycle growth trend: compare OverallGrowth across last two cycles
+            cycleHistory.Add(record);
+            if (cycleHistory.Count >= 2)
+            {
+                float last = cycleHistory[cycleHistory.Count - 1].OverallGrowth;
+                float prev = cycleHistory[cycleHistory.Count - 2].OverallGrowth;
+                cycleGrowthTrend = Mathf.Clamp(last - prev, -1f, 1f);
+            }
+
+            sessionsAnalyzed++;
+            lastUpdatedUtc = DateTime.UtcNow.ToString("o");
+
+            Debug.Log($"[ResonanceLearningState] Cycle {record.cycleIndex} integrated. " +
+                      $"sourceGrowth={record.SourceGrowth:+0.00;-0.00} " +
+                      $"cycleGrowthTrend={cycleGrowthTrend:+0.00;-0.00}");
+        }
+
+        private void ApplyCollapseSignal(CollapseEvent ev)
+        {
+            // A collapse means the personal best in that dimension was reached under
+            // conditions that couldn't hold. Trim it slightly to reflect fragility.
+            const float TRIM = 0.05f;
+            switch (ev.dimension)
+            {
+                case "calm":
+                    personalBests.calm = Mathf.Max(0f, personalBests.calm - TRIM);
+                    break;
+                case "source":
+                    personalBests.sourceAlignment =
+                        Mathf.Max(0f, personalBests.sourceAlignment - TRIM);
+                    break;
+            }
         }
 
         // -------------------------------------------------------------------------

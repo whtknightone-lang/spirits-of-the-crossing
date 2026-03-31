@@ -145,8 +145,8 @@ namespace SpiritsCrossing.Lifecycle
         public float GetPlanetGrowthPulse(string planetId)
         {
             float growth = CosmosGenerationSystem.Instance?.GetLivePlanetGrowth(planetId) ?? 0f;
-            // Pulse = growth * sin(time) for animated breathing effect
-            float pulse = growth * (0.7f + 0.3f * Mathf.Sin(Time.time * 0.8f));
+            // Tightened: base 0.50, swing ±0.15 — matches PlanetNodeController.GetGrowthPulse()
+            float pulse = growth * (0.50f + 0.15f * Mathf.Sin(Time.time * 0.8f));
             return Mathf.Clamp01(pulse);
         }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using SpiritsCrossing;
 using SpiritsCrossing.SpiritAI;
 using SpiritsCrossing.RUE;
+using SpiritsCrossing.Vibration;
 
 namespace V243.SandstoneCave
 {
@@ -95,6 +96,10 @@ namespace V243.SandstoneCave
 
             _mythTriggerAccumulator.Clear();
 
+            // Reset emotional depth tracking for this session.
+            if (EmotionalFieldPropagation.Instance != null)
+                EmotionalFieldPropagation.Instance.ResetDepthTracking();
+
             // Subscribe to spirit awakening events for the duration of this session.
             // Unsubscribe first so re-starting a session never double-registers the handler.
             if (_orchestrator == null)
@@ -167,6 +172,29 @@ namespace V243.SandstoneCave
             foreach (var key in _mythTriggerAccumulator)
                 if (!result.mythTriggerKeys.Contains(key))
                     result.mythTriggerKeys.Add(key);
+
+            // ── Emotional spectrum snapshot ──
+            // Capture the player's emotional shape at session end so it persists
+            // into UniverseState and can influence planet selection, companion growth,
+            // and return greetings.
+            var efp = EmotionalFieldPropagation.Instance;
+            if (efp != null)
+            {
+                var spectrum = efp.LiveSpectrum;
+                result.emotionalSpectrum = new EmotionalResonanceSpectrum(
+                    spectrum.stillness, spectrum.peace, spectrum.joy,
+                    spectrum.love, spectrum.source);
+                result.emotionalDepth      = spectrum.Depth;
+                result.emotionalCoherence  = spectrum.Coherence;
+                result.reachedFullSpectrum  = efp.InFullSpectrum;
+                result.highestDepthLevel   = efp.HighestDepthThreshold;
+
+                // Emotional planet alignment — which planet best matches the
+                // player's emotional shape at session end?
+                var alignments = efp.GetAllPlanetAlignments();
+                if (alignments.Length > 0)
+                    result.emotionalAffinityPlanet = alignments[0].planetId;
+            }
 
             return result;
         }

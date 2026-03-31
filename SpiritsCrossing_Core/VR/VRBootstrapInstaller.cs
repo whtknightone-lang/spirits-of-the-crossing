@@ -25,6 +25,7 @@ using SpiritsCrossing.Vibration;
 using SpiritsCrossing.Lifecycle;
 using SpiritsCrossing.World;
 using SpiritsCrossing.Autonomous;
+using SpiritsCrossing.Runtime;
 using V243.SandstoneCave;
 
 namespace SpiritsCrossing.VR
@@ -77,6 +78,8 @@ namespace SpiritsCrossing.VR
         private PlanetAutonomySystem        _planetAutonomy;
         private CosmosClockSystem           _cosmosClock;
         private CompanionIntentionSystem    _intentionSystem;
+        private MythModifierApplicator      _mythModifierApplicator;
+        private RUELiveLoop                  _rueLiveLoop;
 
         // -------------------------------------------------------------------------
         // Lifecycle
@@ -367,6 +370,14 @@ namespace SpiritsCrossing.VR
             // Companion intention + agency
             if (_intentionSystem == null) _intentionSystem = FindObjectOfType<CompanionIntentionSystem>();
             if (_intentionSystem == null) { var go = new GameObject("[CompanionIntentionSystem]"); DontDestroyOnLoad(go); _intentionSystem = go.AddComponent<CompanionIntentionSystem>(); }
+
+            // MythModifierApplicator — distributes myth scalar outputs to companions, planets, environment
+            if (_mythModifierApplicator == null) _mythModifierApplicator = FindObjectOfType<MythModifierApplicator>();
+            if (_mythModifierApplicator == null) { var go = new GameObject("[MythModifierApplicator]"); DontDestroyOnLoad(go); _mythModifierApplicator = go.AddComponent<MythModifierApplicator>(); }
+
+            // RUELiveLoop — live EngineLoop.step() equivalent; advances NPCs + universe clock during play
+            if (_rueLiveLoop == null) _rueLiveLoop = FindObjectOfType<RUELiveLoop>();
+            if (_rueLiveLoop == null) { var go = new GameObject("[RUELiveLoop]"); DontDestroyOnLoad(go); _rueLiveLoop = go.AddComponent<RUELiveLoop>(); }
         }
 
         // =========================================================================
