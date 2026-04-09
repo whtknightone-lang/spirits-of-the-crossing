@@ -1,34 +1,71 @@
-# Unity License Activation — run this ONCE to generate UNITY_LICENSE secret.
+# Unity License Activation — GameCI v4
 #
-# Steps:
-#   1. Go to Actions → "Acquire Unity license" → Run workflow
-#   2. Download the .alf artifact from the run
-#   3. Visit https://license.unity3d.com/manual and upload the .alf file
-#   4. Download the returned .ulf license file
-#   5. Add the file contents as a GitHub secret named UNITY_LICENSE
-#      (Settings → Secrets and variables → Actions → New repository secret)
-#   6. Also add UNITY_EMAIL and UNITY_PASSWORD as secrets
+# The automated activation file action was deprecated in GameCI v4.
+# Activation is now done LOCALLY via Unity Hub. Follow these steps once:
 #
-# After that this workflow is no longer needed — the ci and cd workflows
-# will use the stored UNITY_LICENSE secret automatically.
+# 1. Install Unity Hub: https://unity.com/download
+# 2. Log in with the Unity account you want to use for CI.
+# 3. Unity Hub → Preferences → Licenses → Add → Get a free personal license.
+# 4. Locate the generated .ulf file:
+#      macOS:   /Library/Application Support/Unity/Unity_lic.ulf
+#      Windows: C:\ProgramData\Unity\Unity_lic.ulf
+#      Linux:   ~/.local/share/unity3d/Unity/Unity_lic.ulf
+# 5. Add three GitHub secrets (Settings → Secrets and variables → Actions):
+#      UNITY_LICENSE   — full contents of the .ulf file
+#      UNITY_EMAIL     — Unity account email
+#      UNITY_PASSWORD  — Unity account password
+#
+# Pro license? Skip UNITY_LICENSE. Add UNITY_SERIAL instead (XX-XXXX-XXXX-XXXX-XXXX-XXXX).
+#
+# This workflow verifies the secrets are present and the license activates
+# correctly. Run it after adding the secrets to confirm everything works.
 
-name: Acquire Unity license
+name: Verify Unity license
 
 on:
   workflow_dispatch: {}
 
 jobs:
-  activation:
-    name: Request Unity license activation file
+  verify:
+    name: Verify Unity license activation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: game-ci/unity-request-activation-file@v2
-        id: getManualLicenseFile
+      - name: Check required secrets are set
+        run: |
+          missing=""
+          [ -z "$UNITY_LICENSE" ]  && missing="$missing UNITY_LICENSE"
+          [ -z "$UNITY_EMAIL" ]    && missing="$missing UNITY_EMAIL"
+          [ -z "$UNITY_PASSWORD" ] && missing="$missing UNITY_PASSWORD"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing required secrets:$missing"
+            echo "Follow the activation steps in .github/workflows/activation.yml"
+            exit 1
+          fi
+          echo "All required secrets are present."
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
 
-      - uses: actions/upload-artifact@v4
+      - name: Cache Unity Library
+        uses: actions/cache@v4
         with:
-          name: unity-license-activation-file
-          path: ${{ steps.getManualLicenseFile.outputs.filePath }}
-          retention-days: 1
+          path: Library
+          key: Library-Activation-${{ runner.os }}
+          restore-keys: Library-Activation-
+
+      - name: Activate and verify Unity license
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: .
+          unityVersion: auto
+          testMode: EditMode
+          # Run a no-op filter — exits immediately after license activation
+          customParameters: -testFilter NonExistentTestThatWillNotMatch
+          githubToken: ${{ secrets.GITHUB_TOKEN }}

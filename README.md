@@ -110,15 +110,22 @@ Automated workflows live in `.github/workflows/`. Powered by [GameCI](https://ga
 
 | File | Trigger | What it does |
 |---|---|---|
-| `activation.yml` | Manual (once) | Generates the `.ulf` license file to store as `UNITY_LICENSE` secret |
+| `activation.yml` | Manual (once) | Verifies `UNITY_LICENSE`, `UNITY_EMAIL`, `UNITY_PASSWORD` secrets activate correctly |
 | `ci.yml` | PR → `production` | Runs EditMode + PlayMode tests in parallel; publishes results as a check |
 | `cd.yml` | Push to `production` | Builds Windows, macOS, Android in parallel; creates a GitHub Release |
 
 ### First-time setup
 
-**1. Activate your Unity license**
+**1. Activate your Unity license locally**
 
-Run the `activation.yml` workflow manually (Actions → Acquire Unity license → Run workflow). Download the `.alf` artifact, upload it at https://license.unity3d.com/manual, and download the returned `.ulf` file.
+GameCI v4 requires local activation — there is no longer an automated activation action.
+
+1. Install [Unity Hub](https://unity.com/download) and log in with your CI account
+2. **Unity Hub → Preferences → Licenses → Add → Get a free personal license**
+3. Locate the generated `.ulf` file:
+   - macOS: `/Library/Application Support/Unity/Unity_lic.ulf`
+   - Windows: `C:\ProgramData\Unity\Unity_lic.ulf`
+   - Linux: `~/.local/share/unity3d/Unity/Unity_lic.ulf`
 
 **2. Add repository secrets**
 
