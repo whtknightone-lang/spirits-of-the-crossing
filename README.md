@@ -1,5 +1,8 @@
 # Spirits of the Crossing
 
+[![CI](https://github.com/whtknightone-lang/spirits-of-the-crossing/actions/workflows/ci.yml/badge.svg)](https://github.com/whtknightone-lang/spirits-of-the-crossing/actions/workflows/ci.yml)
+[![CD](https://github.com/whtknightone-lang/spirits-of-the-crossing/actions/workflows/cd.yml/badge.svg)](https://github.com/whtknightone-lang/spirits-of-the-crossing/actions/workflows/cd.yml)
+
 A resonance-driven game where the player enters a ritual chamber, expresses a measurable internal state, unlocks realm paths, and travels into living planet-specific gameplay loops. The cosmos remembers every choice.
 
 ## Project Structure
@@ -96,6 +99,54 @@ An optional `upsilonBridge` inspector field was added. When assigned, the sphere
 Play Mode tests are in `SpiritsCrossing_Core/Tests/UpsilonSphereBootstrapTests.cs`. Run via **Window → General → Test Runner → PlayMode**.
 
 10 tests cover: component self-assembly, reference wiring, node count and uniqueness, default value validity, guard flags (`autoCreate`, `initNodes`), idempotency, perception target forwarding, and live coherence output.
+
+---
+
+## CI/CD
+
+Automated workflows live in `.github/workflows/`. Powered by [GameCI](https://game.ci).
+
+### Workflow overview
+
+| File | Trigger | What it does |
+|---|---|---|
+| `activation.yml` | Manual (once) | Generates the `.ulf` license file to store as `UNITY_LICENSE` secret |
+| `ci.yml` | PR → `production` | Runs EditMode + PlayMode tests in parallel; publishes results as a check |
+| `cd.yml` | Push to `production` | Builds Windows, macOS, Android in parallel; creates a GitHub Release |
+
+### First-time setup
+
+**1. Activate your Unity license**
+
+Run the `activation.yml` workflow manually (Actions → Acquire Unity license → Run workflow). Download the `.alf` artifact, upload it at https://license.unity3d.com/manual, and download the returned `.ulf` file.
+
+**2. Add repository secrets**
+
+Settings → Secrets and variables → Actions → New repository secret:
+
+| Secret | Value |
+|---|---|
+| `UNITY_LICENSE` | Full contents of the `.ulf` file |
+| `UNITY_EMAIL` | Your Unity account email |
+| `UNITY_PASSWORD` | Your Unity account password |
+
+For a **Pro license**, add `UNITY_SERIAL` instead of `UNITY_LICENSE` and remove the `UNITY_LICENSE` env var from both workflow files.
+
+For **Android builds**, also add `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASS`, `ANDROID_KEYALIAS_NAME`, `ANDROID_KEYALIAS_PASS`.
+
+**3. Ensure the Unity project is at the repo root**
+
+The workflows expect `Assets/`, `ProjectSettings/`, and `Packages/` at the top level of the repository. `SpiritsCrossing_Core/` should be placed under `Assets/Scripts/` in the Unity project. `unityVersion: auto` reads the version from `ProjectSettings/ProjectVersion.txt`.
+
+### Build targets
+
+- `StandaloneWindows64` — PC VR (SteamVR / OpenXR)
+- `StandaloneOSX` — Mac VR
+- `Android` — Meta Quest standalone (exports as `.aab`)
+
+### Versioning
+
+Builds use GameCI's Semantic strategy: `MAJOR.MINOR.commit-count`. Tag any commit with `vMAJOR.MINOR` (e.g. `v1.0`) to advance the baseline.
 
 ---
 
