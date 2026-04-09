@@ -403,5 +403,56 @@ namespace SpiritsCrossing.SourceWorld
         public bool IsWellDiscovered(string wellId)        => _discoveredWells.Contains(wellId);
         public int  DiscoveryCount() => _touchedPools.Count + _discoveredChamberOuters.Count +
                                         _completedGates.Count + _discoveredWells.Count;
+
+        /// <summary>
+        /// Overall zone completion as 0–1: ratio of discovered features to total features.
+        /// Called by UpsilonSourceLayer to drive band targets.
+        /// </summary>
+        public float ZoneCompletion01()
+        {
+            var zone = Data?.GetZone(ActiveZoneId);
+            if (zone == null) return 0f;
+            int total = zone.veilPools.Count + zone.communionChambers.Count +
+                        zone.thresholdGates.Count + zone.originWells.Count;
+            if (total == 0) return 0f;
+            int found = _touchedPools.Count + _discoveredChamberOuters.Count +
+                        _completedGates.Count + _discoveredWells.Count;
+            return Mathf.Clamp01((float)found / total);
+        }
+
+        /// <summary>
+        /// Average progress across all threshold gates in the current zone (0–1).
+        /// Completed gates count as 1.0; in-progress gates use elapsed/sustainDuration.
+        /// Called by UpsilonSourceLayer to drive band targets.
+        /// </summary>
+        public float AverageGateProgress01()
+        {
+            var zone = Data?.GetZone(ActiveZoneId);
+            if (zone == null || zone.thresholdGates.Count == 0) return 0f;
+            float total = 0f;
+            foreach (var gate in zone.thresholdGates)
+            {
+                if (_completedGates.Contains(gate.gateId))
+                    total += 1f;
+                else if (_gateTimers.TryGetValue(gate.gateId, out float elapsed))
+                    total += Mathf.Clamp01(elapsed / Mathf.Max(0.001f, gate.sustainDurationSeconds));
+            }
+            return Mathf.Clamp01(total / zone.thresholdGates.Count);
+        }
+
+        /// <summary>
+        /// A 0–1 discovery bias weighted toward deep source features (veil pools,
+        /// inner chambers, origin wells). Used by UpsilonSourceLayer to drive
+        /// the violet/indigo band targets.
+        /// </summary>
+        public float SourceDiscoveryBias()
+        {
+            var zone = Data?.GetZone(ActiveZoneId);
+            if (zone == null) return 0f;
+            int total = zone.veilPools.Count + zone.communionChambers.Count + zone.originWells.Count;
+            if (total == 0) return 0f;
+            int deep = _touchedPools.Count + _discoveredChamberInners.Count + _discoveredWells.Count;
+            return Mathf.Clamp01((float)deep / total);
+        }
     }
 }

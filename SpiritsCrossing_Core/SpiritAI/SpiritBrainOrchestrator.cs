@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using V243.SandstoneCave;
+using UpsilonPath.Sphere;
 
 namespace SpiritsCrossing.SpiritAI
 {
@@ -48,6 +49,12 @@ namespace SpiritsCrossing.SpiritAI
         [Header("Update Rate")]
         [Tooltip("Brain update interval in seconds. 0 = every frame.")]
         public float updateInterval = 0.05f;
+
+        [Header("Upsilon Sphere (optional)")]
+        [Tooltip("When assigned, the sphere's clarity and distortion outputs modulate " +
+                 "sourceAlignment and distortion in the shared player state (30% blend weight). " +
+                 "The cave interpreter remains the primary driver.")]
+        public UpsilonPerceptionBridge upsilonBridge;
 
         // -------------------------------------------------------------------------
         // Events
@@ -129,6 +136,18 @@ namespace SpiritsCrossing.SpiritAI
             _sharedState.wonder          = cave.wonder;
             _sharedState.distortion      = cave.distortion;
             _sharedState.sourceAlignment = cave.sourceAlignment;
+
+            // Optional: blend UpsilonSphere perception into the shared state.
+            // The sphere's clarity deepens sourceAlignment; its distortion adds to the
+            // existing distortion reading. Both use a conservative 30% blend so the
+            // cave interpreter stays the primary signal source.
+            if (upsilonBridge != null)
+            {
+                _sharedState.sourceAlignment = Mathf.Lerp(
+                    _sharedState.sourceAlignment, upsilonBridge.clarity, 0.30f);
+                _sharedState.distortion = Mathf.Lerp(
+                    _sharedState.distortion, upsilonBridge.distortion, 0.30f);
+            }
         }
 
         // -------------------------------------------------------------------------
