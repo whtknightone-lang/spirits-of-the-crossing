@@ -1,0 +1,135 @@
+# CD — Spirits of the Crossing
+#
+# Triggered when a PR is merged into production.
+# Builds for all three target platforms in parallel and uploads
+# artifacts ready for distribution or upload to a store.
+#
+# Platforms:
+#   StandaloneWindows64 — PC VR (SteamVR / OpenXR)
+#   StandaloneOSX       — Mac VR
+#   Android             — Meta Quest (standalone)
+#
+# Android signing: set these additional secrets for a signed .aab:
+#   ANDROID_KEYSTORE_BASE64   — base64 of your .keystore file
+#   ANDROID_KEYSTORE_PASS     — keystore password
+#   ANDROID_KEYALIAS_NAME     — key alias
+#   ANDROID_KEYALIAS_PASS     — key alias password
+#
+# Versioning: uses Semantic strategy (tag.tag.commit-count).
+# Tag a commit with vMAJOR.MINOR to set the version baseline.
+
+name: CD
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  build:
+    name: Build — ${{ matrix.targetPlatform }}
+    runs-on: ${{ matrix.runsOn }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - targetPlatform: StandaloneWindows64
+            runsOn: ubuntu-latest
+          - targetPlatform: StandaloneOSX
+            runsOn: ubuntu-latest
+          - targetPlatform: Android
+            runsOn: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # full history required for Semantic versioning
+          lfs: true
+
+      # Free up disk space on Ubuntu runners — Unity builds are large
+      - name: Free disk space
+        if: matrix.targetPlatform == 'Android'
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          large-packages: false
+
+      - name: Cache Unity Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-Build-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-Build-${{ matrix.targetPlatform }}-
+            Library-Build-
+            Library-
+
+      - name: Build ${{ matrix.targetPlatform }}
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: .
+          unityVersion: auto
+          targetPlatform: ${{ matrix.targetPlatform }}
+          buildName: SpiritsCrossing
+          versioning: Semantic
+          # Android signing (no-op if secrets are absent)
+          androidExportType: ${{ matrix.targetPlatform == 'Android' && 'androidAppBundle' || '' }}
+          androidKeystoreName: ${{ matrix.targetPlatform == 'Android' && 'user.keystore' || '' }}
+          androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
+          androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
+
+      - name: Upload ${{ matrix.targetPlatform }} build
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+          retention-days: 30
+
+  # -----------------------------------------------------------------------
+  # After all platforms build successfully, create a GitHub Release
+  # -----------------------------------------------------------------------
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: builds
+
+      - name: Create release archives
+        run: |
+          cd builds
+          for dir in */; do
+            platform="${dir%/}"
+            zip -r "../${platform}.zip" "${dir}"
+            echo "Created ${platform}.zip"
+          done
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: release-${{ github.sha }}
+          name: Release ${{ github.sha }}
+          body: |
+            Automated release from production branch.
+            Commit: ${{ github.sha }}
+          files: |
+            *.zip
+          generate_release_notes: true
